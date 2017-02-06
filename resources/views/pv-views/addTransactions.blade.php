@@ -13,7 +13,7 @@
             <div class="panel-heading"> Payment Vouchers</div>
             <div class="panel-body">
 
-                <form class="form-horizontal" role="form" method="POST" action="{{ url('/saveTrans') }}" file="true">
+                <form class="form-horizontal" role="form" method="POST" action="{{ url('/saveTrans') }}" files="true" enctype="multipart/form-data">
                     {{ csrf_field() }}
 
                     <div class="form-group{{ $errors->has('amount') ? ' has-error' : '' }}">

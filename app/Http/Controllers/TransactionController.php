@@ -7,6 +7,7 @@ use App\Account;
 use App\Supplier;
 use Response;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class TransactionController extends Controller {
 
@@ -38,10 +39,21 @@ class TransactionController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function save(Request $request) {
-        echo $request->documents;
-       // dd($request);
+ //dd($request->file('documents')); 
+ //echo $request->documents;
+ //return $request->documents;
+ //return $request->file('documents')->getClientOriginalName();
+       /* 
+        if ($request->hasFile('documents')){
+            echo "true";
+        }
+        
+        else
+            echo "false";
+*/
+       
         if ($request->hasFile('documents')) {
-            $path = $request->file('documents')->store('storage/app');
+            $path = $request->file('documents')->store('files');
 
             $pv = new Payment();
             $pv->amount = $request->amount;
