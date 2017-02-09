@@ -142,6 +142,36 @@
                             @endif
                         </div>
                     </div>
+                    
+                    <div class="form-group{{ $errors->has('withohlding') ? ' has-error' : '' }}">
+                        <label for="withholding" class="col-md-4 control-label"></label>
+
+                        <div class="col-md-4">
+                            <strong>Withholding Tax</strong><br>
+                            <input type="radio" name="WTH" value="yes"> Yes
+                            <input type="radio" name="WTH" value="no"> No
+                            @if ($errors->has('withholding'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('withholding') }}</strong>
+                            </span>
+                            @endif
+                        </div>
+                    </div>
+                    
+                    <div class="form-group{{ $errors->has('vat') ? ' has-error' : '' }}">
+                        <label for="vat" class="col-md-4 control-label"></label>
+
+                        <div class="col-md-4">
+                            <strong>VAT/NHIL</strong><br>
+                            <input type="radio" name="VAT" value="yes"> Yes
+                            <input type="radio" name="VAT" value="no"> No
+                            @if ($errors->has('vat'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('vat') }}</strong>
+                            </span>
+                            @endif
+                        </div>
+                    </div>
 
 
 

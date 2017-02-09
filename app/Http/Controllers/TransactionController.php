@@ -38,22 +38,10 @@ class TransactionController extends Controller {
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function save(Request $request) {
- //dd($request->file('documents')); 
- //echo $request->documents;
- //return $request->documents;
- //return $request->file('documents')->getClientOriginalName();
-       /* 
-        if ($request->hasFile('documents')){
-            echo "true";
-        }
-        
-        else
-            echo "false";
-*/
-       
+    public function save(Request $request) {       
         if ($request->hasFile('documents')) {
-            $path = $request->file('documents')->store('files');
+            $name = $request->file('documents')->getClientOriginalName();
+            $path = $request->file('documents')->storeAs('files',$name);
 
             $pv = new Payment();
             $pv->amount = $request->amount;
@@ -63,9 +51,12 @@ class TransactionController extends Controller {
             $pv->cheque = $request->cheque;
             $pv->accountDebited = $request->debit;
             $pv->payee = $request->payee;
+            $pv->status = "created";
+            $pv->creator=Auth::user()->id;
             $pv->save();
             return response()->json($pv);
-        } else {
+        } 
+        else {
             echo "Error";
         }
     }

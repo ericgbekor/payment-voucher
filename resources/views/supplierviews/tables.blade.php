@@ -39,7 +39,7 @@
                 <table id="data" data-toggle="table"  data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="id" data-sort-order="asc">
                     <thead>
                         <tr>
-                            <th data-field="state" data-checkbox="true" >Item</th>
+                            <th data-field="state" data-checkbox="true" ></th>
                             <th data-field="id" data-sortable="true">Supplier ID</th>
                             <th data-field="supplier_name"  data-sortable="true">Supplier Name</th>
                             <th data-field="supplier_category" data-sortable="true">Supplier Category</th>
