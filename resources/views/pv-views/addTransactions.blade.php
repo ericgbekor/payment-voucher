@@ -18,7 +18,7 @@
 
                     <div class="form-group{{ $errors->has('amount') ? ' has-error' : '' }}">
                         <label for="amount" class="col-md-4 control-label"></label>
-
+                        
                         <div class="col-md-4">
                             <input id="amount" type="text" class="form-control" name="amount" placeholder="Gross Amount" value="{{ old('amount') }}" required autofocus>
 
@@ -77,7 +77,6 @@
 
                         <div class="col-md-4">
                            
-
                             <select class="form-control" name="payee" id="payee"  name="payee" required>
                                 <option value="-1">--Select Payee-- </option>
                                 @foreach ($suppliers as $sn) 
