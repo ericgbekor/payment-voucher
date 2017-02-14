@@ -17,7 +17,7 @@
                         <tr>
                             <th data-field="state" data-checkbox="true" ></th>
                             <th data-field="id" data-sortable="true">PV</th>
-                            <th data-field="descriptions"  data-sortable="true">Transaction Description</th>
+                            <th data-field="description"  data-sortable="true">Transaction Description</th>
                             <th data-field="amount" data-sortable="true"> Total Amount</th>
                              <th data-field="status" data-sortable="true"> Status</th>
                             <th data-field="created_at" data-sortable="true"> Created At</th>
@@ -43,7 +43,7 @@
                                     <span class="glyphicon glyphicon-edit"></span> Edit
                                 </button> </td>
                             <td>
-                                <button class="delete-modal btn btn-danger" data-id="{{$transaction->id}}" data-name="{{$transaction->description}}" data-category="{{$transaction->amount}}">
+                                <button class="delete-modal btn btn-danger" data-id="{{$transaction->id}}" data-descrition="{{$transaction->description}}" data-amount="{{$transaction->amount}}">
                                     <span class="glyphicon glyphicon-trash"></span> Delete
                                 </button>
                             </td>
@@ -87,7 +87,7 @@
                     </div>
                 </form>
                 <div class="deleteContent">
-                    Are you Sure you want to delete <span class="name"></span> ?
+                    Are you Sure you want to delete transaction?
                     <span class="hidden id"></span>
                 </div>
                 <div class="modal-footer">
@@ -243,14 +243,14 @@
         $('.id').val($(this).data('id'));
         $('.deleteContent').show();
         $('.form-horizontal').hide();
-        $('.name').html($(this).data('name'));
+       // $('.name').html($(this).data('description'));
         $('#myModal').modal('show');
     });
     $('.modal-footer').on('click', '.delete', function () {
         $.ajax({
             async: 'true',
-            type: 'delete',
-            url: '/supplier/' + $('.id').val(),
+            type: 'get',
+            url: '/deleteTrans',
             data: {
                 '_token': $('input[name=_token]').val(),
                 'id': $('.id').val()
@@ -263,14 +263,6 @@
 
 </script>
 
-<script> 
-    $(doucment).ready(function(){
-    $("table tbody tr").click(function()
-    {
-        window.location = '/';
-    });
-    });
-</script>
 
 @stop
 

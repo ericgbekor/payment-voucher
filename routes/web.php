@@ -25,4 +25,5 @@ Auth::routes();
 Route::get('/home', 'HomeController@index');
 Route::get('/transactions', 'TransactionController@index');
 Route::get('/addtransactions', 'TransactionController@create');
-Route::post('saveTrans', 'TransactionController@save');
+Route::post('/saveTrans', 'TransactionController@save');
+Route::get('/deleteTrans', 'TransactionController@deletePayment');
