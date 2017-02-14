@@ -105,7 +105,7 @@
 
                         <div class="col-md-4">
                            <select class="form-control" name="debit" id="debit"  name="debit" required>
-                               <option value="-1">--Select Account-- </option>
+                               <option value="-1">--Select Debit Account-- </option>
                                 @foreach ($accounts as $an) 
                                 {
                                 <option value="{{ $an->id }}">{{ $an->account_name }}</option>
@@ -127,6 +127,34 @@
                             </button>
                         </div>
                     </div> 
+                    
+                    <div class="form-group{{ $errors->has('debit') ? ' has-error' : '' }}">
+                        <label for="debit" class="col-md-4 control-label"></label>
+                     <div class="col-md-4">
+                           <select class="form-control" name="credit" id="credit"  name="credit" required>
+                               <option value="-1">--Select Credit Account-- </option>
+                                @foreach ($accounts as $an) 
+                                {
+                                <option value="{{ $an->id }}">{{ $an->account_name }}</option>
+                                }
+                                @endforeach
+                               
+                            </select>
+
+                            @if ($errors->has('credit'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('credit') }}</strong>
+                            </span>
+                            @endif
+                        </div>
+
+                        <div class="col-md-1">
+                            <button class="btn btn-secondary" type="" id="add">
+                                <span class="glyphicon glyphicon-plus-sign"></span>
+                            </button>
+                        </div>
+                    </div> 
+            
                     <div class="form-group{{ $errors->has('documents') ? ' has-error' : '' }}">
                         <label for="documents" class="col-md-4 control-label"></label>
 
@@ -142,16 +170,16 @@
                         </div>
                     </div>
                     
-                    <div class="form-group{{ $errors->has('withohlding') ? ' has-error' : '' }}">
-                        <label for="withholding" class="col-md-4 control-label"></label>
+                    <div class="form-group{{ $errors->has('WHT') ? ' has-error' : '' }}">
+                        <label for="WHT" class="col-md-4 control-label"></label>
 
                         <div class="col-md-4">
                             <strong>Withholding Tax</strong><br>
-                            <input type="radio" name="WTH" value="yes"> Yes
-                            <input type="radio" name="WTH" value="no"> No
+                            <input type="radio" name="WHT" value="yes"> Yes
+                            <input type="radio" name="WHT" value="no"> No
                             @if ($errors->has('withholding'))
                             <span class="help-block">
-                                <strong>{{ $errors->first('withholding') }}</strong>
+                                <strong>{{ $errors->first('WHT') }}</strong>
                             </span>
                             @endif
                         </div>

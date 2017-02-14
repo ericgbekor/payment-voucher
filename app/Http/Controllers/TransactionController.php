@@ -6,6 +6,7 @@ use App\Payment;
 use App\Account;
 use App\Supplier;
 use Response;
+use Auth;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -63,7 +64,7 @@ class TransactionController extends Controller {
     
     public function getWHT ($request){
         if ($request->has('WHT')){
-            $req = $request->WHT;
+            $req = $request-> WHT;
             if ($req=="yes")
             {
           $amount=$request->amount;
@@ -74,7 +75,7 @@ class TransactionController extends Controller {
            }
            return $witholding;
         }
-        else{echo "Error";}
+        else{echo "Requset has no WHT in it";}
     }
 
     /**
@@ -84,26 +85,27 @@ class TransactionController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function save(Request $request) {  
-       // dd($request);
-        if ($request->has('description')){echo "True";}
-        else{echo "False";}
-       
+            //dd($request);
             $pv = new Payment();
             $pv->amount = $request->amount;
-            $pv->descriptions = $request->descripton;
+            $pv->description = $request->description;
             $pv->rate = $request->rate;
             $pv->cheque = $request->cheque;
             $pv->accountDebited = $request->debit;
+            $pv->accountCredited = $request->credit;
             $pv->payee = $request->payee;
             $pv->status = "created";
             $pv->attachments = $this->saveFile($request);
             $pv->vat = $this->getVAT($request);
             $pv->withholding = $this->getWHT($request);
-           // $pv->creator=Auth::user()->id;
+            $pv->creator = Auth::user()->id;
+           //dd($pv);
             $pv->save();
-            return response()->json($pv);
+            //return response()->json($pv);
+            return redirect('transactions');
     }
     
     
 
 }
+

@@ -3,23 +3,23 @@
 @section('content')
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-header">@section('name') Transactions @stop</h1>
+        <h1 class="page-header">@section('name') Payment Vouchers @stop</h1>
     </div>
 </div><!--/.row-->
 
 
 <div class="row">
-    <div class="col-lg-11">
+    <div class="col-lg-12">
         <div class="panel panel-default">
-            <div class="panel-heading"> Payment Vouchers</div>
             <div class="panel-body">
                 <table id="data" data-toggle="table"  data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="total amount" data-sort-order="asc">
                     <thead>
                         <tr>
-                            <th data-field="state" data-checkbox="true" >Item</th>
+                            <th data-field="state" data-checkbox="true" ></th>
                             <th data-field="id" data-sortable="true">PV</th>
-                            <th data-field="description"  data-sortable="true">Transaction Description</th>
-                            <th data-field="amount" data-sortable="true"> Transaction </th>
+                            <th data-field="descriptions"  data-sortable="true">Transaction Description</th>
+                            <th data-field="amount" data-sortable="true"> Total Amount</th>
+                             <th data-field="status" data-sortable="true"> Status</th>
                             <th data-field="created_at" data-sortable="true"> Created At</th>
                             <th data-field="updated_at" data-sortable="true"> Updated At</th>
                             <th>Edit</th>
@@ -35,6 +35,7 @@
                             <td> {{$transaction->id}} </td>
                             <td> {{$transaction->description}}</td>
                             <td> {{$transaction->amount}}</td>
+                            <td> {{$transaction->status}}</td>
                             <td> {{$transaction->created_at}} </td>
                             <td > {{$transaction->updated_at}} </td>
                             <td>
