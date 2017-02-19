@@ -129,9 +129,9 @@
                          
                          <div class="col-md-6">
                              <b>Permission </b> <br>
-                             <input type ='checkbox' name ='permission' value='Create' /> Create
-                             <input type ='checkbox' name ='permission' value='Review' /> Review
-                             <input type ='checkbox' name ='permission' value='Approve' /> Approve 
+                             <input type ='checkbox' name ='permission[]' value='Create' /> Create
+                             <input type ='checkbox' name ='permission[]' value='Review' /> Review
+                             <input type ='checkbox' name ='permission[]' value='Approve' /> Approve 
                         
                          </div>
                             

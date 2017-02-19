@@ -1,4 +1,5 @@
 
+
 @extends('master')
 @section('content')
 <div class="row">
@@ -22,8 +23,7 @@
                             <th data-field="status" data-sortable="true"> Status</th>
                             <th data-field="created_at" data-sortable="true"> Created At</th>
                             <th data-field="updated_at" data-sortable="true"> Updated At</th>
-                            <th>Edit</th>
-                            <th>Delete</th>
+                            
 
                         </tr>
                     </thead>
@@ -38,15 +38,6 @@
                             <td> {{$transaction->status}}</td>
                             <td> {{$transaction->created_at}} </td>
                             <td > {{$transaction->updated_at}} </td>
-                            <td>
-                                <button class="edit-modal btn btn-primary" data-id="{{$transaction->id}}" data-name="{{$transaction->description}}" data-category="{{$transaction->amount}}">
-                                    <span class="glyphicon glyphicon-edit"></span> Edit
-                                </button> </td>
-                            <td>
-                                <button class="delete-modal btn btn-danger" data-id="{{$transaction->id}}" data-descrition="{{$transaction->description}}" data-amount="{{$transaction->amount}}">
-                                    <span class="glyphicon glyphicon-trash"></span> Delete
-                                </button>
-                            </td>
 
                         </tr>
                         @endforeach
@@ -54,12 +45,12 @@
                 </table>
             </div>
             <div align="right">
-                <button type="button" name="btn_delete" id="btn_delete" class="btn btn-success">
-                    <span class="glyphicon glyphicon-trash"></span> Delete
+                <button type="button" name="btn_reject" id="btn_reject" class="btn btn-success">
+                    <span class="glyphicon glyphicon-trash"></span> Reject
                 </button>
                 
-                <button type="button" name="btn_submit" id="btn_submit" class="btn btn-primary">
-                    <span class="glyphicon glyphicon-check"></span> Submit
+                <button type="button" name="btn_review" id="btn_review" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-check"></span> Reviewed
                 </button>
             </div>
         </div>
@@ -171,8 +162,8 @@
 
     <script>
         $(document).ready(function(){
-           $('#btn_delete').click(function(){
-              if(confirm("Delete?")){
+           $('#btn_reject').click(function(){
+              if(confirm("Reject?")){
                   var id =[];
                   $('#checkbox:checked').each(function(){
                   id.push(this.value);
@@ -185,15 +176,16 @@
                  $.ajax({
                      async: 'true',
                      type: 'get',
-                     url: '/multidelete',
+                     url: '/multireject',
                      data:{id:id},
                      success:function(){
-                         for(var i=0;i<id.length;i++){
-                             
-                           $('tr#'+id[i]+'').css('background-color','#cc');
-                           $('tr#'+id[i]+'').fadeOut('slow');
-                           
-                         }
+                          window.location="/reviewTrans";
+//                         for(var i=0;i<id.length;i++){
+//                             
+//                           $('tr#'+id[i]+'').css('background-color','#cc');
+//                           $('tr#'+id[i]+'').fadeOut('slow');
+//                           
+//                         }
                      }
                      
                  });
@@ -208,7 +200,7 @@
         
         
          $(document).ready(function(){
-           $('#btn_submit').click(function(){
+           $('#btn_review').click(function(){
               if(confirm("Submit for Review?")){
                   var id =[];
                   $('#checkbox:checked').each(function(){
@@ -222,10 +214,10 @@
                  $.ajax({
                      async: 'true',
                      type: 'get',
-                     url: '/multireview',
+                     url: '/review',
                      data:{id:id},
                      success:function(){
-                         window.location="/transactions";
+                         window.location="/reviewTrans";
 //                         for(var i=0;i<id.length;i++){
 //                             
 //                           $('tr#'+id[i]+'').css('background-color','#cc');
@@ -351,4 +343,5 @@
 
 
 @stop
+
 

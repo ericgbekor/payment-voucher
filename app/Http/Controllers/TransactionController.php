@@ -7,6 +7,7 @@ use App\Account;
 use App\Supplier;
 use Response;
 use Auth;
+use PDF;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -21,6 +22,16 @@ class TransactionController extends Controller {
         $transactions = Payment::get();
         return view('pv-views/viewTransactions', compact('transactions'));
     }
+    
+     public function reviewPayment() {
+        $transactions = Payment::where('status','pending review')->get();
+        return view('pv-views/reviewTransactions', compact('transactions'));
+    }
+    
+    public function approvePayment() {
+        $transactions = Payment::where('status','reviewed')->get();
+        return view('pv-views/approveTransactions', compact('transactions'));
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -33,6 +44,15 @@ class TransactionController extends Controller {
         return view('pv-views/addTransactions', compact('suppliers', 'accounts'));
     }
 
+    public function genReport(){
+    PDF::SetTitle('Payment Voucher');
+    PDF::SetAuthor('Eric Gbekor');
+    PDF::AddPage();
+    PDF::Write(5, 'Hello World');
+    PDF::Output('hello_world.pdf');
+    }
+    
+    
     public function saveFile(Request $request) {
         if ($request->hasFile('documents')) {
             $name = $request->file('documents')->getClientOriginalName();
@@ -81,7 +101,6 @@ class TransactionController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function save(Request $request) {
-        //dd($request);
         $pv = new Payment();
         $pv->amount = $request->amount;
         $pv->description = $request->description;
@@ -105,6 +124,66 @@ class TransactionController extends Controller {
         $id = $request->id;
         Payment::where('id', $id)->delete();
         return response()->json();  
+    }
+    
+    public function multiDelete(Request $request){
+        
+        if ($request->has('id')){
+           // var_dump( $request->id);
+           foreach ($request->id as $id){
+           Payment::where('id', $id)->delete();
+           
+             } 
+        }
+    }
+    
+    
+    public function reviewStatus(Request $request){
+        
+        if($request->has('id')){
+            
+          foreach ($request->id as $id){
+           $pv = Payment::findorfail($id);
+           $pv->status = "pending review";
+           $pv->save();
+          }  
+        }
+    }
+    
+    public function review(Request $request){
+        
+        if($request->has('id')){
+            
+          foreach ($request->id as $id){
+           $pv = Payment::findorfail($id);
+           $pv->status = "reviewed";
+           $pv->save();
+          }  
+        }
+    }
+    
+    public function reject(Request $request){
+        
+        if($request->has('id')){
+            
+          foreach ($request->id as $id){
+           $pv = Payment::findorfail($id);
+           $pv->status = "rejected";
+           $pv->save();
+          }  
+        }
+    }
+    
+    public function approve(Request $request){
+        
+        if($request->has('id')){
+            
+          foreach ($request->id as $id){
+           $pv = Payment::findorfail($id);
+           $pv->status = "approved";
+           $pv->save();
+          }  
+        }
     }
 
 }

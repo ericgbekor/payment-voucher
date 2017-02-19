@@ -64,13 +64,13 @@
 		<ul class="nav menu">
 			<li class="active"><a href="/"><svg class="glyph stroked dashboard-dial"><use xlink:href="#stroked-dashboard-dial"></use></svg> Dashboard</a></li>
                         <li class="parent ">
-				<a href="#">
+				<a href="transactions">
 					Payment Voucher  <span data-toggle="collapse" href="#sub-item-1"><svg class="glyph stroked chevron-down"><use xlink:href="#stroked-chevron-down"></use></svg></span> 
 				</a>
 				<ul class="children collapse" id="sub-item-1">
 					<li>
-						<a class="" href="transactions">
-							<svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> View Vouchers
+						<a class="" href="reviewTrans">
+							<svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> Review Vouchers
 						</a>
 					</li>
 					<li>
@@ -79,8 +79,8 @@
 						</a>
 					</li>
 					<li>
-						<a class="" href="#">
-							<svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> Sub Item 3
+						<a class="" href="approveTrans">
+							<svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> Approve Vouchers
 						</a>
 					</li>
 				</ul>
@@ -90,7 +90,7 @@
 			<li><a href="supplier"><svg class="glyph stroked table"><use xlink:href="#stroked-table"></use></svg>Suppliers</a></li>
 			<li><a href="account"><svg class="glyph stroked pencil"><use xlink:href="#stroked-pencil"></use></svg>Chart of Accounts</a></li>
 			<li><a href="panels.html"><svg class="glyph stroked app-window"><use xlink:href="#stroked-app-window"></use></svg> Alerts &amp; Panels</a></li>
-			<li><a href="icons.html"><svg class="glyph stroked star"><use xlink:href="#stroked-star"></use></svg> Reports</a></li>
+			<li><a href="reportTrans"><svg class="glyph stroked star"><use xlink:href="#stroked-star"></use></svg> Reports</a></li>
 			
 			<li role="presentation" class="divider"></li>
 			<li><a href="login"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> Login Page</a></li>
