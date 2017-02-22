@@ -26,6 +26,7 @@ Route::get('/home', 'HomeController@index');
 Route::get('/transactions', 'TransactionController@index');
 Route::get('/addtransactions', 'TransactionController@create');
 Route::post('/saveTrans', 'TransactionController@save');
+Route::get('/updateTrans', 'TransactionController@updatePV');
 Route::get('/deleteTrans', 'TransactionController@deletePayment');
 Route::get('/reviewTrans', 'TransactionController@reviewPayment');
 Route::get('/approveTrans', 'TransactionController@approvePayment');

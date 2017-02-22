@@ -16,6 +16,27 @@
                 <form class="form-horizontal" role="form" method="POST" action="{{ url('/saveTrans') }}" files="true" enctype="multipart/form-data">
                     {{ csrf_field() }}
 
+                    <div class="form-group{{ $errors->has('currency') ? ' has-error' : '' }}">
+                        <label for="currency" class="col-md-4 control-label"></label>
+
+                        <div class="col-md-2">
+                           
+                            <select class="form-control" name="currency" id="currency"  name="currency" required>
+                                <option value="-1">--Currency-- </option>
+                               
+                                <option value="cedis">GHS</option>
+                                <option value="dollars">USD</option>
+                                
+                            </select>
+
+                            @if ($errors->has('currency'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('currency') }}</strong>
+                            </span>
+                            @endif
+                        </div>
+                    </div>
+                    
                     <div class="form-group{{ $errors->has('amount') ? ' has-error' : '' }}">
                         <label for="amount" class="col-md-4 control-label"></label>
                         
@@ -93,11 +114,11 @@
                             @endif
                         </div>
 
-                        <div class="col-md-2">
+<!--                        <div class="col-md-2">
                             <button class="add-modal btn btn-secondary" type="" id="add">
                                 <span class="glyphicon glyphicon-plus-sign"></span>
                             </button>
-                        </div>
+                        </div>-->
                     </div>
 
                     <div class="form-group{{ $errors->has('debit') ? ' has-error' : '' }}">
@@ -121,46 +142,21 @@
                             @endif
                         </div>
 
-                        <div class="col-md-1">
+<!--                        <div class="col-md-1">
                             <button class="btn btn-secondary" type="" id="add">
                                 <span class="glyphicon glyphicon-plus-sign"></span>
                             </button>
-                        </div>
+                        </div>-->
                     </div> 
                     
-                    <div class="form-group{{ $errors->has('debit') ? ' has-error' : '' }}">
-                        <label for="debit" class="col-md-4 control-label"></label>
-                     <div class="col-md-4">
-                           <select class="form-control" name="credit" id="credit"  name="credit" required>
-                               <option value="-1">--Select Credit Account-- </option>
-                                @foreach ($accounts as $an) 
-                                {
-                                <option value="{{ $an->id }}">{{ $an->account_name }}</option>
-                                }
-                                @endforeach
-                               
-                            </select>
 
-                            @if ($errors->has('credit'))
-                            <span class="help-block">
-                                <strong>{{ $errors->first('credit') }}</strong>
-                            </span>
-                            @endif
-                        </div>
-
-                        <div class="col-md-1">
-                            <button class="btn btn-secondary" type="" id="add">
-                                <span class="glyphicon glyphicon-plus-sign"></span>
-                            </button>
-                        </div>
-                    </div> 
             
                     <div class="form-group{{ $errors->has('documents') ? ' has-error' : '' }}">
                         <label for="documents" class="col-md-4 control-label"></label>
 
                         <div class="col-md-4">
                             <strong>Attachments</strong>
-                            <input id="documents" type="file" name="documents">
+                            <input id="documents" type="file" name="documents[]" multiple="multiple">
 
                             @if ($errors->has('documents'))
                             <span class="help-block">

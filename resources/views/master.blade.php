@@ -7,7 +7,7 @@
 <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 <title>Payment Voucher</title>
-
+<link rel="shortcut icon" type="image/x-icon" href="{{URL::asset('images.ico')}}">
 <link href="{{ URL::asset ('css/bootstrap.min.css')}}" rel="stylesheet">
 <link href="{{ URL::asset ('css/datepicker3.css')}}" rel="stylesheet">
 <link href="{{ URL:: asset('css/styles.css')}}" rel="stylesheet">
@@ -33,7 +33,7 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#"><span>Payment Voucher</span>Admin</a>
+				<a class="navbar-brand" href="/home"><span>Payment Voucher</span>Admin</a>
 				<ul class="user-menu">
 					<li class="dropdown pull-right">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> {{ Auth::user()->firstname }} {{Auth::user()->lastname}} <span class="caret"></span></a>
@@ -65,19 +65,21 @@
 			<li class="active"><a href="/"><svg class="glyph stroked dashboard-dial"><use xlink:href="#stroked-dashboard-dial"></use></svg> Dashboard</a></li>
                         <li class="parent ">
 				<a href="transactions">
-					Payment Voucher  <span data-toggle="collapse" href="#sub-item-1"><svg class="glyph stroked chevron-down"><use xlink:href="#stroked-chevron-down"></use></svg></span> 
+					<span class="glyphicon glyphicon-file"></span>Payment Voucher  <span data-toggle="collapse" href="#sub-item-1"><svg class="glyph stroked chevron-down"><use xlink:href="#stroked-chevron-down"></use></svg></span> 
 				</a>
 				<ul class="children collapse" id="sub-item-1">
-					<li>
-						<a class="" href="reviewTrans">
-							<svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> Review Vouchers
-						</a>
-					</li>
-					<li>
+                                    <li>
 						<a class="" href="addtransactions">
 							<svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> New Voucher
 						</a>
 					</li>
+                                    
+                                    <li>
+						<a class="" href="reviewTrans">
+							<svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> Review Vouchers
+						</a>
+					</li>
+					
 					<li>
 						<a class="" href="approveTrans">
 							<svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> Approve Vouchers

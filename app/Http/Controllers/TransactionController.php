@@ -20,7 +20,9 @@ class TransactionController extends Controller {
      */
     public function index() {
         $transactions = Payment::get();
-        return view('pv-views/viewTransactions', compact('transactions'));
+        $suppliers = Supplier::get();
+        $accounts = Account::get();
+        return view('pv-views/viewTransactions', compact('transactions','suppliers','accounts'));
     }
     
      public function reviewPayment() {
@@ -43,6 +45,8 @@ class TransactionController extends Controller {
         $accounts = Account::get();
         return view('pv-views/addTransactions', compact('suppliers', 'accounts'));
     }
+    
+    
 
     public function genReport(){
     PDF::SetTitle('Payment Voucher');
@@ -56,7 +60,7 @@ class TransactionController extends Controller {
     public function saveFile(Request $request) {
         if ($request->hasFile('documents')) {
             $name = $request->file('documents')->getClientOriginalName();
-            $path = $request->file('documents')->storeAs('files', $name);
+            $path = $request->file('documents')->storeAs('files', $name,'public');
             return $path;
         } else {
             echo "Error";
@@ -93,6 +97,23 @@ class TransactionController extends Controller {
             echo "Requset has no WHT in it";
         }
     }
+    
+    public function creditAcc(Request $request){
+        if ($request->has('currency')){
+           $currency = $request->currency; 
+            if ($currency=='cedis'){
+               $credit = 5001; 
+            }
+            else if ($currency == 'dollars'){
+                $credit = 5002;
+            }
+            
+            return $credit;
+        }
+        else{
+            echo "No currency selected";
+        }
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -101,23 +122,48 @@ class TransactionController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function save(Request $request) {
+        //dd($request);
         $pv = new Payment();
         $pv->amount = $request->amount;
         $pv->description = $request->description;
         $pv->rate = $request->rate;
         $pv->cheque = $request->cheque;
         $pv->accountDebited = $request->debit;
-        $pv->accountCredited = $request->credit;
+        $pv->accountCredited = $this->creditAcc($request);
+        $pv->WHT = $request->WHT;
+        $pv->nhil= $request->VAT;
         $pv->payee = $request->payee;
+        $pv->currency = $request->currency;
         $pv->status = "created";
         $pv->attachments = $this->saveFile($request);
         $pv->vat = $this->getVAT($request);
         $pv->withholding = $this->getWHT($request);
         $pv->creator = Auth::user()->id;
-        //dd($pv);
         $pv->save();
         //return response()->json($pv);
         return redirect('transactions');
+    }
+    
+    public function updatePV(Request $request){
+        $id=$request->id;
+        $pv = Payment::findorfail('id',$id);
+        $pv->amount = $request->amount;
+        $pv->description = $request->description;
+        $pv->rate = $request->rate;
+        $pv->cheque = $request->cheque;
+        $pv->accountDebited = $request->debit;
+        $pv->accountCredited = $this->creditAcc($request);
+        $pv->WHT = $request->WHT;
+        $pv->nhil= $request->VAT;
+        $pv->payee = $request->payee;
+        $pv->currency = $request->currency;
+        $pv->status = "created";
+        $pv->attachments = $this->saveFile($request);
+        $pv->vat = $this->getVAT($request);
+        $pv->withholding = $this->getWHT($request);
+        $pv->creator = Auth::user()->id;
+        $pv->save();
+       return response()->json($pv);
     }
 
     public function deletePayment(Request $request) {
@@ -129,7 +175,6 @@ class TransactionController extends Controller {
     public function multiDelete(Request $request){
         
         if ($request->has('id')){
-           // var_dump( $request->id);
            foreach ($request->id as $id){
            Payment::where('id', $id)->delete();
            
