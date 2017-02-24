@@ -8,6 +8,7 @@ use App\Supplier;
 use Response;
 use Auth;
 use PDF;
+use Excel;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -48,15 +49,66 @@ class TransactionController extends Controller {
     
     
 
-    public function genReport(){
-    PDF::SetTitle('Payment Voucher');
-    PDF::SetAuthor('Eric Gbekor');
-    PDF::AddPage();
-    PDF::Write(5, 'Hello World');
-    PDF::Output('hello_world.pdf');
+    public function genReport(Request $request){
+       // dd($request);
+ 
+//    PDF::SetTitle('Payment Voucher');
+//    PDF::SetAuthor('Eric Gbekor');
+//    PDF::AddPage();
+//    $transaction = Payment::get();
+//    
+//    PDF::Write(5,$transaction);
+//    PDF::AddPage();
+//    $sup = Supplier::get();
+//    PDF::Write(5,$sup);
+//    PDF::Output('hello_world.pdf');
+        
+//        $data = Payment::get();
+//        Excel::create('vouchers', function($excel) use($data) {
+//
+//            $excel->sheet('paymentVouchers', function($sheet) use($data) {
+//
+//                $sheet->fromModel($data);
+//            });
+//        })->export('csv');
+        
+//       $data = Excel::load('voucher.xls', function($reader) {
+//            
+//        })->get();
+//        return response()->json($data);
+        
+        if ($request->hasFile('import_file')) {
+            //echo "Yes";
+            $path = $request->file('import_file')->path();
+            $data = Excel::load($path, function($reader) {
+                        })->get();
+              //dd($data);          
+            if (!empty($data) && $data->count()) {
+                foreach ($data as $key => $value) {
+                    $pv = new Payment();
+                    $pv->amount = $value->amount;
+                    $pv->description = $value->description;
+                    $pv->rate = $value->rate;
+                    $pv->cheque = $value->cheque;
+                    $pv->accountDebited = $value->accountdebited;
+                   $pv->accountCredited = $value->accountcredited;
+                    $pv->WHT = $value->wht;
+                    $pv->nhil = $value->nhil;
+                    $pv->payee = $value->payee;
+                    $pv->currency = $value->currency;
+                    $pv->status = "created";
+                    //$pv->attachments = $this->saveFile($request);
+                    $pv->vat = $value->vat;
+                    $pv->withholding = $value->withholding;
+                    $pv->creator = Auth::user()->id;
+                    $pv->save();
+                    //return response()->json($pv);
+                    return redirect('transactions');
+                }
+            }else{echo "Error";}
+        }
     }
-    
-    
+
     public function saveFile(Request $request) {
         if ($request->hasFile('documents')) {
             $name = $request->file('documents')->getClientOriginalName();
@@ -146,16 +198,16 @@ class TransactionController extends Controller {
     
     public function updatePV(Request $request){
         $id=$request->id;
-        $pv = Payment::findorfail('id',$id);
+        $pv = Payment::findorfail($id);
         $pv->amount = $request->amount;
-        $pv->description = $request->description;
+        $pv->description = $request->name;
         $pv->rate = $request->rate;
         $pv->cheque = $request->cheque;
         $pv->accountDebited = $request->debit;
         $pv->accountCredited = $this->creditAcc($request);
         $pv->WHT = $request->WHT;
         $pv->nhil= $request->VAT;
-        $pv->payee = $request->payee;
+       // $pv->payee = $request->payee;
         $pv->currency = $request->currency;
         $pv->status = "created";
         $pv->attachments = $this->saveFile($request);
@@ -163,7 +215,8 @@ class TransactionController extends Controller {
         $pv->withholding = $this->getWHT($request);
         $pv->creator = Auth::user()->id;
         $pv->save();
-       return response()->json($pv);
+        dd($pv);
+      // return response()->json($pv);
     }
 
     public function deletePayment(Request $request) {
@@ -190,7 +243,10 @@ class TransactionController extends Controller {
           foreach ($request->id as $id){
            $pv = Payment::findorfail($id);
            $pv->status = "pending review";
+           //Mail::to('eric.gbekor@ashesi.edu.gh')->send( new reviewPV($pv));
            $pv->save();
+           
+           
           }  
         }
     }

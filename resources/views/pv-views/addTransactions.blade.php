@@ -1,16 +1,38 @@
 @extends('master')
 @section('content')
 
-<div class="row">
+<!--<div class="row">
     <div class="col-lg-12">
         <h1 class="page-header">@section('name') Transactions @stop</h1>
     </div>
-</div><!--/.row-->
+</div>/.row-->
 
+<div class="container col-md-4">
+    <form style="border: 4px solid #a1a1a1;margin-top: 15px;padding: 10px;" action="{{ URL::to('/reportTrans') }}" class="form-horizontal" method="post" files="true" enctype="multipart/form-data">
+        {{ csrf_field() }}
+        <div class="form-group{{ $errors->has('documents') ? ' has-error' : '' }}">
+                        <label for="import_file" class="col-md-4 control-label"></label>
+
+                        <div class="col-md-4">
+<!--                            <strong>Attachments</strong>-->
+                            <input id="documents" type="file" name="import_file"/>
+
+                            @if ($errors->has('import_file'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('import_file') }}</strong>
+                            </span>
+                            @endif
+                             <button class="btn btn-primary">Import File</button>
+                        </div>
+                    </div>
+       
+    </form>
+</div>
 <div class="row">
     <div class="col-lg-11">
         <div class="panel panel-default">
             <div class="panel-heading"> Payment Vouchers</div>
+            
             <div class="panel-body">
 
                 <form class="form-horizontal" role="form" method="POST" action="{{ url('/saveTrans') }}" files="true" enctype="multipart/form-data">

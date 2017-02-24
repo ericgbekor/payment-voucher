@@ -35,4 +35,4 @@ Route::get('/review', 'TransactionController@review');
 Route::get('/multiapprove', 'TransactionController@approve');
 Route::get('/multidelete', 'TransactionController@multiDelete');
 Route::get('/multireview', 'TransactionController@reviewStatus');
-Route::get('/reportTrans', 'TransactionController@genReport');
+Route::post('/reportTrans', 'TransactionController@genReport');

@@ -103,7 +103,7 @@
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="name">Description:</label>
-                        <div class="col-sm-10">
+                        <div class="col-sm-8">
                             <input type="name" class="form-control" id="name" value="">
                         </div>
                     </div>
@@ -361,7 +361,7 @@
                     'VAT':$('.vat').val()
             },
             success: function (data) {
-                alert('success');
+                alert(data);
 
             /*$('.item' + data.id).replaceWith("<tr class='item" + data.id + "'><td data-checkbox='true'></td><td>" + data.id + "</td><td>" + data.description +
              "</td><td>" + data.amount + "</td><td>" + data.created_at + "</td><td>" + data.updated_at + "</td><td>\n\
