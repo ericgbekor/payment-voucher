@@ -5,7 +5,11 @@
         <group>
             <file>file:/C:/xampp/htdocs/payment-voucher/resources/views/pv-views/addTransactions.blade.php</file>
             <file>file:/C:/xampp/htdocs/payment-voucher/routes/web.php</file>
+            <file>file:/C:/xampp/htdocs/payment-voucher/resources/views/mail/review.blade.php</file>
+            <file>file:/C:/xampp/htdocs/payment-voucher/app/Http/Controllers/MailController.php</file>
+            <file>file:/C:/xampp/htdocs/payment-voucher/app/Mail/reviewPV.php</file>
             <file>file:/C:/xampp/htdocs/payment-voucher/app/Http/Controllers/TransactionController.php</file>
+            <file>file:/C:/xampp/htdocs/payment-voucher/composer.json</file>
         </group>
     </open-files>
 </project-private>

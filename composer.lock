@@ -4,8 +4,56 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "857535a628c9333f013bdf5b25ec10fb",
+    "content-hash": "0a5f588323d3007e282752cae2c6d153",
     "packages": [
+        {
+            "name": "barryvdh/laravel-dompdf",
+            "version": "v0.8.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/barryvdh/laravel-dompdf.git",
+                "reference": "22ee9cb8e0ac0d5f11633d1194280ab40b2bba1f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/barryvdh/laravel-dompdf/zipball/22ee9cb8e0ac0d5f11633d1194280ab40b2bba1f",
+                "reference": "22ee9cb8e0ac0d5f11633d1194280ab40b2bba1f",
+                "shasum": ""
+            },
+            "require": {
+                "dompdf/dompdf": "^0.8",
+                "illuminate/support": "5.1.x|5.2.x|5.3.x|5.4.x",
+                "php": ">=5.5.9"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.8-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Barryvdh\\DomPDF\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Barry vd. Heuvel",
+                    "email": "barryvdh@gmail.com"
+                }
+            ],
+            "description": "A DOMPDF Wrapper for Laravel",
+            "keywords": [
+                "dompdf",
+                "laravel",
+                "pdf"
+            ],
+            "time": "2017-02-19T06:45:54+00:00"
+        },
         {
             "name": "dnoegel/php-xdg-base-dir",
             "version": "0.1",
@@ -107,46 +155,66 @@
             "time": "2015-11-06T14:35:42+00:00"
         },
         {
-            "name": "elibyy/tcpdf-laravel",
-            "version": "5.4.0",
+            "name": "dompdf/dompdf",
+            "version": "v0.8.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/elibyy/tcpdf-laravel.git",
-                "reference": "0847d3a708992a055c3edcd86a35e92a6fde9a6f"
+                "url": "https://github.com/dompdf/dompdf.git",
+                "reference": "0f418c6b58fdeafc2a0e80eb1fa5e644e185089c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/elibyy/tcpdf-laravel/zipball/0847d3a708992a055c3edcd86a35e92a6fde9a6f",
-                "reference": "0847d3a708992a055c3edcd86a35e92a6fde9a6f",
+                "url": "https://api.github.com/repos/dompdf/dompdf/zipball/0f418c6b58fdeafc2a0e80eb1fa5e644e185089c",
+                "reference": "0f418c6b58fdeafc2a0e80eb1fa5e644e185089c",
                 "shasum": ""
             },
             "require": {
-                "illuminate/support": "5.4.*",
-                "tecnickcom/tcpdf": "6.2.*"
+                "ext-dom": "*",
+                "ext-gd": "*",
+                "ext-mbstring": "*",
+                "phenx/php-font-lib": "0.5.*",
+                "phenx/php-svg-lib": "0.2.*",
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.8.*",
+                "squizlabs/php_codesniffer": "2.*"
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-develop": "0.7-dev"
+                }
+            },
             "autoload": {
                 "psr-4": {
-                    "Elibyy\\TCPDF\\": "src/"
-                }
+                    "Dompdf\\": "src/"
+                },
+                "classmap": [
+                    "lib/"
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "MIT"
+                "LGPL-2.1"
             ],
             "authors": [
                 {
-                    "name": "eli y",
-                    "email": "elibyy@gmail.com"
+                    "name": "Fabien Ménager",
+                    "email": "fabien.menager@gmail.com"
+                },
+                {
+                    "name": "Brian Sweeney",
+                    "email": "eclecticgeek@gmail.com"
+                },
+                {
+                    "name": "Gabriel Bull",
+                    "email": "me@gabrielbull.com"
                 }
             ],
-            "description": "tcpdf support for laravel 5",
-            "keywords": [
-                "TCPDF",
-                "laravel",
-                "pdf"
-            ],
-            "time": "2017-01-25T10:35:16+00:00"
+            "description": "DOMPDF is a CSS 2.1 compliant HTML to PDF converter",
+            "homepage": "https://github.com/dompdf/dompdf",
+            "time": "2017-02-16T02:40:40+00:00"
         },
         {
             "name": "erusev/parsedown",
@@ -192,32 +260,32 @@
         },
         {
             "name": "guzzlehttp/guzzle",
-            "version": "6.2.2",
+            "version": "6.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "ebf29dee597f02f09f4d5bbecc68230ea9b08f60"
+                "reference": "a8dfeff00eb84616a17fea7a4d72af35e750410f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/ebf29dee597f02f09f4d5bbecc68230ea9b08f60",
-                "reference": "ebf29dee597f02f09f4d5bbecc68230ea9b08f60",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/a8dfeff00eb84616a17fea7a4d72af35e750410f",
+                "reference": "a8dfeff00eb84616a17fea7a4d72af35e750410f",
                 "shasum": ""
             },
             "require": {
-                "guzzlehttp/promises": "^1.0",
-                "guzzlehttp/psr7": "^1.3.1",
-                "php": ">=5.5"
+                "guzzlehttp/promises": "~1.0",
+                "guzzlehttp/psr7": "~1.1",
+                "php": ">=5.5.0"
             },
             "require-dev": {
                 "ext-curl": "*",
-                "phpunit/phpunit": "^4.0",
-                "psr/log": "^1.0"
+                "phpunit/phpunit": "~4.0",
+                "psr/log": "~1.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "6.2-dev"
+                    "dev-master": "6.0-dev"
                 }
             },
             "autoload": {
@@ -250,7 +318,7 @@
                 "rest",
                 "web service"
             ],
-            "time": "2016-10-08T15:01:37+00:00"
+            "time": "2015-07-04T20:09:24+00:00"
         },
         {
             "name": "guzzlehttp/promises",
@@ -1067,6 +1135,80 @@
             "time": "2016-11-07T23:38:38+00:00"
         },
         {
+            "name": "phenx/php-font-lib",
+            "version": "0.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PhenX/php-font-lib.git",
+                "reference": "19ad2bebc35be028fcc0221025fcbf3d436a3962"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PhenX/php-font-lib/zipball/19ad2bebc35be028fcc0221025fcbf3d436a3962",
+                "reference": "19ad2bebc35be028fcc0221025fcbf3d436a3962",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "FontLib\\": "src/FontLib"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Ménager",
+                    "email": "fabien.menager@gmail.com"
+                }
+            ],
+            "description": "A library to read, parse, export and make subsets of different types of font files.",
+            "homepage": "https://github.com/PhenX/php-font-lib",
+            "time": "2017-02-11T10:58:43+00:00"
+        },
+        {
+            "name": "phenx/php-svg-lib",
+            "version": "v0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PhenX/php-svg-lib.git",
+                "reference": "de291bec8449b89acfe85691b5c71434797959dc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PhenX/php-svg-lib/zipball/de291bec8449b89acfe85691b5c71434797959dc",
+                "reference": "de291bec8449b89acfe85691b5c71434797959dc",
+                "shasum": ""
+            },
+            "require": {
+                "sabberworm/php-css-parser": "6.0.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Svg\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Ménager",
+                    "email": "fabien.menager@gmail.com"
+                }
+            ],
+            "description": "A library to read, parse and export to PDF SVG files.",
+            "homepage": "https://github.com/PhenX/php-svg-lib",
+            "time": "2016-12-13T20:25:45+00:00"
+        },
+        {
             "name": "phpoffice/phpexcel",
             "version": "1.8.1",
             "source": {
@@ -1374,6 +1516,47 @@
                 "uuid"
             ],
             "time": "2016-11-22T19:21:44+00:00"
+        },
+        {
+            "name": "sabberworm/php-css-parser",
+            "version": "6.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sabberworm/PHP-CSS-Parser.git",
+                "reference": "9ea4b00c569b19f731d0c2e0e802055877ff40c2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sabberworm/PHP-CSS-Parser/zipball/9ea4b00c569b19f731d0c2e0e802055877ff40c2",
+                "reference": "9ea4b00c569b19f731d0c2e0e802055877ff40c2",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Sabberworm\\CSS": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Raphael Schweikert"
+                }
+            ],
+            "description": "Parser for CSS Files written in PHP",
+            "homepage": "http://www.sabberworm.com/blog/2010/6/10/php-css-parser",
+            "keywords": [
+                "css",
+                "parser",
+                "stylesheet"
+            ],
+            "time": "2015-08-24T08:48:52+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -2155,69 +2338,6 @@
                 "dump"
             ],
             "time": "2017-02-16T22:46:52+00:00"
-        },
-        {
-            "name": "tecnickcom/tcpdf",
-            "version": "6.2.12",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/tecnickcom/TCPDF.git",
-                "reference": "2f732eaa91b5665274689b1d40b285a7bacdc37f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/tecnickcom/TCPDF/zipball/2f732eaa91b5665274689b1d40b285a7bacdc37f",
-                "reference": "2f732eaa91b5665274689b1d40b285a7bacdc37f",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0"
-            },
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    "fonts",
-                    "config",
-                    "include",
-                    "tcpdf.php",
-                    "tcpdf_parser.php",
-                    "tcpdf_import.php",
-                    "tcpdf_barcodes_1d.php",
-                    "tcpdf_barcodes_2d.php",
-                    "include/tcpdf_colors.php",
-                    "include/tcpdf_filters.php",
-                    "include/tcpdf_font_data.php",
-                    "include/tcpdf_fonts.php",
-                    "include/tcpdf_images.php",
-                    "include/tcpdf_static.php",
-                    "include/barcodes/datamatrix.php",
-                    "include/barcodes/pdf417.php",
-                    "include/barcodes/qrcode.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "LGPLv3"
-            ],
-            "authors": [
-                {
-                    "name": "Nicola Asuni",
-                    "email": "info@tecnick.com",
-                    "homepage": "http://nicolaasuni.tecnick.com"
-                }
-            ],
-            "description": "TCPDF is a PHP class for generating PDF documents and barcodes.",
-            "homepage": "http://www.tcpdf.org/",
-            "keywords": [
-                "PDFD32000-2008",
-                "TCPDF",
-                "barcodes",
-                "datamatrix",
-                "pdf",
-                "pdf417",
-                "qrcode"
-            ],
-            "time": "2015-09-12T10:08:34+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",

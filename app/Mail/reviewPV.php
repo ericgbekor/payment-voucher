@@ -17,9 +17,9 @@ class reviewPV extends Mailable
      *
      * @return void
      */
-    public function __construct(Payment $pv)
+    public function __construct()
     {
-        $this->pv = $pv;
+       // 
     }
 
     /**
@@ -29,6 +29,6 @@ class reviewPV extends Mailable
      */
     public function build()
     {
-        return $this->from('pileric@gmail.com')->view('p-view.reviewTransactions');
+        return $this->view('mail.review');
     }
 }

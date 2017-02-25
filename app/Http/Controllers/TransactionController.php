@@ -48,13 +48,6 @@ class TransactionController extends Controller {
     }
     
     
-
-    public function genReport(Request $request){
-       // dd($request);
- 
-//    PDF::SetTitle('Payment Voucher');
-//    PDF::SetAuthor('Eric Gbekor');
-//    PDF::AddPage();
 //    $transaction = Payment::get();
 //    
 //    PDF::Write(5,$transaction);
@@ -64,7 +57,14 @@ class TransactionController extends Controller {
 //    PDF::Output('hello_world.pdf');
         
 //        $data = Payment::get();
-//        Excel::create('vouchers', function($excel) use($data) {
+//        Excel::create('vouchers', fu
+
+    public function genReport(Request $request){
+       // dd($request);
+ 
+//    PDF::SetTitle('Payment Voucher');
+//    PDF::SetAuthor('Eric Gbekor');
+//    PDF::AddPage();nction($excel) use($data) {
 //
 //            $excel->sheet('paymentVouchers', function($sheet) use($data) {
 //
@@ -74,10 +74,6 @@ class TransactionController extends Controller {
         
 //       $data = Excel::load('voucher.xls', function($reader) {
 //            
-//        })->get();
-//        return response()->json($data);
-        
-        if ($request->hasFile('import_file')) {
             //echo "Yes";
             $path = $request->file('import_file')->path();
             $data = Excel::load($path, function($reader) {
@@ -86,6 +82,10 @@ class TransactionController extends Controller {
             if (!empty($data) && $data->count()) {
                 foreach ($data as $key => $value) {
                     $pv = new Payment();
+//        })->get();
+//        return response()->json($data);
+        
+        if ($request->hasFile('import_file')) {
                     $pv->amount = $value->amount;
                     $pv->description = $value->description;
                     $pv->rate = $value->rate;
@@ -105,16 +105,21 @@ class TransactionController extends Controller {
                     //return response()->json($pv);
                     return redirect('transactions');
                 }
-            }else{echo "Error";}
+            else{echo "Error";}
         }
     }
+  }
 
     public function saveFile(Request $request) {
         if ($request->hasFile('documents')) {
-            $name = $request->file('documents')->getClientOriginalName();
-            $path = $request->file('documents')->storeAs('files', $name,'public');
+            $docs = $request->file('documents');
+            foreach ($docs as $doc){
+            $name = $doc ->getClientOriginalName();
+            $path = $doc ->storeAs('files', $name, 'public');
+            }
             return $path;
-        } else {
+            }
+         else {
             echo "Error";
         }
     }
@@ -150,6 +155,15 @@ class TransactionController extends Controller {
         }
     }
     
+    public function downloadFile(Request $request){
+        $id = $request->id;
+        $pv = Payment::findorfail($id);
+        //dd($pv);
+        $doc = $pv -> attachments;
+        return response()->download("storage/".$doc);
+    }
+
+
     public function creditAcc(Request $request){
         if ($request->has('currency')){
            $currency = $request->currency; 
@@ -192,13 +206,15 @@ class TransactionController extends Controller {
         $pv->withholding = $this->getWHT($request);
         $pv->creator = Auth::user()->id;
         $pv->save();
+        //return response()->download($this->saveFile($request));
         //return response()->json($pv);
-        return redirect('transactions');
+       return redirect('transactions');
     }
     
     public function updatePV(Request $request){
         $id=$request->id;
         $pv = Payment::findorfail($id);
+        //dd($pv);
         $pv->amount = $request->amount;
         $pv->description = $request->name;
         $pv->rate = $request->rate;
@@ -243,7 +259,6 @@ class TransactionController extends Controller {
           foreach ($request->id as $id){
            $pv = Payment::findorfail($id);
            $pv->status = "pending review";
-           //Mail::to('eric.gbekor@ashesi.edu.gh')->send( new reviewPV($pv));
            $pv->save();
            
            
