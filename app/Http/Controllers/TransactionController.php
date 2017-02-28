@@ -20,7 +20,7 @@ class TransactionController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $transactions = Payment::get();
+        $transactions = Payment::where('status','created')->orwhere('status','rejected')->get();
         $suppliers = Supplier::get();
         $accounts = Account::get();
         return view('pv-views/viewTransactions', compact('transactions','suppliers','accounts'));
@@ -71,44 +71,7 @@ class TransactionController extends Controller {
 //                $sheet->fromModel($data);
 //            });
 //        })->export('csv');
-        
-//       $data = Excel::load('voucher.xls', function($reader) {
-//            
-            //echo "Yes";
-            $path = $request->file('import_file')->path();
-            $data = Excel::load($path, function($reader) {
-                        })->get();
-              //dd($data);          
-            if (!empty($data) && $data->count()) {
-                foreach ($data as $key => $value) {
-                    $pv = new Payment();
-//        })->get();
-//        return response()->json($data);
-        
-        if ($request->hasFile('import_file')) {
-                    $pv->amount = $value->amount;
-                    $pv->description = $value->description;
-                    $pv->rate = $value->rate;
-                    $pv->cheque = $value->cheque;
-                    $pv->accountDebited = $value->accountdebited;
-                   $pv->accountCredited = $value->accountcredited;
-                    $pv->WHT = $value->wht;
-                    $pv->nhil = $value->nhil;
-                    $pv->payee = $value->payee;
-                    $pv->currency = $value->currency;
-                    $pv->status = "created";
-                    //$pv->attachments = $this->saveFile($request);
-                    $pv->vat = $value->vat;
-                    $pv->withholding = $value->withholding;
-                    $pv->creator = Auth::user()->id;
-                    $pv->save();
-                    //return response()->json($pv);
-                    return redirect('transactions');
-                }
-            else{echo "Error";}
-        }
-    }
-  }
+         }
 
     public function saveFile(Request $request) {
         if ($request->hasFile('documents')) {
