@@ -38,4 +38,4 @@ Route::get('/multiapprove', 'TransactionController@approve');
 Route::get('/multidelete', 'TransactionController@multiDelete');
 Route::get('/multireview', 'TransactionController@reviewStatus');
 Route::get('/mail', 'MailController@sendMail');
-Route::post('/reportTrans', 'TransactionController@genReport');
+Route::get('/reportTrans', 'PDFController@genPDF');

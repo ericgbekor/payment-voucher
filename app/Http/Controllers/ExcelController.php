@@ -20,13 +20,14 @@ class ExcelController extends Controller {
             foreach ($request->id as $id) {
                 $pv[] = Payment::where('id', $id)->get();
             }
-            Excel::create('Payments', function($data) use ($pv) {
+           $excel= Excel::create('Payments', function($data) use ($pv) {
                 $data->sheet('Vouchers', function($values) use ($pv) {
                     foreach ($pv as $row) {
                         $values->fromModel($row, null, 'A1', false, false);
                     }
                 });
             })->export('csv');
+            return response()->json($excel);
         }
     }
 

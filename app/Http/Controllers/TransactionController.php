@@ -7,8 +7,6 @@ use App\Account;
 use App\Supplier;
 use Response;
 use Auth;
-use PDF;
-use Excel;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -47,31 +45,6 @@ class TransactionController extends Controller {
         return view('pv-views/addTransactions', compact('suppliers', 'accounts'));
     }
     
-    
-//    $transaction = Payment::get();
-//    
-//    PDF::Write(5,$transaction);
-//    PDF::AddPage();
-//    $sup = Supplier::get();
-//    PDF::Write(5,$sup);
-//    PDF::Output('hello_world.pdf');
-        
-//        $data = Payment::get();
-//        Excel::create('vouchers', fu
-
-    public function genReport(Request $request){
-       // dd($request);
- 
-//    PDF::SetTitle('Payment Voucher');
-//    PDF::SetAuthor('Eric Gbekor');
-//    PDF::AddPage();nction($excel) use($data) {
-//
-//            $excel->sheet('paymentVouchers', function($sheet) use($data) {
-//
-//                $sheet->fromModel($data);
-//            });
-//        })->export('csv');
-         }
 
     public function saveFile(Request $request) {
         if ($request->hasFile('documents')) {
@@ -121,7 +94,6 @@ class TransactionController extends Controller {
     public function downloadFile(Request $request){
         $id = $request->id;
         $pv = Payment::findorfail($id);
-        //dd($pv);
         $doc = $pv -> attachments;
         return response()->download("storage/".$doc);
     }

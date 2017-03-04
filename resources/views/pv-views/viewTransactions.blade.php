@@ -325,7 +325,7 @@
                         url: '/exportExcel',
                         data: {id: id},
                         success: function () {
-                            
+                            location.href="transactions";
                         }
 
                     });
