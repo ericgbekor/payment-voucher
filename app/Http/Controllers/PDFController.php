@@ -7,6 +7,7 @@ use PDF;
 use DB;
 use App\Payment;
 use App\Supplier;
+use NumberToWords\NumberToWords;
 
 class PDFController extends Controller
 {
@@ -29,7 +30,7 @@ class PDFController extends Controller
 
         // Custom Footer
         PDF::setFooterCallback(function($pdf) {
-            $html ='©Ashesi University College. All rights reserved. 1 University Avenue, Berekuso; PMB CT 3, Cantonments, Accra, Ghana | Phone: +233.302.610.330';
+            $html ='©Ashesi University College. All rights reserved.  1 University Avenue, Berekuso; PMB CT 3, Cantonments, Accra, Ghana | Phone: +233.302.610.330';
             // Position at 15 mm from bottom
             $pdf->SetY(-15);
             // Set font
@@ -44,6 +45,13 @@ class PDFController extends Controller
     
     public function genPDF() {
         
+        // create the number to words "manager" class
+        $numberToWords = new NumberToWords();
+        
+ //build a new number transformer using the RFC 3066 language identifier
+        $numberTransformer = $numberToWords->getNumberTransformer('en');
+       $numWords=$numberTransformer->toWords(5346);
+
         $this->headerFooter();
         PDF::setHeaderMargin(10);
         PDF::setMargins(15,40,10);
@@ -80,7 +88,7 @@ class PDFController extends Controller
                       -> select('payment-vouchers.id','accountDebited','account_name')
                        ->where('payment-vouchers.id',56)->get();
                  
-      $view = \View::make('pdf/report', compact('trans','payments','creator','reviewer','approver','credit','debit'));
+      $view = \View::make('pdf/report', compact('trans','payments','creator','reviewer','approver','credit','debit', 'numWords'));
         $html = $view->render();
        
         

@@ -52,7 +52,7 @@
                                     <span class="glyphicon glyphicon-trash"></span> Delete
                                 </button>
                             </td>
-
+                    
                         </tr>
                         @endforeach
                     </tbody>

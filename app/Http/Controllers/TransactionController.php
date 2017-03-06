@@ -208,13 +208,15 @@ class TransactionController extends Controller {
           foreach ($request->id as $id){
            $pv = Payment::findorfail($id);
            $pv->status = "reviewed";
+           $pv->reviewer = Auth::user()->id;
            $pv->save();
+           return redirect('mail');
           }  
         }
     }
     
     public function reject(Request $request){
-        
+       
         if($request->has('id')){
             
           foreach ($request->id as $id){
@@ -227,13 +229,16 @@ class TransactionController extends Controller {
     
     public function approve(Request $request){
         
-        if($request->has('id')){
+        if($request->has('id')){ 
             
           foreach ($request->id as $id){
            $pv = Payment::findorfail($id);
            $pv->status = "approved";
+           $pv->approver = Auth::user()->id;
            $pv->save();
+          
           }  
+        
         }
     }
 
