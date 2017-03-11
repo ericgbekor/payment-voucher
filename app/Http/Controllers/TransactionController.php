@@ -29,6 +29,11 @@ class TransactionController extends Controller {
         return view('pv-views/reviewTransactions', compact('transactions'));
     }
     
+     public function makePayment() {
+        $transactions = Payment::where('status','approved')->get();
+        return view('pv-views/payTransactions', compact('transactions'));
+    }
+    
     public function approvePayment() {
         $transactions = Payment::where('status','reviewed')->get();
         return view('pv-views/approveTransactions', compact('transactions'));
@@ -149,25 +154,22 @@ class TransactionController extends Controller {
     public function updatePV(Request $request){
         $id=$request->id;
         $pv = Payment::findorfail($id);
-        //dd($pv);
         $pv->amount = $request->amount;
         $pv->description = $request->name;
         $pv->rate = $request->rate;
         $pv->cheque = $request->cheque;
         $pv->accountDebited = $request->debit;
         $pv->accountCredited = $this->creditAcc($request);
-        $pv->WHT = $request->WHT;
-        $pv->nhil= $request->VAT;
-       // $pv->payee = $request->payee;
+        $pv->payee = $request->payee;
         $pv->currency = $request->currency;
         $pv->status = "created";
         $pv->attachments = $this->saveFile($request);
-        $pv->vat = $this->getVAT($request);
-        $pv->withholding = $this->getWHT($request);
+        $pv->vat = $request->vat;
+        $pv->withholding = $request->withholding;
         $pv->creator = Auth::user()->id;
         $pv->save();
-        dd($pv);
-      // return response()->json($pv);
+        //dd($pv);
+       return response()->json($pv);
     }
 
     public function deletePayment(Request $request) {

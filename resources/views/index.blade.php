@@ -6,7 +6,8 @@
     </div>
 </div><!--/.row-->
 
-<div class="row">
+
+<!--<div class="row">
     <div class="col-xs-12 col-md-6 col-lg-3">
         <div class="panel panel-blue panel-widget ">
             <div class="row no-padding">
@@ -59,7 +60,7 @@
             </div>
         </div>
     </div>
-</div><!--/.row-->
+</div>/.row
 
 <div class="row">
     <div class="col-lg-12">
@@ -72,7 +73,7 @@
             </div>
         </div>
     </div>
-</div><!--/.row-->
+</div>/.row
 
 <div class="row">
     <div class="col-xs-6 col-md-3">
@@ -101,19 +102,44 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="col-xs-6 col-md-3">
+    </div>-->
+<div class="row">
+    <div class="col-xs-6 col-md-6">
         <div class="panel panel-default">
-            <div class="panel-body easypiechart-panel">
-                <h4>Visitors</h4>
-                <div class="easypiechart" id="easypiechart-red" data-percent="27" ><span class="percent">27%</span>
-                </div>
+            <div class="panel-body">
+                {!! $credit->render() !!}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-xs-6 col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                {!! $suppliers->render() !!}
             </div>
         </div>
     </div>
 </div><!--/.row-->
 
 <div class="row">
+    <div class="col-xs-6 col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                {!! $status->render() !!}
+            </div>
+        </div>
+    </div>
+    
+        <div class="col-xs-6 col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                {!! $vouchers->render() !!}
+            </div>
+        </div>
+    </div>
+</div><!--/.row-->
+
+<!--<div class="row">
     <div class="col-md-8">
 
         <div class="panel panel-default chat">
@@ -172,9 +198,9 @@
             </div>
         </div>
 
-    </div><!--/.col-->
+    </div>/.col-->
 
-    <div class="col-md-4">
+<!--    <div class="col-md-4">
 
         <div class="panel panel-blue">
             <div class="panel-heading dark-overlay"><svg class="glyph stroked clipboard-with-paper"><use xlink:href="#stroked-clipboard-with-paper"></use></svg>To-do List</div>
@@ -258,20 +284,15 @@
             </div>
         </div>
 
-    </div><!--/.col-->
-</div><!--/.row-->
-</div>	<!--/.main-->
+    </div>/.col
+</div>/.row
+</div>	/.main-->
 
 <script type= "text/javascript" src="{{URL::asset('js/jquery-1.11.1.min.js')}}"></script>
 <script type="text/javascript" src="{{URL::asset('js/bootstrap.min.js')}}"></script>
-<script type="text/javascript" src="{{URL::asset('js/chart.min.js')}}"></script>
-<script type="text/javascript" src="{{URL::asset('js/chart-data.js')}}"></script>
-<script type="text/javascript" src="{{URL::asset('js/easypiechart.js')}}"></script>
-<script type="text/javascript" src="{{URL::asset('js/easypiechart-data.js')}}"></script>
-<script type="text/javascript" src="{{URL::asset('js/bootstrap-datepicker.js')}}"></script>
+
 <script>
-$('#calendar').datepicker({
-});
+
 
 !function ($) {
     $(document).on("click", "ul.nav li.parent > a > span.icon", function () {
@@ -282,12 +303,12 @@ $('#calendar').datepicker({
 
 $(window).on('resize', function () {
     if ($(window).width() > 768)
-        $('#sidebar-collapse').collapse('show')
-})
+        $('#sidebar-collapse').collapse('show');
+});
 $(window).on('resize', function () {
     if ($(window).width() <= 767)
-        $('#sidebar-collapse').collapse('hide')
-})
+        $('#sidebar-collapse').collapse('hide');
+});
 </script>	
 
 @endsection

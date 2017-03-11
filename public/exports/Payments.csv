@@ -1,0 +1,4 @@
+"id","status","currency","amount","WHT","withholding","nhil","vat","description","rate","payee","recipient-name","cheque","accountDebited","accountCredited","creator","reviewer","approver","attachments","created_at","updated_at"
+"54","pending review","cedis","2345","yes","117.25","no","","Payment for laptops","4","9","","ECB5089","3001","5001","9","","","files/Stage 1 Marksheet.docx","2017-02-24 15:59:40","2017-03-05 17:51:18"
+"55","reviewed","cedis","5600","yes","280","no","","Payment for water supply","4.1","9","","ECB6579","2001","5001","9","9","","files/Progress Presentation.pptx","2017-02-24 16:12:43","2017-03-05 14:25:58"
+"56","rejected","dollars","2345","yes","117.25","no","","Payment to EPP Books & Stationery","4.3","9","","ECB6578","1002","5002","9","6","8","files/vouchers.xls","2017-02-24 16:21:49","2017-02-28 22:22:28"

@@ -3,31 +3,56 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+//use Request;
 use App\Payment;
 use Excel;
 use PDF;
+use Response;
+use App\Payee;
+use DB;
 
 class ExcelController extends Controller {
 
     //
-
     public function exportExcel(Request $request) {
+        
         $pv = array();
         $pv[] = [['id' => 'id', 'status' => 'status', 'currency' => 'currency', 'amount' => 'amount', 'WHT' => 'WHT', 'withholding' => 'withholding', 'nhil' => 'nhil', 'vat' => 'vat', 'description' => 'description', 'rate' => 'rate', 'payee' => 'payee', 'recipient-name' => 'recipient-name', 'cheque' => 'cheque',
         'accountDebited' => 'accountDebited', 'accountCredited' => 'accountCredited', 'creator' => 'creator', 'reviewer' => 'reviewer', 'approver' => 'approver', 'attachments' => 'attachments', 'created_at' => 'created_at', 'updated_at' => 'updated_at']];
 
         if ($request->has('id')) {
             foreach ($request->id as $id) {
+                
                 $pv[] = Payment::where('id', $id)->get();
             }
-           $excel= Excel::create('Payments', function($data) use ($pv) {
+          $excel=Excel::create('Payments', function($data) use ($pv) {
                 $data->sheet('Vouchers', function($values) use ($pv) {
                     foreach ($pv as $row) {
                         $values->fromModel($row, null, 'A1', false, false);
                     }
                 });
             })->export('csv');
-            return response()->json($excel);
+        }
+    }
+    
+    public function cheque(Request $request) {
+        
+        $pv = array();
+        $pv[] = [['name' => 'Name', 'amount' => 'Amount']];
+
+        if ($request->has('id')) {
+            foreach ($request->id as $id) {
+               // $id = $request->id;
+                $pv[] = Payee::where('id',$id)->select('supplier_name','amount')
+                   ->get();
+            }
+          Excel::create('Vouchers', function($data) use ($pv) {
+                $data->sheet('Vouchers', function($values) use ($pv) {
+                    foreach ($pv as $row) {
+                        $values->fromModel($row, null, 'A1', false, false);
+                    }
+                });
+            })->export('csv');
         }
     }
 

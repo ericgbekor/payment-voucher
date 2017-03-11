@@ -12,7 +12,7 @@ class Payment extends Model
 *
 * @var string
 */
-protected $table = 'payment-vouchers';
+protected $table = 'vouchers';
 
 
 protected $fillable = ['status','amount','withholding','vat','description','rate','cheque','attachments'];

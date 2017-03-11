@@ -12,7 +12,7 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-body">
-                <table class="table-bordered" id="data" data-toggle="table"  data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="total amount" data-sort-order="asc">
+                <table class="table table-bordered table-striped" id="data" data-toggle="table"  data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="total amount" data-sort-order="asc">
                     <thead>
                         <tr>
                             <th>Item</th>
@@ -44,7 +44,7 @@
                             <td>
                                 <button class="edit-modal btn btn-primary" id="btn_edit" data-id="{{$transaction->id}}" data-name="{{$transaction->description}}" data-amount="{{$transaction->amount}}" 
                                         data-cheque="{{$transaction->cheque}}" data-rate="{{$transaction->rate}}" file-attachment="{{$transaction->attachments}}" data-payee="{{$transaction->payee}}"
-                                        data-debit="{{$transaction->accountDebited}}" data-wht="{{$transaction->WHT}}" data-nhil="{{$transaction->nhil}}" data-currency="{{$transaction->currency}}">
+                                        data-debit="{{$transaction->accountDebited}}" data-withholding="{{$transaction->withholding}}" data-vat="{{$transaction->vat}}" data-currency="{{$transaction->currency}}">
                                     <span class="glyphicon glyphicon-edit"></span> Edit
                                 </button> </td>
                             <td>
@@ -84,7 +84,7 @@
                 <h4 class="modal-title"></h4>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal" role="form">
+              <form class="form-horizontal" role="form">
                     <div class="form-group">
 
                         <div class="form-group">
@@ -158,7 +158,22 @@
                                 </select>
                             </div>
                         </div>
-
+                        
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="withholding">Withholding Tax:</label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control" id="withholding" value="">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="vat">VAT/NHIL:</label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control" id="vat" value="">
+                            </div>
+                        </div>
+                        
+                        
                         <div class="form-group">
                             <label class="control-label col-sm-2" for="attachment">Attachment:</label>
                             <div class="col-sm-10">
@@ -167,21 +182,21 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
+<!--                        <div class="form-group">
                             <label class="control-label col-sm-2" for="wht">Withholding Tax:</label>
                             <div class="col-sm-5">
                                 <input type="radio" name="wht" class="wht" id="wht_yes" value="yes"> Yes
                                 <input type="radio" name="wht" class="wht" id="wht_no" value="no"> No
                             </div>
-                        </div>
+                        </div>-->
 
-                        <div class="form-group">
+<!--                        <div class="form-group">
                             <label class="control-label col-sm-2" for="vat">VAT/NHIL:</label>
                             <div class="col-sm-5">
                                 <input type="radio" name="vat" class="vat" id="vat_yes" value="yes"> Yes
                                 <input type="radio" name="vat" class="vat" id="vat_no" value="no"> No
                             </div>
-                        </div>
+                        </div>-->
 
                 </form>
                 <div class="deleteContent">
@@ -242,6 +257,48 @@
 
 
 <script>
+//    function JSONToCSVConvertor(JSONData,ShowLabel) {    
+//	var arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;   
+//	var CSV = '';     
+//	if (ShowLabel) {
+//		 var row = "";
+//		 for (var index in arrData[0]) {
+//				 row += index + ',';
+//		 }
+//		 row = row.slice(0, -1);
+//		 CSV += row + '\r\n';
+//	}
+//	for (var i = 0; i < arrData.length; i++) {
+//		 var row = "";
+//		 for (var index in arrData[i]) {
+//				var arrValue = arrData[i][index] == null ? "" : '="' + arrData[i][index] + '"';
+//				row += arrValue + ',';
+//		 }
+//		 row.slice(0, row.length - 1);
+//		 CSV += row + '\r\n';
+//	}
+//	if (CSV == '') {        
+//		 growl.error("Invalid data");
+//		 return;
+//	}   
+//	var fileName = "Result";
+//	if(msieversion()){
+//	var IEwindow = window.open();
+//	IEwindow.document.write('sep=,\r\n' + CSV);
+//	IEwindow.document.close();
+//	IEwindow.document.execCommand('SaveAs', true, fileName + ".csv");
+//	IEwindow.close();
+//	} else {
+//	 var uri = 'data:application/csv;charset=utf-8,' + escape(CSV);
+//	 var link = document.createElement("a");    
+//	 link.href = uri;
+//	 link.style = "visibility:hidden";
+//	 link.download = fileName + ".csv";
+//	 document.body.appendChild(link);
+//	 link.click();
+//	 document.body.removeChild(link);
+//	}
+//    }
     $(document).ready(function () {
         $('#btn_delete').click(function () {
             if (confirm("Delete?")) {
@@ -308,7 +365,6 @@
     });
 
 
-
     $(document).ready(function () {
         $('#btn_excel').click(function () {
             if (confirm("Export to Excel")) {
@@ -319,14 +375,22 @@
                 if (id.length === 0) {
                     alert("Please select at least one checkbox");
                 } else {
+                    //
                     $.ajax({
-                        async: 'true',
+                        async: 'false',
                         type: 'get',
                         url: '/exportExcel',
                         data: {id: id},
-                        success: function () {
-                            location.href="transactions";
-                        }
+                        success: function (url) {
+                           
+                            var path=window.location.host;
+                             //console.log(path + this.url);
+                            var download = path + this.url;
+                            console.log(download);
+//                            location.href=this.url;
+                            window.open(this.url);
+                            location.reload();
+                    }
 
                     });
                 }
@@ -358,17 +422,8 @@
         $('#rate').val($(this).data('rate'));
         $('#debit').val($(this).data('debit'));
         $('#payee').val($(this).data('payee'));
-        if ($(this).data('wht') == 'yes') {
-            $('#wht_yes').val($(this).data('wht')).prop('checked', true);
-        } else {
-            $('#wht_no').val($(this).data('wht')).prop('checked', true);
-        }
-
-        if ($(this).data('nhil') == 'yes') {
-            $('#vat_yes').val($(this).data('nhil')).prop('checked', true);
-        } else {
-            $('#vat_no').val($(this).data('nhil')).prop('checked', true);
-        }
+        $('#withholding').val($(this).data('withholding'));
+        $('#vat').val($(this).data('vat'));
         $('.modal-title').text("Edit " + $('#name').val() + "'s details");
         $('#myModal').modal('show');
     });
@@ -388,8 +443,8 @@
                 'cheque': $('#cheque').val(),
                 'debit': $('#debit').val(),
                 'payee': $('#debit').val(),
-                'WHT': $('.wht').val(),
-                'VAT': $('.vat').val()
+                'withholding': $('#withholding').val(),
+                'vat': $('#vat').val()
             },
             success: function (data) {
                 alert(data);

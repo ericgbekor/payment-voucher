@@ -7,8 +7,8 @@
     </div>
 </div>/.row-->
 
-<div class="container col-md-4">
-    <form style="border: 4px solid #a1a1a1;margin-top: 15px;padding: 10px;" action="{{ URL::to('/reportTrans') }}" class="form-horizontal" method="post" files="true" enctype="multipart/form-data">
+<div class="row col-md-4">
+    <form action="{{ URL::to('/reportTrans') }}" class="form-horizontal" method="post" files="true" enctype="multipart/form-data">
         {{ csrf_field() }}
         <div class="form-group{{ $errors->has('documents') ? ' has-error' : '' }}">
                         <label for="import_file" class="col-md-4 control-label"></label>
@@ -22,7 +22,18 @@
                                 <strong>{{ $errors->first('import_file') }}</strong>
                             </span>
                             @endif
-                             <button class="btn btn-primary">Import File</button>
+                             
+                        </div>
+                        <!--<button class="btn btn-primary">Import File</button>-->
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="col-md-8 col-md-offset-4">
+                            <button type="submit" class="btn btn-primary">
+                                Import
+                            </button>
+
+
                         </div>
                     </div>
        
@@ -171,7 +182,33 @@
                         </div>-->
                     </div> 
                     
+                    <div class="form-group{{ $errors->has('withholding') ? ' has-error' : '' }}">
+                        <label for="withholding" class="col-md-4 control-label"></label>
 
+                        <div class="col-md-4">
+                            <input id="withholding" type="text" placeholder="Withholding Tax" class="form-control" name="withholding" required>
+
+                            @if ($errors->has('withholding'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('withholding') }}</strong>
+                            </span>
+                            @endif
+                        </div>
+                    </div>
+                    
+                    <div class="form-group{{ $errors->has('vat') ? ' has-error' : '' }}">
+                        <label for="vat" class="col-md-4 control-label"></label>
+
+                        <div class="col-md-4">
+                            <input id="vat" type="text" placeholder="Enter VAT" class="form-control" name="vat" required>
+
+                            @if ($errors->has('vat'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('vat') }}</strong>
+                            </span>
+                            @endif
+                        </div>
+                    </div>
             
                     <div class="form-group{{ $errors->has('documents') ? ' has-error' : '' }}">
                         <label for="documents" class="col-md-4 control-label"></label>
@@ -188,7 +225,7 @@
                         </div>
                     </div>
                     
-                    <div class="form-group{{ $errors->has('WHT') ? ' has-error' : '' }}">
+<!--                    <div class="form-group{{ $errors->has('WHT') ? ' has-error' : '' }}">
                         <label for="WHT" class="col-md-4 control-label"></label>
 
                         <div class="col-md-4">
@@ -201,9 +238,11 @@
                             </span>
                             @endif
                         </div>
-                    </div>
+                    </div>-->
                     
-                    <div class="form-group{{ $errors->has('vat') ? ' has-error' : '' }}">
+                    
+                    
+<!--                    <div class="form-group{{ $errors->has('vat') ? ' has-error' : '' }}">
                         <label for="vat" class="col-md-4 control-label"></label>
 
                         <div class="col-md-4">
@@ -216,7 +255,7 @@
                             </span>
                             @endif
                         </div>
-                    </div>
+                    </div>-->
 
 
 

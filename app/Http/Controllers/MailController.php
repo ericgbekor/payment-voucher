@@ -11,7 +11,7 @@ class MailController extends Controller
     //
     function sendMail()
     {
-        $mail = 'eric.gbekor@ashesi.edu.gh';
+        $mail = 'kwabena.bamfo@ashesi.edu.gh';
     Mail::to($mail)->send(new reviewPV);
     dd('Mail sent successfully');
     }
