@@ -217,13 +217,8 @@
                      url: '/review',
                      data:{id:id},
                      success:function(){
-                         window.location="/reviewTrans";
-//                         for(var i=0;i<id.length;i++){
-//                             
-//                           $('tr#'+id[i]+'').css('background-color','#cc');
-//                           $('tr#'+id[i]+'').fadeOut('slow');
-                           
-                         //}
+                         window.location = "/reviewTrans";
+                        
                      }
                      
                  });

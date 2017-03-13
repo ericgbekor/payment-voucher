@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Payment;
 use App\Account;
 use App\Supplier;
+use App\User;
 use Response;
 use Auth;
 use Illuminate\Http\Request;
@@ -21,6 +22,7 @@ class TransactionController extends Controller {
         $transactions = Payment::where('status','created')->orwhere('status','rejected')->get();
         $suppliers = Supplier::get();
         $accounts = Account::get();
+        
         return view('pv-views/viewTransactions', compact('transactions','suppliers','accounts'));
     }
     
@@ -47,7 +49,9 @@ class TransactionController extends Controller {
     public function create() {
         $suppliers = Supplier::get();
         $accounts = Account::get();
-        return view('pv-views/addTransactions', compact('suppliers', 'accounts'));
+         $review = User::where('role','2')->orwhere('role','4')->get();
+        $approve = User::where('role','3')->orwhere('role','4')->get();
+        return view('pv-views/addTransactions', compact('suppliers', 'accounts','approve','review'));
     }
     
 
@@ -199,40 +203,48 @@ class TransactionController extends Controller {
            $pv->save();
            
            
-          }  
+          }
+          
         }
+        return redirect('/reviewmail');
     }
     
     public function review(Request $request){
         
         if($request->has('id')){
-            
+            if(Auth::user()->role==2 || Auth::user()->role==4){
           foreach ($request->id as $id){
            $pv = Payment::findorfail($id);
            $pv->status = "reviewed";
            $pv->reviewer = Auth::user()->id;
            $pv->save();
-           return redirect('mail');
+           
+          }
+          
           }  
         }
+        return redirect('/approvemail');
     }
     
     public function reject(Request $request){
        
         if($request->has('id')){
-            
+           if(Auth::user()->role==3|| Auth::user()->role==4){ 
           foreach ($request->id as $id){
            $pv = Payment::findorfail($id);
            $pv->status = "rejected";
            $pv->save();
+          
+          }
           }  
         }
+        return redirect('/rejectmail');
     }
     
     public function approve(Request $request){
         
         if($request->has('id')){ 
-            
+            if(Auth::user()->role==3|| Auth::user()->role==4){ 
           foreach ($request->id as $id){
            $pv = Payment::findorfail($id);
            $pv->status = "approved";
@@ -240,8 +252,10 @@ class TransactionController extends Controller {
            $pv->save();
           
           }  
-        
+            }
         }
+        return redirect('/approvalmail');
     }
+    
 
 }

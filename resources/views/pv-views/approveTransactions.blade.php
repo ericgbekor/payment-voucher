@@ -179,7 +179,7 @@
                      url: '/multireject',
                      data:{id:id},
                      success:function(){
-                          window.location="/reviewTrans";
+                          window.location="/approveTrans";
 //                         for(var i=0;i<id.length;i++){
 //                             
 //                           $('tr#'+id[i]+'').css('background-color','#cc');

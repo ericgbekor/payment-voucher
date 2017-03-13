@@ -13,9 +13,9 @@ class ChartController extends Controller
     
     public function charts(){
       
-        $credit = Charts::database(DB::table('payment-vouchers')
+        $credit = Charts::database(DB::table('vouchers')
                      ->join('accounts','accountCredited','=','accounts.id')
-                      -> select('payment-vouchers.id','accountCredited','account_name')
+                      -> select('vouchers.id','accountCredited','account_name')
                       ->get(),"pie","chartjs")
                 ->title("Credit Accounts Affected")
                 ->elementLabel("Total")
@@ -23,9 +23,9 @@ class ChartController extends Controller
                 ->responsive(false)
                 ->groupBy('account_name');
         
-        $suppliers = Charts::database(DB::table('payment-vouchers')
-                    ->join('suppliers','payment-vouchers.payee','=','suppliers.id')
-                    ->select('payment-vouchers.id','payee','supplier_name')
+        $suppliers = Charts::database(DB::table('vouchers')
+                    ->join('suppliers','payee','=','suppliers.id')
+                    ->select('vouchers.id','payee','supplier_name')
                    ->get(),"bar","fusioncharts")
                 ->title("Suppliers")
                 ->elementLabel("Total")

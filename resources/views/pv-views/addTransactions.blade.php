@@ -8,6 +8,8 @@
 </div>/.row-->
 
 <div class="row col-md-4">
+    <div class="panel-default">
+        <div class="panel-body">
     <form action="{{ URL::to('/reportTrans') }}" class="form-horizontal" method="post" files="true" enctype="multipart/form-data">
         {{ csrf_field() }}
         <div class="form-group{{ $errors->has('documents') ? ' has-error' : '' }}">
@@ -38,6 +40,8 @@
                     </div>
        
     </form>
+            </div>
+    </div>
 </div>
 <div class="row">
     <div class="col-lg-11">
@@ -256,7 +260,51 @@
                             @endif
                         </div>
                     </div>-->
+<div class="form-group{{ $errors->has('reviewer') ? ' has-error' : '' }}">
+                        <label for="reviewer" class="col-md-4 control-label"></label>
 
+                        <div class="col-md-4">
+                           <select class="form-control" id="reviewer"  name="reviewer" required>
+                               <option value="-1">--Select Reviewer-- </option>
+                                @foreach ($review as $user) 
+                                {
+                                <option value="{{ $user->id }}">{{ $user->firstname }} {{ $user->lastname }}</option>
+                                }
+                                @endforeach
+                               
+                            </select>
+
+                            @if ($errors->has('reviewer'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('reviewer') }}</strong>
+                            </span>
+                            @endif
+                        </div>
+
+                    </div> 
+
+<div class="form-group{{ $errors->has('approver') ? ' has-error' : '' }}">
+                        <label for="approver" class="col-md-4 control-label"></label>
+
+                        <div class="col-md-4">
+                           <select class="form-control" id="approver"  name="approver" required>
+                               <option value="-1">--Select Approver-- </option>
+                                @foreach ($approve as $user) 
+                                {
+                                <option value="{{ $user->id }}">{{ $user->firstname }} {{ $user->lastname }}</option>
+                                }
+                                @endforeach
+                               
+                            </select>
+
+                            @if ($errors->has('approver'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('approver') }}</strong>
+                            </span>
+                            @endif
+                        </div>
+
+                    </div> 
 
 
                     <div class="form-group">
