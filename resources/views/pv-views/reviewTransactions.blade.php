@@ -20,10 +20,11 @@
                             <th data-field="id" data-sortable="true">PV</th>
                             <th data-field="description"  data-sortable="true">Transaction Description</th>
                             <th data-field="amount" data-sortable="true"> Total Amount</th>
+                            <th data-field="payee" data-sortable="true"> Payee</th>
                             <th data-field="status" data-sortable="true"> Status</th>
                             <th data-field="created_at" data-sortable="true"> Created At</th>
                             <th data-field="updated_at" data-sortable="true"> Updated At</th>
-                            
+                            <th></th>
 
                         </tr>
                     </thead>
@@ -35,19 +36,23 @@
                             <td> {{$transaction->id}} </td>
                             <td> {{$transaction->description}}</td>
                             <td> {{$transaction->amount}}</td>
+                             <td> {{$transaction->payee}}</td>
                             <td> {{$transaction->status}}</td>
                             <td> {{$transaction->created_at}} </td>
                             <td > {{$transaction->updated_at}} </td>
-
+                            <td>
+                     <button type="button" name="btn_reject" id="btn_reject" class="btn btn-success" data-id="{{$transaction->id}}" data-descrition="{{$transaction->description}}" data-amount="{{$transaction->amount}}">
+                    <span class="glyphicon glyphicon-trash"></span> Reject
+                     </button> </td>
                         </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
-            <div align="right">
-                <button type="button" name="btn_reject" id="btn_reject" class="btn btn-success">
+            <div align="center">
+<!--                <button type="button" name="btn_reject" id="btn_reject" class="btn btn-success">
                     <span class="glyphicon glyphicon-trash"></span> Reject
-                </button>
+                </button>-->
                 
                 <button type="button" name="btn_review" id="btn_review" class="btn btn-primary">
                     <span class="glyphicon glyphicon-check"></span> Reviewed
@@ -164,33 +169,24 @@
         $(document).ready(function(){
            $('#btn_reject').click(function(){
               if(confirm("Reject?")){
-                  var id =[];
-                  $('#checkbox:checked').each(function(){
-                  id.push(this.value);
-                  });
-                  
-             if(id.length === 0){
-                 alert("Please select at least one checkbox");
-             }
-             else{
+                $('#id').val($(this).data('id'));
+                 var id = $('#id').val();
+                 
                  $.ajax({
                      async: 'true',
                      type: 'get',
-                     url: '/multireject',
-                     data:{id:id},
-                     success:function(){
-                          window.location="/reviewTrans";
-//                         for(var i=0;i<id.length;i++){
-//                             
-//                           $('tr#'+id[i]+'').css('background-color','#cc');
-//                           $('tr#'+id[i]+'').fadeOut('slow');
-//                           
-//                         }
+                     url: '/reject',
+                     data:{id:id
+                     },
+                     success:function(response){
+                        alert(response);
+                        alert("Record has been rejected");
+                          window.location="/rejectmail?email="+response;
                      }
                      
                  });
                  
-             } 
+              
              }
                   else{
                   return false;}
@@ -201,12 +197,14 @@
         
          $(document).ready(function(){
            $('#btn_review').click(function(){
-              if(confirm("Submit for Review?")){
-                  var id =[];
+              if(confirm("Submit for Approval?")){
+                 var approver; 
+                var id =[];
                   $('#checkbox:checked').each(function(){
                   id.push(this.value);
-                  });
                   
+                  });
+                  approver = prompt("Please enter approver's email");
              if(id.length === 0){
                  alert("Please select at least one checkbox");
              }
@@ -215,9 +213,10 @@
                      async: 'true',
                      type: 'get',
                      url: '/review',
-                     data:{id:id},
-                     success:function(){
-                         window.location = "/reviewTrans";
+                     data:{id:id,
+                     app:approver },
+                     success:function(response){
+                         window.location = "/approvemail?email="+response;
                         
                      }
                      

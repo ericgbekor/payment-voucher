@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('/','ChartController@charts' );
+Route::get('/','ChartController@charts' )->middleware('auth');
 
 Route::resource('supplier', 'SupplierController', ['except'=>['store','edit']]);
 Route::resource('account', 'AccountController', ['except'=>['store','edit']]);
@@ -29,9 +29,11 @@ Route::get('/deleteTrans', 'TransactionController@deletePayment');
 Route::get('/reviewTrans', 'TransactionController@reviewPayment');
 Route::get('/approveTrans', 'TransactionController@approvePayment');
 Route::get('/makePayment', 'TransactionController@makePayment');
-Route::get('/multireject', 'TransactionController@reject');
+Route::get('/multireject', 'TransactionController@multireject');
+Route::get('/reject', 'TransactionController@reject');
 Route::get('/review', 'TransactionController@review');
 Route::get('/exportExcel', 'ExcelController@exportExcel');
+Route::post('/importExcel', 'ExcelController@importExcel');
 Route::get('/printCheque', 'ExcelController@cheque');
 Route::get('/download', 'TransactionController@downloadFile');
 Route::get('/multiapprove', 'TransactionController@approve');

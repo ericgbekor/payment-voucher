@@ -17,7 +17,7 @@ p {
 }
 
 a, a:hover, a:focus {
-	color: #30a5ff;
+	color: #BC472F;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -81,9 +81,9 @@ h3, h4 {
 }
 
 .form-control:focus {
-	border: 1px solid #30a5ff;
+	border: 1px solid #BC472F;
 	outline: 0;
-	box-shadow: inset 0px 0px 0px 1px #30a5ff;
+	box-shadow: inset 0px 0px 0px 1px #BC472F;
 }
 
 .navbar-header .navbar-brand {
@@ -95,7 +95,7 @@ h3, h4 {
 }
 
 .navbar-header .navbar-brand span {
-	color: #30a5ff;
+	color: #BC472F;
 }
 
 /*Buttons*/
@@ -158,8 +158,8 @@ fieldset[disabled] .btn-primary:active,
 .btn-primary.disabled.active,
 .btn-primary[disabled].active,
 fieldset[disabled] .btn-primary.active {
-	background-color: #30a5ff;
-	border-color: #30a5ff;
+	background-color: #BC472F;
+	border-color: #BC472F;
 }
 
 .btn-success,
@@ -341,7 +341,7 @@ a.bg-danger:hover {
 	text-decoration: none;
 }
 
-.panel-blue { background: #30a5ff; color: #fff; }
+.panel-terracotta { background: #BC472F; color: #fff; }
 .panel-teal { background: #1ebfae; color: #fff; }
 .panel-orange { background: #ffb53e; color: #fff; }
 .panel-red { background: #f9243f; color: #fff; }
@@ -478,7 +478,7 @@ a.bg-danger:hover {
 
 .nav-pills li.active a,
 .nav-pills li.active a:hover {
-	background: #30a5ff;
+	background: #BC472F;
 }
 
 .tab-content {
@@ -501,7 +501,7 @@ a.bg-danger:hover {
 .navbar input:focus {
 	color: #fff;
 	background: #555;
-	border: 1px solid #30a5ff;
+	border: 1px solid #BC472F;
 	outline: 0;
 	box-shadow: inset 0px 0px 0px 1px #30a5ff;
 }
@@ -569,7 +569,7 @@ a.bg-danger:hover {
 .sidebar ul.nav .active > a:hover, .sidebar ul.nav li.parent a.active:hover,
 .sidebar ul.nav .active > a:focus, .sidebar ul.nav li.parent a.active:focus {
 	color: #fff;
-	background-color: #30a5ff;
+	background-color: #BC472F;
 }
 
 .sidebar ul.nav ul,
@@ -588,11 +588,11 @@ a.bg-danger:hover {
 .sidebar ul.nav ul.children li a {
 	height: 40px;
 	background: #f9f9f9;
-	color: #30a5ff!important;
+	color: #BC472F!important;
 }
 
 .sidebar ul.nav li.current a {
-	background-color: #30a5ff;
+	background-color: #BC472F;
 	color: #fff!important;
 }
 

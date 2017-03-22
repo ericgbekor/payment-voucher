@@ -7,16 +7,16 @@
     </div>
 </div>/.row-->
 
-<div class="row col-md-4">
+<div class="row col-md-5">
     <div class="panel-default">
         <div class="panel-body">
-    <form action="{{ URL::to('/reportTrans') }}" class="form-horizontal" method="post" files="true" enctype="multipart/form-data">
+    <form action="{{ URL::to('/importExcel') }}" class="form-horizontal" method="post" files="true" enctype="multipart/form-data">
         {{ csrf_field() }}
         <div class="form-group{{ $errors->has('documents') ? ' has-error' : '' }}">
                         <label for="import_file" class="col-md-4 control-label"></label>
 
                         <div class="col-md-4">
-<!--                            <strong>Attachments</strong>-->
+                            upload .csv files
                             <input id="documents" type="file" name="import_file"/>
 
                             @if ($errors->has('import_file'))
@@ -58,7 +58,7 @@
 
                         <div class="col-md-2">
                            
-                            <select class="form-control" name="currency" id="currency"  name="currency" required>
+                            <select class="form-control" name="currency" id="currency" required>
                                 <option value="-1">--Currency-- </option>
                                
                                 <option value="cedis">GHS</option>
@@ -185,6 +185,34 @@
                             </button>
                         </div>-->
                     </div> 
+
+                    <div class="form-group{{ $errors->has('credit') ? ' has-error' : '' }}">
+                        <label for="debit" class="col-md-4 control-label"></label>
+
+                        <div class="col-md-4">
+                           <select class="form-control" name="credit" id="credit"  name="credit" required>
+                               <option value="-1">--Select Credit Account-- </option>
+                                @foreach ($accounts as $an) 
+                                {
+                                <option value="{{ $an->id }}">{{ $an->account_name }}</option>
+                                }
+                                @endforeach
+                               
+                            </select>
+
+                            @if ($errors->has('credit'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('credit') }}</strong>
+                            </span>
+                            @endif
+                        </div>
+
+<!--                        <div class="col-md-1">
+                            <button class="btn btn-secondary" type="" id="add">
+                                <span class="glyphicon glyphicon-plus-sign"></span>
+                            </button>
+                        </div>-->
+                    </div> 
                     
                     <div class="form-group{{ $errors->has('withholding') ? ' has-error' : '' }}">
                         <label for="withholding" class="col-md-4 control-label"></label>
@@ -218,7 +246,7 @@
                         <label for="documents" class="col-md-4 control-label"></label>
 
                         <div class="col-md-4">
-                            <strong>Attachments</strong>
+                            upload .csv, .zip files
                             <input id="documents" type="file" name="documents[]" multiple="multiple">
 
                             @if ($errors->has('documents'))
@@ -260,7 +288,7 @@
                             @endif
                         </div>
                     </div>-->
-<div class="form-group{{ $errors->has('reviewer') ? ' has-error' : '' }}">
+<!-- <div class="form-group{{ $errors->has('reviewer') ? ' has-error' : '' }}">
                         <label for="reviewer" class="col-md-4 control-label"></label>
 
                         <div class="col-md-4">
@@ -304,7 +332,7 @@
                             @endif
                         </div>
 
-                    </div> 
+                    </div>  -->
 
 
                     <div class="form-group">

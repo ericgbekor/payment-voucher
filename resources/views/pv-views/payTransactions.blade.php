@@ -15,14 +15,16 @@
             <div class="panel-body">
                 <table class="table-bordered" id="data" data-toggle="table"  data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="total amount" data-sort-order="asc">
                     <thead>
-                        <tr>
+                       <tr>
                             <th>Item</th>
                             <th data-field="id" data-sortable="true">PV</th>
                             <th data-field="description"  data-sortable="true">Transaction Description</th>
                             <th data-field="amount" data-sortable="true"> Total Amount</th>
+                            <th data-field="payee" data-sortable="true"> Payee</th>
                             <th data-field="status" data-sortable="true"> Status</th>
                             <th data-field="created_at" data-sortable="true"> Created At</th>
                             <th data-field="updated_at" data-sortable="true"> Updated At</th>
+                            <th></th>
                             
 
                         </tr>
@@ -35,10 +37,15 @@
                             <td> {{$transaction->id}} </td>
                             <td> {{$transaction->description}}</td>
                             <td> {{$transaction->amount}}</td>
+                             <td> {{$transaction->payee}}</td>
                             <td> {{$transaction->status}}</td>
                             <td> {{$transaction->created_at}} </td>
                             <td > {{$transaction->updated_at}} </td>
-                          
+                            <td>
+                                <a input="button" class="pdf_button btn btn-secondary" href="/reportTrans?id={{$transaction->id}}" id="btn_pdf"  data-id="{{$transaction->id}}" data-descrition="{{$transaction->description}}" data-amount="{{$transaction->amount}}">
+                                    <span class="glyphicon glyphicon-pdf"></span> PDF
+                                </a>
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -142,6 +149,26 @@
 
         });
     });
+    
+//    $(document).ready(function () {
+//        $('#btn_pdf').click(function () {
+//                    var id = $('#btn_pdf').val($(this).data('id'));
+//                    $.ajax({
+//                        async: 'true',
+//                        type: 'get',
+//                        url: '/reportTrans',
+//                        data: {id: id},
+//                        success: function (url) {
+//                           location.href=this.url;
+//                            //window.open(this.url);
+//                            //location.reload();
+//                          
+//                    }
+//
+//                    });
+//
+//        });
+//    });
     </script>
 
 

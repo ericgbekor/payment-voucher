@@ -19,11 +19,12 @@
                             <th data-field="id" data-sortable="true">PV</th>
                             <th data-field="description"  data-sortable="true">Transaction Description</th>
                             <th data-field="amount" data-sortable="true"> Total Amount</th>
+                            <th data-field="payee" data-sortable="true"> Payee</th>
                             <th data-field="status" data-sortable="true"> Status</th>
                             <th data-field="created_at" data-sortable="true"> Created At</th>
                             <th data-field="updated_at" data-sortable="true"> Updated At</th>
-                            <th>Edit</th>
-                            <th>Delete</th>
+                            <th></th>
+                            <!-- <th>Delete</th> -->
 
                         </tr>
                     </thead>
@@ -35,6 +36,7 @@
                             <td> {{$transaction->id}} </td>
                             <td> {{$transaction->description}}</td>
                             <td> {{$transaction->amount}}</td>
+                             <td> {{$transaction->payee}}</td>
                             <td> {{$transaction->status}}</td>
                             <td> {{$transaction->created_at}} </td>
                             <td > {{$transaction->updated_at}} </td>
@@ -46,11 +48,11 @@
                                         data-cheque="{{$transaction->cheque}}" data-rate="{{$transaction->rate}}" file-attachment="{{$transaction->attachments}}" data-payee="{{$transaction->payee}}"
                                         data-debit="{{$transaction->accountDebited}}" data-withholding="{{$transaction->withholding}}" data-vat="{{$transaction->vat}}" data-currency="{{$transaction->currency}}">
                                     <span class="glyphicon glyphicon-edit"></span> Edit
-                                </button> </td>
-                            <td>
-                                <button class="delete-modal btn btn-danger" data-id="{{$transaction->id}}" data-descrition="{{$transaction->description}}" data-amount="{{$transaction->amount}}">
+                                </button> 
+                            
+                                <!-- <button class="delete-modal btn btn-danger" data-id="{{$transaction->id}}" data-descrition="{{$transaction->description}}" data-amount="{{$transaction->amount}}">
                                     <span class="glyphicon glyphicon-trash"></span> Delete
-                                </button>
+                                </button> -->
                             </td>
                     
                         </tr>
@@ -59,7 +61,7 @@
                 </table>
             </div>
             <div align="right">
-                <button type="button" name="btn_delete" id="btn_delete" class="btn btn-success">
+                <button type="button" name="btn_delete" id="btn_delete" class="btn btn-danger">
                     <span class="glyphicon glyphicon-trash"></span> Delete
                 </button>
 
@@ -182,21 +184,6 @@
                             </div>
                         </div>
 
-<!--                        <div class="form-group">
-                            <label class="control-label col-sm-2" for="wht">Withholding Tax:</label>
-                            <div class="col-sm-5">
-                                <input type="radio" name="wht" class="wht" id="wht_yes" value="yes"> Yes
-                                <input type="radio" name="wht" class="wht" id="wht_no" value="no"> No
-                            </div>
-                        </div>-->
-
-<!--                        <div class="form-group">
-                            <label class="control-label col-sm-2" for="vat">VAT/NHIL:</label>
-                            <div class="col-sm-5">
-                                <input type="radio" name="vat" class="vat" id="vat_yes" value="yes"> Yes
-                                <input type="radio" name="vat" class="vat" id="vat_no" value="no"> No
-                            </div>
-                        </div>-->
 
                 </form>
                 <div class="deleteContent">
@@ -257,48 +244,7 @@
 
 
 <script>
-//    function JSONToCSVConvertor(JSONData,ShowLabel) {    
-//	var arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;   
-//	var CSV = '';     
-//	if (ShowLabel) {
-//		 var row = "";
-//		 for (var index in arrData[0]) {
-//				 row += index + ',';
-//		 }
-//		 row = row.slice(0, -1);
-//		 CSV += row + '\r\n';
-//	}
-//	for (var i = 0; i < arrData.length; i++) {
-//		 var row = "";
-//		 for (var index in arrData[i]) {
-//				var arrValue = arrData[i][index] == null ? "" : '="' + arrData[i][index] + '"';
-//				row += arrValue + ',';
-//		 }
-//		 row.slice(0, row.length - 1);
-//		 CSV += row + '\r\n';
-//	}
-//	if (CSV == '') {        
-//		 growl.error("Invalid data");
-//		 return;
-//	}   
-//	var fileName = "Result";
-//	if(msieversion()){
-//	var IEwindow = window.open();
-//	IEwindow.document.write('sep=,\r\n' + CSV);
-//	IEwindow.document.close();
-//	IEwindow.document.execCommand('SaveAs', true, fileName + ".csv");
-//	IEwindow.close();
-//	} else {
-//	 var uri = 'data:application/csv;charset=utf-8,' + escape(CSV);
-//	 var link = document.createElement("a");    
-//	 link.href = uri;
-//	 link.style = "visibility:hidden";
-//	 link.download = fileName + ".csv";
-//	 document.body.appendChild(link);
-//	 link.click();
-//	 document.body.removeChild(link);
-//	}
-//    }
+
     $(document).ready(function () {
         $('#btn_delete').click(function () {
             if (confirm("Delete?")) {
@@ -333,9 +279,12 @@
     $(document).ready(function () {
         $('#btn_submit').click(function () {
             if (confirm("Submit for Review?")) {
+                var reviewer;
                 var id = [];
                 $('#checkbox:checked').each(function () {
                     id.push(this.value);
+                    reviewer = prompt("Please enter reviewer's email");
+                    
                 });
                 if (id.length === 0) {
                     alert("Please select at least one checkbox");
@@ -344,15 +293,13 @@
                         async: 'true',
                         type: 'get',
                         url: '/multireview',
-                        data: {id: id},
-                        success: function () {
-                            window.location = "/transactions";
-//                         for(var i=0;i<id.length;i++){
-//                             
-//                           $('tr#'+id[i]+'').css('background-color','#cc');
-//                           $('tr#'+id[i]+'').fadeOut('slow');
+                        data: {id: id,
+                               rev:reviewer
+                               },
+                        success: function (response) {
+                            //alert(response);
+                            window.location = "/reviewmail?email="+response;
 
-                            //}
                         }
 
                     });
@@ -469,7 +416,7 @@
         $('.id').val($(this).data('id'));
         $('.deleteContent').show();
         $('.form-horizontal').hide();
-        // $('.name').html($(this).data('description'));
+        $('.name').html($(this).data('description'));
         $('#myModal').modal('show');
     });
     $('.modal-footer').on('click', '.delete', function () {

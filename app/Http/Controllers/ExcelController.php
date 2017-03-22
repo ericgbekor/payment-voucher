@@ -5,25 +5,31 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 //use Request;
 use App\Payment;
+use App\Summary;
 use Excel;
 use PDF;
 use Response;
 use App\Payee;
 use DB;
+use Auth;
 
 class ExcelController extends Controller {
 
     //
+    public function __construct()
+{
+    $this->middleware('auth');
+}
+    
     public function exportExcel(Request $request) {
         
         $pv = array();
-        $pv[] = [['id' => 'id', 'status' => 'status', 'currency' => 'currency', 'amount' => 'amount', 'WHT' => 'WHT', 'withholding' => 'withholding', 'nhil' => 'nhil', 'vat' => 'vat', 'description' => 'description', 'rate' => 'rate', 'payee' => 'payee', 'recipient-name' => 'recipient-name', 'cheque' => 'cheque',
-        'accountDebited' => 'accountDebited', 'accountCredited' => 'accountCredited', 'creator' => 'creator', 'reviewer' => 'reviewer', 'approver' => 'approver', 'attachments' => 'attachments', 'created_at' => 'created_at', 'updated_at' => 'updated_at']];
+        $pv[] = [['id' => 'id', 'currency' => 'currency', 'amount' => 'amount', 'netpayable'=>'netpayable' , 'withholding' => 'withholding', 'vat' => 'vat', 'description' => 'description', 'rate' => 'rate', 'payee' => 'payee', 'cheque' => 'cheque','status' => 'status','debit' => 'debit', 'credit' => 'credit', 'created_at' => 'created_at', 'updated_at' => 'updated_at']];
 
         if ($request->has('id')) {
             foreach ($request->id as $id) {
                 
-                $pv[] = Payment::where('id', $id)->get();
+                $pv[] = Summary::where('id', $id)->get();
             }
           $excel=Excel::create('Payments', function($data) use ($pv) {
                 $data->sheet('Vouchers', function($values) use ($pv) {
@@ -43,7 +49,7 @@ class ExcelController extends Controller {
         if ($request->has('id')) {
             foreach ($request->id as $id) {
                // $id = $request->id;
-                $pv[] = Payee::where('id',$id)->select('supplier_name','amount')
+                $pv[] = Summary::where('id',$id)->select('payee','netpayable')
                    ->get();
             }
           Excel::create('Vouchers', function($data) use ($pv) {
@@ -54,6 +60,19 @@ class ExcelController extends Controller {
                 });
             })->export('csv');
         }
+    }
+
+
+    public function getNetPayable($value) {
+        if ($value->has('amount')) {
+           $amount=$value->amount;
+           $vat = $value->vat;
+           $wth = $value->withholding;
+           
+           $net = $amount-($vat+$wth);
+           return $net;
+    }
+
     }
 
     public function importExcel(Request $request) {
@@ -71,10 +90,10 @@ class ExcelController extends Controller {
                     $pv->description = $value->description;
                     $pv->rate = $value->rate;
                     $pv->cheque = $value->cheque;
-                    $pv->accountDebited = $value->accountdebited;
-                    $pv->accountCredited = $value->accountcredited;
-                    $pv->WHT = $value->wht;
-                    $pv->nhil = $value->nhil;
+                    $pv->accountDebited = $value->debit;
+                    $pv->accountCredited = $value->credit;
+                    $pv->netpayable=$this->getNetPayable($value);
+                    // $pv->accountCredited = $value->accountcredited;
                     $pv->payee = $value->payee;
                     $pv->currency = $value->currency;
                     $pv->status = "created";
@@ -82,11 +101,11 @@ class ExcelController extends Controller {
                     $pv->withholding = $value->withholding;
                     $pv->creator = Auth::user()->id;
                     $pv->save();
-                    return redirect('transactions');
                 } else {
                     echo "Error";
                 }
             }
+            return redirect('transactions');
         }
     }
 

@@ -9,10 +9,10 @@
 <title>Payment Voucher</title>
 <link rel="shortcut icon" type="image/x-icon" href="{{URL::asset('images.ico')}}">
 <link href="{{ URL::asset ('css/bootstrap.min.css')}}" rel="stylesheet">
-<link href="{{ URL::asset ('css/datepicker3.css')}}" rel="stylesheet">
+<!--<link href="{{ URL::asset ('css/datepicker3.css')}}" rel="stylesheet">-->
 <link href="{{ URL:: asset('css/styles.css')}}" rel="stylesheet">
 <!--<link href="{{URL::asset('jQuery-Popup-Msgbox/themes/bootstrap/img')}}" rel="stylesheet">-->
-<link href="{{URL::asset('jQuery-Popup-Msgbox/themes/bootstrap/css/jquery.msgbox.css')}}" rel="stylesheet">
+<!--<link href="{{URL::asset('jQuery-Popup-Msgbox/themes/bootstrap/css/jquery.msgbox.css')}}" rel="stylesheet">-->
 <!--Icons-->
 <script type="text/javascript" src="{{URL:: asset('js/lumino.glyphs.js')}}"></script>
 
@@ -21,21 +21,11 @@
 <script src="js/respond.min.js"></script>
 <![endif]-->
 
- {!! Charts::assets() !!}
+<!--  {!! Charts::assets() !!} -->
 </head>
 
 <body>
 	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @if (Auth::check())
-                        <!--<a href="{{ url('/home') }}">Home</a>-->
-                    @else
-                        <a href="{{ url('/login') }}">Login</a>
-                        <a href="{{ url('/register') }}">Register</a>
-                    @endif
-                </div>
-            @endif
 		<div class="container-fluid">
                      
 			<div class="navbar-header">

@@ -40,25 +40,34 @@
 
                 <tbody>
                     <tr>
-                        <td> Debited Account will be here</td>
-                        <td>{{$debit[0]->accountDebited}} - {{$debit[0]->account_name}}</td>
+                        <td>{{$debit[0]->account_name}}</td>
+                        <td>{{$debit[0]->accountDebited}}</td>
 
                         <td>{{$trans[0]->amount}}</td>
                         <td></td>
                     </tr>
+                    
                     <tr>
-                        <td> Credited Account will be here</td>
-                        <td>{{$trans[0]->accountDebited}}</td>
-
-                        <td>{{$credit[0]->accountCredited}} - {{$credit[0]->account_name}}</td>
+                        <td> VAT/NHIL</td>
                         <td></td>
+
+                        <td></td>
+                        <td>{{$trans[0]->vat}}</td>
+                    </tr>
+                    
+                    <tr>
+                        <td> WTH Tax </td>
+                        <td></td>
+
+                        <td></td>
+                        <td>{{$trans[0]->withholding}}</td>
                     </tr>
                     <tr>
-                        <td> Debited Account will be here</td>
-                        <td>{{$trans[0]->accountDebited}}</td>
+                        <td> {{$credit[0]->account_name}}</td>
+                        <td>{{$credit[0]->accountCredited}}</td>
 
-                        <td>{{$trans[0]->amount}}</td>
-                        <td></td>
+                        <td> </td>
+                        <td>{{$trans[0]->netpayable}} </td>
                     </tr>
                     <tr>
                         <td> TOTAL</td>
@@ -76,16 +85,16 @@
         <div>
             <h1> DETAILED TRANSACTION NARRATION </h1>
             <div>
-            Gross Amount  <br>
-            WHT <br>
-            VAT/NHIL   <br>       
-            Net Payable  
+            Gross Amount: {{$trans[0]->amount}}  <br>
+            WHT: {{$trans[0]->withholding}} <br>
+            VAT/NHIL: {{$trans[0]->vat}}  <br>       
+            Net Payable: {{$trans[0]->netpayable}}  
             </div>
         </div>
 
-       
-        DATE: <br>
-       
+        <div>
+        DATE: {{$current}}
+        </div>
 
 
 
@@ -96,6 +105,7 @@
                 APPROVED BY: {{$approver[0]->firstname}} {{$approver[0]->lastname}}
             </div>
         </section>
+        
 
     </body>
 </html>

@@ -10,32 +10,43 @@ use Illuminate\Http\Request;
 
 class MailController extends Controller
 {
+    public function __construct()
+{
+    $this->middleware('auth');
+}
+    
     //
-    function sendReviewMail()
+    function sendReviewMail(Request $request)
     {
-        $mail = 'eric.gbekor@ashesi.edu.gh';
-    Mail::to($mail)->send(new reviewPV);
-    
+        if ($request->has('email')){
+        $mail = $request->email;
+    Mail::to($mail)->queue(new reviewPV);
+    return redirect('/transactions');
+        }
     }
     
-    function sendApproveMail()
+    function sendApproveMail(Request $request)
     {
-        $mail = 'eric.gbekor@ashesi.edu.gh';
-    Mail::to($mail)->send(new approvePV);
-    dd('Mail sent successfully');
+        if ($request->has('email')){
+        $mail = $request->email;
+        Mail::to($mail)->queue(new approvePV);
+    return redirect('/approveTrans');
+    }
+    }
+    function sendRejectMail(Request $request)
+    {if ($request->has('email')){
+        $mail = $request->email;
+    Mail::to($mail)->queue(new rejectPV);
+        return redirect('/reviewTrans');
+            }
     }
     
-    function sendRejectMail()
+    function approvalMail(Request $request)
     {
-        $mail = 'eric.gbekor@ashesi.edu.gh';
-    Mail::to($mail)->send(new rejectPV);
+       if ($request->has('email')){
+        $mail = $request->email;
+    Mail::to($mail)->queue(new approvalPV);
     dd('Mail sent successfully');
-    }
-    
-    function approvalMail()
-    {
-        $mail = 'eric.gbekor@ashesi.edu.gh';
-    Mail::to($mail)->send(new approvalPV);
-    dd('Mail sent successfully');
+}
     }
 }

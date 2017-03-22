@@ -19,6 +19,16 @@
             'csrfToken' => csrf_token(),
         ]); ?>
     </script>
+
+    <style rel="stylesheet">
+ body .panel-default{
+    background-image: url('../background.png');
+    background-size: 100% 100%;
+    background-repeat:no-repeat;
+    /*height: 100%;*/
+}
+</style>
+
 </head>
 <body>
     <div id="app">
