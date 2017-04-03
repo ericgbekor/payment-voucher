@@ -31,6 +31,7 @@ Route::get('/approveTrans', 'TransactionController@approvePayment');
 Route::get('/makePayment', 'TransactionController@makePayment');
 Route::get('/multireject', 'TransactionController@multireject');
 Route::get('/reject', 'TransactionController@reject');
+Route::get('/approve', 'TransactionController@approve');
 Route::get('/review', 'TransactionController@review');
 Route::get('/exportExcel', 'ExcelController@exportExcel');
 Route::post('/importExcel', 'ExcelController@importExcel');

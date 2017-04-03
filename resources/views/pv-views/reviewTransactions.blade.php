@@ -16,7 +16,7 @@
                 <table class="table-bordered" id="data" data-toggle="table"  data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="total amount" data-sort-order="asc">
                     <thead>
                         <tr>
-                            <th>Item</th>
+                        <th>Item</th>
                             <th data-field="id" data-sortable="true">PV</th>
                             <th data-field="description"  data-sortable="true">Transaction Description</th>
                             <th data-field="amount" data-sortable="true"> Total Amount</th>
@@ -24,7 +24,8 @@
                             <th data-field="status" data-sortable="true"> Status</th>
                             <th data-field="created_at" data-sortable="true"> Created At</th>
                             <th data-field="updated_at" data-sortable="true"> Updated At</th>
-                            <th></th>
+                            
+                            <!-- <th>Delete</th> -->
 
                         </tr>
                     </thead>
@@ -40,19 +41,16 @@
                             <td> {{$transaction->status}}</td>
                             <td> {{$transaction->created_at}} </td>
                             <td > {{$transaction->updated_at}} </td>
-                            <td>
-                     <button type="button" name="btn_reject" id="btn_reject" class="btn btn-success" data-id="{{$transaction->id}}" data-descrition="{{$transaction->description}}" data-amount="{{$transaction->amount}}">
-                    <span class="glyphicon glyphicon-trash"></span> Reject
-                     </button> </td>
+
                         </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
             <div align="center">
-<!--                <button type="button" name="btn_reject" id="btn_reject" class="btn btn-success">
+                <button type="button" name="btn_reject" id="btn_reject" class="btn btn-success">
                     <span class="glyphicon glyphicon-trash"></span> Reject
-                </button>-->
+                </button>
                 
                 <button type="button" name="btn_review" id="btn_review" class="btn btn-primary">
                     <span class="glyphicon glyphicon-check"></span> Reviewed
@@ -62,51 +60,7 @@
     </div>
 </div><!--/.row-->
 
-<!--Modal for CRUD-->
-<div id="myModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&minus;</button>
-                <h4 class="modal-title"></h4>
-            </div>
-            <div class="modal-body">
-                <form class="form-horizontal" role="form">
-                    <div class="form-group">
-                        <label class="control-label col-sm-2" for="id">ID :</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="id" value="">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-2" for="name">Supplier Name:</label>
-                        <div class="col-sm-10">
-                            <input type="name" class="form-control" id="name" value="">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-2" for="category">Supplier Category:</label>
-                        <div class="col-sm-10">
-                            <input type="name" class="form-control" id="category" value="">
-                        </div>
-                    </div>
-                </form>
-                <div class="deleteContent">
-                    Are you Sure you want to delete transaction?
-                    <span class="hidden id"></span>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn actionBtn" data-dismiss="modal">
-                        <span id="footer_action_button" class='glyphicon'> </span>
-                    </button>
-                    <button type="button" class="btn btn-warning" data-dismiss="modal">
-                        <span class='glyphicon glyphicon-remove'></span> Close
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div> <!--end modal-->
+
 
 <div class="row">
 
@@ -169,24 +123,26 @@
         $(document).ready(function(){
            $('#btn_reject').click(function(){
               if(confirm("Reject?")){
-                $('#id').val($(this).data('id'));
-                 var id = $('#id').val();
-                 
+                  var id =[];
+                  $('#checkbox:checked').each(function(){
+                  id.push(this.value);
+                  });
+                  
+             if(id.length === 0){
+                 alert("Please select at least one checkbox");
+             }
+             else{
                  $.ajax({
                      async: 'true',
                      type: 'get',
-                     url: '/reject',
-                     data:{id:id
-                     },
+                     url: '/multireject',
+                     data:{id:id},
                      success:function(response){
-                        alert(response);
-                        alert("Record has been rejected");
                           window.location="/rejectmail?email="+response;
-                     }
-                     
-                 });
-                 
-              
+
+                     }  
+                 });    
+             } 
              }
                   else{
                   return false;}
@@ -198,13 +154,11 @@
          $(document).ready(function(){
            $('#btn_review').click(function(){
               if(confirm("Submit for Approval?")){
-                 var approver; 
-                var id =[];
+                  var id =[];
                   $('#checkbox:checked').each(function(){
                   id.push(this.value);
-                  
                   });
-                  approver = prompt("Please enter approver's email");
+                  
              if(id.length === 0){
                  alert("Please select at least one checkbox");
              }
@@ -213,8 +167,7 @@
                      async: 'true',
                      type: 'get',
                      url: '/review',
-                     data:{id:id,
-                     app:approver },
+                     data:{id:id},
                      success:function(response){
                          window.location = "/approvemail?email="+response;
                         

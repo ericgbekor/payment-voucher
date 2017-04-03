@@ -72,7 +72,7 @@ class RegisterController extends Controller
             'lastname'=>$data['lastname'],
             'usertype'=>$data['usertype'],
             'status'=>$data['status'],
-            'permission'=>implode(",",$data['permission'])
+            'permission'=>$data['permission']
         ]);
     }
 }

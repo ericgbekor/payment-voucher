@@ -42,7 +42,7 @@
                             <td> {{$transaction->created_at}} </td>
                             <td > {{$transaction->updated_at}} </td>
                             <td>
-                                <a input="button" class="pdf_button btn btn-secondary" href="/reportTrans?id={{$transaction->id}}" id="btn_pdf"  data-id="{{$transaction->id}}" data-descrition="{{$transaction->description}}" data-amount="{{$transaction->amount}}">
+                                <a type="button" class="pdf_button btn btn-secondary" href="/reportTrans?id={{$transaction->id}}" id="btn_pdf"  data-id="{{$transaction->id}}" data-descrition="{{$transaction->description}}" data-amount="{{$transaction->amount}}">
                                     <span class="glyphicon glyphicon-pdf"></span> PDF
                                 </a>
                             </td>
@@ -52,7 +52,7 @@
                 </table>
             </div>
             <div align="center">
-                 <button type="button" name="btn_excel" id="excel" class="btn btn-secondary">
+                 <button type="button" name="btn_excel" id="excel" class="btn btn-success">
                     <span class="glyphicon glyphicon-check"></span> Print Cheque
                 </button>
             </div>

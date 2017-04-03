@@ -106,7 +106,7 @@
                         <label for="description" class="col-md-4 control-label"></label>
 
                         <div class="col-md-6">
-                            <input id="description" type="text" placeholder="Transaction Description" class="form-control" name="description" required>
+                            <textarea id="description" type="text" placeholder="Transaction Description" class="form-control" name="description" required></textarea>
 
                             @if ($errors->has('description'))
                             <span class="help-block">
@@ -241,6 +241,63 @@
                             @endif
                         </div>
                     </div>
+                    
+                    <div class="form-group{{ $errors->has('reviewer') ? ' has-error' : '' }}">
+                        <label for="reviewer" class="col-md-4 control-label"></label>
+
+                        <div class="col-md-4">
+                           
+                            <select class="form-control" name="reviewer" id="reviewer"  required>
+                                <option value="-1">--Select Reviewer-- </option>
+                                @foreach ($review as $sn) 
+                                {
+                                <option value="{{ $sn->id }}">{{ $sn->firstname }} {{ $sn->lastname }}</option>
+                                }
+                                @endforeach
+                            </select>
+
+                            @if ($errors->has('reviewer'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('reviewer') }}</strong>
+                            </span>
+                            @endif
+                        </div>
+
+<!--                        <div class="col-md-2">
+                            <button class="add-modal btn btn-secondary" type="" id="add">
+                                <span class="glyphicon glyphicon-plus-sign"></span>
+                            </button>
+                        </div>-->
+                    </div>
+
+                    <div class="form-group{{ $errors->has('approver') ? ' has-error' : '' }}">
+                        <label for="approver" class="col-md-4 control-label"></label>
+
+                        <div class="col-md-4">
+                           
+                            <select class="form-control" name="approver" id="approver"  required>
+                                <option value="-1">--Select Approver-- </option>
+                                @foreach ($approve as $sn) 
+                                {
+                                <option value="{{ $sn->id }}">{{ $sn->firstname }} {{ $sn->lastname }}</option>
+                                }
+                                @endforeach
+                            </select>
+
+                            @if ($errors->has('approver'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('approver') }}</strong>
+                            </span>
+                            @endif
+                        </div>
+
+<!--                        <div class="col-md-2">
+                            <button class="add-modal btn btn-secondary" type="" id="add">
+                                <span class="glyphicon glyphicon-plus-sign"></span>
+                            </button>
+                        </div>-->
+                    </div>
+
             
                     <div class="form-group{{ $errors->has('documents') ? ' has-error' : '' }}">
                         <label for="documents" class="col-md-4 control-label"></label>

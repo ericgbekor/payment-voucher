@@ -60,16 +60,16 @@
                     </tbody>
                 </table>
             </div>
-            <div align="right">
+            <div align="center">
                 <button type="button" name="btn_delete" id="btn_delete" class="btn btn-danger">
                     <span class="glyphicon glyphicon-trash"></span> Delete
                 </button>
 
-                <button type="button" name="btn_submit" id="btn_submit" class="btn btn-primary">
+                <button type="button" name="btn_submit" id="btn_submit" class="btn btn-success">
                     <span class="glyphicon glyphicon-check"></span> Submit
                 </button>
                 
-                 <button type="button" name="btn_excel" id="btn_excel" class="btn btn-secondary">
+                 <button type="button" name="btn_excel" id="btn_excel" class="btn btn-primary">
                     <span class="glyphicon glyphicon-check"></span> Export To Excel
                 </button>
             </div>
@@ -279,12 +279,9 @@
     $(document).ready(function () {
         $('#btn_submit').click(function () {
             if (confirm("Submit for Review?")) {
-                var reviewer;
                 var id = [];
                 $('#checkbox:checked').each(function () {
-                    id.push(this.value);
-                    reviewer = prompt("Please enter reviewer's email");
-                    
+                    id.push(this.value);   
                 });
                 if (id.length === 0) {
                     alert("Please select at least one checkbox");
@@ -293,11 +290,9 @@
                         async: 'true',
                         type: 'get',
                         url: '/multireview',
-                        data: {id: id,
-                               rev:reviewer
+                        data: {id: id
                                },
                         success: function (response) {
-                            //alert(response);
                             window.location = "/reviewmail?email="+response;
 
                         }
@@ -329,12 +324,7 @@
                         url: '/exportExcel',
                         data: {id: id},
                         success: function (url) {
-                           
-                            var path=window.location.host;
-                             //console.log(path + this.url);
-                            var download = path + this.url;
-                            console.log(download);
-//                            location.href=this.url;
+                          
                             window.open(this.url);
                             location.reload();
                     }

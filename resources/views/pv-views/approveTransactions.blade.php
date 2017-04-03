@@ -24,7 +24,7 @@
                             <th data-field="status" data-sortable="true"> Status</th>
                             <th data-field="created_at" data-sortable="true"> Created At</th>
                             <th data-field="updated_at" data-sortable="true"> Updated At</th>
-                            <th></th>
+                            
                             
 
                         </tr>
@@ -41,21 +41,21 @@
                             <td> {{$transaction->status}}</td>
                             <td> {{$transaction->created_at}} </td>
                             <td > {{$transaction->updated_at}} </td>
-
+                            
                         </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
-            <div align="right">
+            <div align="center">
                 <button type="button" name="btn_reject" id="btn_reject" class="btn btn-success">
                     <span class="glyphicon glyphicon-trash"></span> Reject
                 </button>
                 
                 <button type="button" name="btn_review" id="btn_review" class="btn btn-primary">
-                    <span class="glyphicon glyphicon-check"></span> Approve
+                    <span class="glyphicon glyphicon-check"></span> Reviewed
                 </button>
-            </div>
+            </div> 
         </div>
     </div>
 </div><!--/.row-->
@@ -164,7 +164,7 @@
 
 
     <script>
-        $(document).ready(function(){
+         $(document).ready(function(){
            $('#btn_reject').click(function(){
               if(confirm("Reject?")){
                   var id =[];
@@ -181,14 +181,9 @@
                      type: 'get',
                      url: '/multireject',
                      data:{id:id},
-                     success:function(){
-                          window.location="/approveTrans";
-//                         for(var i=0;i<id.length;i++){
-//                             
-//                           $('tr#'+id[i]+'').css('background-color','#cc');
-//                           $('tr#'+id[i]+'').fadeOut('slow');
-//                           
-//                         }
+                     success:function(response){
+                          window.location="/rejectmail?email="+response;
+
                      }
                      
                  });
@@ -201,43 +196,73 @@
            }); 
         });
         
-        
+
+
          $(document).ready(function(){
-           $('#btn_review').click(function(){
+           $('#btn_approve').click(function(){
               if(confirm("Approve?")){
-                  var id =[];
-                  $('#checkbox:checked').each(function(){
-                  id.push(this.value);
-                  });
-                  
-             if(id.length === 0){
-                 alert("Please select at least one checkbox");
-             }
-             else{
+                $('#id').val($(this).data('id'));
+                 var id = $('#id').val();
+                 
                  $.ajax({
                      async: 'true',
                      type: 'get',
-                     url: '/multiapprove',
-                     data:{id:id},
-                     success:function(){
-                         window.location="/approveTrans";
-//                         for(var i=0;i<id.length;i++){
-//                             
-//                           $('tr#'+id[i]+'').css('background-color','#cc');
-//                           $('tr#'+id[i]+'').fadeOut('slow');
-                           
-                         //}
+                     url: '/approve',
+                     data:{id:id
+                     },
+                     success:function(response){
+                        alert("Record has been approved");
+                          window.location="/approvalmail?email="+response;
                      }
                      
                  });
                  
-             } 
+              
              }
                   else{
                   return false;}
              
            }); 
         });
+
+        
+//          $(document).ready(function(){
+//            $('#btn_review').click(function(){
+//               if(confirm("Approve?")){
+//                   var id =[];
+//                   $('#checkbox:checked').each(function(){
+//                   id.push(this.value);
+//                   });
+                  
+//              if(id.length === 0){
+//                  alert("Please select at least one checkbox");
+//              }
+//              else{
+//                  $.ajax({
+//                      async: 'true',
+//                      type: 'get',
+//                      url: '/multiapprove',
+//                      data:{id:id},
+//                      success:function(){
+//                         alert("Voucher(s) Approved Successfully!!!");
+//                          window.location="/approveTrans";
+// //                         for(var i=0;i<id.length;i++){
+// //                             
+// //                           $('tr#'+id[i]+'').css('background-color','#cc');
+// //                           $('tr#'+id[i]+'').fadeOut('slow');
+                           
+//                          //}
+//                      }
+                     
+//                  });
+                 
+//              } 
+//              }
+//                   else{
+//                   return false;}
+             
+//            }); 
+//         });
     </script>
 
 <!--Modal script-->

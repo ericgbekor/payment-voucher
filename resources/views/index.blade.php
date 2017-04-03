@@ -13,8 +13,7 @@
 <link href="{{ URL::asset ('css/bootstrap.min.css')}}" rel="stylesheet">
 <!--<link href="{{ URL::asset ('css/datepicker3.css')}}" rel="stylesheet">-->
 <link href="{{ URL:: asset('css/styles.css')}}" rel="stylesheet">
-<!--<link href="{{URL::asset('jQuery-Popup-Msgbox/themes/bootstrap/img')}}" rel="stylesheet">-->
-<!--<link href="{{URL::asset('jQuery-Popup-Msgbox/themes/bootstrap/css/jquery.msgbox.css')}}" rel="stylesheet">-->
+
 <!--Icons-->
 <script type="text/javascript" src="{{URL:: asset('js/lumino.glyphs.js')}}"></script>
 
@@ -58,6 +57,8 @@
                             
         </div><!-- /.container-fluid -->
     </nav>
+
+
         
     <div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
         <form role="search">
@@ -101,21 +102,23 @@
             <li><a href="supplier"><svg class="glyph stroked table"><use xlink:href="#stroked-table"></use></svg>Suppliers</a></li>
             <li><a href="account"><svg class="glyph stroked pencil"><use xlink:href="#stroked-pencil"></use></svg>Chart of Accounts</a></li>
             <!--<li><a href="panels.html"><svg class="glyph stroked app-window"><use xlink:href="#stroked-app-window"></use></svg> Alerts &amp; Panels</a></li>-->
-            <li><a href="reportTrans"><svg class="glyph stroked star"><use xlink:href="#stroked-star"></use></svg> Reports</a></li>
+            <!-- <li><a href="reportTrans"><svg class="glyph stroked star"><use xlink:href="#stroked-star"></use></svg> Reports</a></li> -->
             
             <li role="presentation" class="divider"></li>
             <li><a href="login"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> Login Page</a></li>
         </ul>
 
     </div><!--/.sidebar-->
-        
+
+    <!--/.header icons-->    
     <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">           
-        <div class="row">
+         <div class="row">
             <ol class="breadcrumb">
                 <li><a href="/"><svg class="glyph stroked home"><use xlink:href="#stroked-home"></use></svg></a></li>
                 <li class="active">Icons</li>
             </ol>
         </div><!--/.row-->
+
         
         <div class="row">
             <div class="col-lg-12">
@@ -163,7 +166,7 @@
     </div>
 </div><!--/.row-->
 
-
+</div>
 
 <script type= "text/javascript" src="{{URL::asset('js/jquery-1.11.1.min.js')}}"></script>
 <script type="text/javascript" src="{{URL::asset('js/bootstrap.min.js')}}"></script>
@@ -188,7 +191,7 @@ $(window).on('resize', function () {
 });
 </script>	
 
-</div>
+
 
 </body>
 </html>

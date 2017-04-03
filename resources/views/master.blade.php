@@ -99,7 +99,7 @@
 			<li><a href="supplier"><svg class="glyph stroked table"><use xlink:href="#stroked-table"></use></svg>Suppliers</a></li>
 			<li><a href="account"><svg class="glyph stroked pencil"><use xlink:href="#stroked-pencil"></use></svg>Chart of Accounts</a></li>
 			<!--<li><a href="panels.html"><svg class="glyph stroked app-window"><use xlink:href="#stroked-app-window"></use></svg> Alerts &amp; Panels</a></li>-->
-			<li><a href="reportTrans"><svg class="glyph stroked star"><use xlink:href="#stroked-star"></use></svg> Reports</a></li>
+			<!-- <li><a href="reportTrans"><svg class="glyph stroked star"><use xlink:href="#stroked-star"></use></svg> Reports</a></li> -->
 			
 			<li role="presentation" class="divider"></li>
 			<li><a href="login"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> Login Page</a></li>
