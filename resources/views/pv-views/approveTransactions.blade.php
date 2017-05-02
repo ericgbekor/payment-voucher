@@ -24,7 +24,7 @@
                             <th data-field="status" data-sortable="true"> Status</th>
                             <th data-field="created_at" data-sortable="true"> Created At</th>
                             <th data-field="updated_at" data-sortable="true"> Updated At</th>
-                            
+                            <th></th>
                             
 
                         </tr>
@@ -41,7 +41,11 @@
                             <td> {{$transaction->status}}</td>
                             <td> {{$transaction->created_at}} </td>
                             <td > {{$transaction->updated_at}} </td>
-                            
+                            <td>
+                                <a class="btn btn-secondary" href="showTrans?id={{$transaction->id}}" id="btn_show">
+                                    <span class="glyphicon glyphicon-eye-open"></span> Details
+                                </a> 
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -49,11 +53,11 @@
             </div>
             <div align="center">
                 <button type="button" name="btn_reject" id="btn_reject" class="btn btn-success">
-                    <span class="glyphicon glyphicon-trash"></span> Reject
+                    <span class="glyphicon glyphicon-remove-sign"></span> Reject
                 </button>
                 
-                <button type="button" name="btn_review" id="btn_review" class="btn btn-primary">
-                    <span class="glyphicon glyphicon-check"></span> Reviewed
+                <button type="button" name="btn_review" id="btn_approve" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-check"></span> Approve
                 </button>
             </div> 
         </div>
@@ -197,72 +201,68 @@
         });
         
 
-
-         $(document).ready(function(){
-           $('#btn_approve').click(function(){
-              if(confirm("Approve?")){
-                $('#id').val($(this).data('id'));
-                 var id = $('#id').val();
-                 
-                 $.ajax({
-                     async: 'true',
-                     type: 'get',
-                     url: '/approve',
-                     data:{id:id
-                     },
-                     success:function(response){
-                        alert("Record has been approved");
-                          window.location="/approvalmail?email="+response;
-                     }
-                     
-                 });
-                 
-              
-             }
-                  else{
-                  return false;}
-             
-           }); 
-        });
+//
+//         $(document).ready(function(){
+//           $('#btn_approve').click(function(){
+//              if(confirm("Approve?")){
+//                $('#id').val($(this).data('id'));
+//                 var id = $('#id').val();
+//                 
+//                 $.ajax({
+//                     async: 'true',
+//                     type: 'get',
+//                     url: '/approve',
+//                     data:{id:id
+//                     },
+//                     success:function(response){
+//                        alert("Record has been approved");
+//                          window.location="/approvalmail?email="+response;
+//                     }
+//                     
+//                 });
+//                 
+//              
+//             }
+//                  else{
+//                  return false;}
+//             
+//           }); 
+//        });
 
         
-//          $(document).ready(function(){
-//            $('#btn_review').click(function(){
-//               if(confirm("Approve?")){
-//                   var id =[];
-//                   $('#checkbox:checked').each(function(){
-//                   id.push(this.value);
-//                   });
+          $(document).ready(function(){
+            $('#btn_approve').click(function(){
+               if(confirm("Approve?")){
+                   var id =[];
+                   $('#checkbox:checked').each(function(){
+                   id.push(this.value);
+                   });
                   
-//              if(id.length === 0){
-//                  alert("Please select at least one checkbox");
-//              }
-//              else{
-//                  $.ajax({
-//                      async: 'true',
-//                      type: 'get',
-//                      url: '/multiapprove',
-//                      data:{id:id},
-//                      success:function(){
-//                         alert("Voucher(s) Approved Successfully!!!");
-//                          window.location="/approveTrans";
-// //                         for(var i=0;i<id.length;i++){
-// //                             
-// //                           $('tr#'+id[i]+'').css('background-color','#cc');
-// //                           $('tr#'+id[i]+'').fadeOut('slow');
+              if(id.length === 0){
+                  alert("Please select at least one checkbox");
+              }
+              else{
+                  $.ajax({
+                      async: 'true',
+                      type: 'get',
+                      url: '/multiapprove',
+                      data:{id:id},
+                      success:function(response){
+                         alert("Voucher(s) Approved Successfully!!!");
+                          window.location="/approvalmail?email="+response;                     
                            
-//                          //}
-//                      }
+                          }
+                      
                      
-//                  });
+                  });
                  
-//              } 
-//              }
-//                   else{
-//                   return false;}
+              } 
+              }
+                   else{
+                   return false;}
              
-//            }); 
-//         });
+            }); 
+         });
     </script>
 
 <!--Modal script-->

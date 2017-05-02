@@ -124,14 +124,14 @@
                             </div>
                         </div>
                         
-                        <div class="form-group {{$errors->has('permission')? 'has-error':''}}">
-                         <label for="permission" class="col-md-4 control-label"></label>
+                        <div class="form-group {{$errors->has('role')? 'has-error':''}}">
+                         <label for="role" class="col-md-4 control-label"></label>
                          
                          <div class="col-md-6">
-                             <b>Permission </b> <br>
-                             <input type ='checkbox' name ='permission' value='1' /> Create
-                             <input type ='checkbox' name ='permission' value='2' /> Review
-                             <input type ='checkbox' name ='permission' value='3' /> Approve 
+                             <b>Role </b> <br>
+                             <input type ='checkbox' name ='role' value='1' /> Creator
+                             <input type ='checkbox' name ='role' value='2' /> Reviewer
+                             <input type ='checkbox' name ='role' value='3' /> Approver
                         
                          </div>
                             

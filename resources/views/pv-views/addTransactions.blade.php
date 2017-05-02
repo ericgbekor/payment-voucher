@@ -164,7 +164,7 @@
                         <div class="col-md-4">
                            <select class="form-control" name="debit" id="debit"  name="debit" required>
                                <option value="-1">--Select Debit Account-- </option>
-                                @foreach ($accounts as $an) 
+                                @foreach ($debit as $an) 
                                 {
                                 <option value="{{ $an->id }}">{{ $an->account_name }}</option>
                                 }
@@ -192,7 +192,7 @@
                         <div class="col-md-4">
                            <select class="form-control" name="credit" id="credit"  name="credit" required>
                                <option value="-1">--Select Credit Account-- </option>
-                                @foreach ($accounts as $an) 
+                                @foreach ($credit as $an) 
                                 {
                                 <option value="{{ $an->id }}">{{ $an->account_name }}</option>
                                 }
@@ -203,6 +203,34 @@
                             @if ($errors->has('credit'))
                             <span class="help-block">
                                 <strong>{{ $errors->first('credit') }}</strong>
+                            </span>
+                            @endif
+                        </div>
+
+<!--                        <div class="col-md-1">
+                            <button class="btn btn-secondary" type="" id="add">
+                                <span class="glyphicon glyphicon-plus-sign"></span>
+                            </button>
+                        </div>-->
+                    </div> 
+                    
+                     <div class="form-group{{ $errors->has('credit') ? ' has-error' : '' }}">
+                        <label for="debit" class="col-md-4 control-label"></label>
+
+                        <div class="col-md-4">
+                           <select class="form-control" name="department" id="department" required>
+                               <option value="-1">--Select Department-- </option>
+                                @foreach ($depts as $dept) 
+                                {
+                                <option value="{{ $dept->id }}">{{ $dept->departmentName }}</option>
+                                }
+                                @endforeach
+                               
+                            </select>
+
+                            @if ($errors->has('department'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('department') }}</strong>
                             </span>
                             @endif
                         </div>

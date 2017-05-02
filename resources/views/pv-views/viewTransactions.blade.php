@@ -24,6 +24,7 @@
                             <th data-field="created_at" data-sortable="true"> Created At</th>
                             <th data-field="updated_at" data-sortable="true"> Updated At</th>
                             <th></th>
+                            <th></th>
                             <!-- <th>Delete</th> -->
 
                         </tr>
@@ -41,18 +42,19 @@
                             <td> {{$transaction->created_at}} </td>
                             <td > {{$transaction->updated_at}} </td>
 
-
-
                             <td>
                                 <button class="edit-modal btn btn-primary" id="btn_edit" data-id="{{$transaction->id}}" data-name="{{$transaction->description}}" data-amount="{{$transaction->amount}}" 
-                                        data-cheque="{{$transaction->cheque}}" data-rate="{{$transaction->rate}}" file-attachment="{{$transaction->attachments}}" data-payee="{{$transaction->payee}}"
-                                        data-debit="{{$transaction->accountDebited}}" data-withholding="{{$transaction->withholding}}" data-vat="{{$transaction->vat}}" data-currency="{{$transaction->currency}}">
+                                        data-cheque="{{$transaction->cheque}}" data-rate="{{$transaction->rate}}"  data-payee="{{$transaction->payee}}" 
+                                        data-credit="{{$transaction->accountCredited}}" data-debit="{{$transaction->accountDebited}}" data-withholding="{{$transaction->withholding}}" data-vat="{{$transaction->vat}}" 
+                                        data-currency="{{$transaction->currency}}" data-dept="{{$transaction->department}}" data-reviewer="{{$transaction->reviewer}}" data-approver="{{$transaction->approver}}">
                                     <span class="glyphicon glyphicon-edit"></span> Edit
                                 </button> 
                             
-                                <!-- <button class="delete-modal btn btn-danger" data-id="{{$transaction->id}}" data-descrition="{{$transaction->description}}" data-amount="{{$transaction->amount}}">
-                                    <span class="glyphicon glyphicon-trash"></span> Delete
-                                </button> -->
+                            </td>
+                            <td>
+                                <a class="btn btn-secondary" href="showTrans?id={{$transaction->id}}" id="btn_show">
+                                    <span class="glyphicon glyphicon-eye-open"></span> Details
+                                </a> 
                             </td>
                     
                         </tr>
@@ -85,9 +87,10 @@
                 <button type="button" class="close" data-dismiss="modal">&minus;</button>
                 <h4 class="modal-title"></h4>
             </div>
-            <div class="modal-body">
+            <div class="modal-body ">
+                
               <form class="form-horizontal" role="form">
-                    <div class="form-group">
+                    <div class="form-group container-fluid">
 
                         <div class="form-group">
                             <label class="control-label col-sm-2" for="id">ID :</label>
@@ -98,11 +101,11 @@
                         <div class="form-group">
                             <label class="control-label col-sm-2" for="currency">Currency:</label>
                             <div class="col-sm-5">
-                                <select class="form-control" name="currency" id="currency"  name="currency" required>
+                                <select class="form-control" name="currency" id="currency"  required>
                                     <option value="-1">--Currency-- </option>
 
                                     <option value="cedis">GHS</option>
-                                    <option value="dollars">$</option>
+                                    <option value="dollars">USD</option>
 
                                 </select>
                             </div>
@@ -110,7 +113,7 @@
                         <div class="form-group">
                             <label class="control-label col-sm-2" for="name">Description:</label>
                             <div class="col-sm-8">
-                                <input type="name" class="form-control" id="name" value="">
+                                <textarea type="name" class="form-control" id="name" value=""></textarea>
                             </div>
                         </div>
                         <div class="form-group">
@@ -135,7 +138,7 @@
                         <div class="form-group">
                             <label class="control-label col-sm-2" for="payee">Payee:</label>
                             <div class="col-sm-5">
-                                <select class="form-control" name="payee" id="payee"  name="payee" required>
+                                <select class="form-control" name="payee" id="payee" required>
                                     <option value="-1">--Select Payee-- </option>
                                     @foreach ($suppliers as $sn) 
                                     {
@@ -149,9 +152,9 @@
                         <div class="form-group">
                             <label class="control-label col-sm-2" for="debit">Account Debited:</label>
                             <div class="col-sm-5">
-                                <select class="form-control" name="debit" id="debit"  name="debit" required>
+                                <select class="form-control" name="debit" id="debit" required>
                                     <option value="-1">--Select Debit Account-- </option>
-                                    @foreach ($accounts as $an) 
+                                    @foreach ($debit as $an) 
                                     {
                                     <option value="{{ $an->id }}">{{ $an->account_name }}</option>
                                     }
@@ -160,6 +163,36 @@
                                 </select>
                             </div>
                         </div>
+                        
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="credit">Account Credited:</label>
+                            <div class="col-sm-5">
+                                <select class="form-control" name="credit" id="credit"  required>
+                                    <option value="-1">--Select Credit Account-- </option>
+                                    @foreach ($credit as $an) 
+                                    {
+                                    <option value="{{ $an->id }}">{{ $an->account_name }}</option>
+                                    }
+                                    @endforeach
+
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="department">Department:</label>
+                            <div class="col-sm-5">
+                                <select class="form-control" name="department" id="department">
+                                    <option value="-1">--Select Department-- </option>
+                                    @foreach ($depts as $sn) 
+                                    {
+                                    <option value="{{ $sn->id }}">{{ $sn->departmentName }}</option>
+                                    }
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        
                         
                         <div class="form-group">
                             <label class="control-label col-sm-2" for="withholding">Withholding Tax:</label>
@@ -175,14 +208,41 @@
                             </div>
                         </div>
                         
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="reviewer">Reviewer:</label>
+                            <div class="col-sm-5">
+                                <select class="form-control" name="reviewer" id="reviewer">
+                                    <option value="-1">--Select Reviewer-- </option>
+                                    @foreach ($reviewer as $sn) 
+                                    {
+                                    <option value="{{ $sn->id }}">{{ $sn->firstname}} {{ $sn->lastname}}</option>
+                                    }
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
                         
                         <div class="form-group">
+                            <label class="control-label col-sm-2" for="approver">Approver:</label>
+                            <div class="col-sm-5">
+                                <select class="form-control" name="approver" id="approver">
+                                    <option value="-1">--Select Approver-- </option>
+                                    @foreach ($approver as $sn) 
+                                    {
+                                    <option value="{{ $sn->id }}">{{ $sn->firstname}} {{ $sn->lastname}}</option>
+                                    }
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        
+<!--                        <div class="form-group">
                             <label class="control-label col-sm-2" for="attachment">Attachment:</label>
                             <div class="col-sm-10">
                                 <input id="documents" type="file" name="documents">
 
                             </div>
-                        </div>
+                        </div>-->
 
 
                 </form>
@@ -359,6 +419,10 @@
         $('#rate').val($(this).data('rate'));
         $('#debit').val($(this).data('debit'));
         $('#payee').val($(this).data('payee'));
+        $('#credit').val($(this).data('credit'));
+        $('#department').val($(this).data('dept'));
+        $('#reviewer').val($(this).data('reviewer'));
+        $('#approver').val($(this).data('approver'));
         $('#withholding').val($(this).data('withholding'));
         $('#vat').val($(this).data('vat'));
         $('.modal-title').text("Edit " + $('#name').val() + "'s details");
@@ -373,22 +437,22 @@
             data: {
                 '_token': $('input[name=_token]').val(),
                 'id': $('#id').val(),
-                'name': $('#name').val(),
+                'description': $('#name').val(),
                 'amount': $('#amount').val(),
                 'currency': $('#currency').val(),
                 'rate': $('#rate').val(),
                 'cheque': $('#cheque').val(),
                 'debit': $('#debit').val(),
-                'payee': $('#debit').val(),
+                'credit': $('#credit').val(),
+                'payee': $('#payee').val(),
+                'department': $('#department').val(),
+                'reviewer': $('#reviewer').val(),
+                'approver': $('#approver').val(),
                 'withholding': $('#withholding').val(),
                 'vat': $('#vat').val()
             },
-            success: function (data) {
-                alert(data);
-
-                /*$('.item' + data.id).replaceWith("<tr class='item" + data.id + "'><td data-checkbox='true'></td><td>" + data.id + "</td><td>" + data.description +
-                 "</td><td>" + data.amount + "</td><td>" + data.created_at + "</td><td>" + data.updated_at + "</td><td>\n\
-                 <button class='edit-modal btn btn-info' data-id='" + data.id + "' data-name='" + data.description + "' data-category='" + data.amount + "'><span class='glyphicon glyphicon-edit'></span> Edit</button></td><td> <button class='delete-modal btn btn-danger' data-id='" + data.id + "' data-name='" + data.description + "' data-category='" + data.amount + "'><span class='glyphicon glyphicon-trash'></span> Delete</button></td></tr>");*/
+            success: function () {
+                alert("Record Updated Successfully");
                 location.href = '/transactions';
             }
         });

@@ -6,49 +6,39 @@ use Illuminate\Http\Request;
 use App\Account;
 use Response;
 
-class AccountController extends Controller
-{
-    
-    public function __construct()
-{
-    $this->middleware('auth');
-}
+class AccountController extends Controller {
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct() {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-       $accounts = Account::get();
+    public function index() {
+        $accounts = Account::get();
         return view('accountviews/tables', compact('accounts'));
-        
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
+     * Save new resource into the storage .
+     *@param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
-    {
+    public function create(Request $request) {
         $account = new Account();
-        $account->id=$request->aid;
+        $account->id = $request->aid;
         $account->account_name = $request->aname;
         $account->account_class = $request->aclass;
         $account->save();
-       return response()->json($account);
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+        return response()->json($account);
     }
 
     /**
@@ -57,21 +47,9 @@ class AccountController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+    public function show($id) {
         $account = Account::where('id', $id)->get();
         return $account->toJson();
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**
@@ -81,9 +59,8 @@ class AccountController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-         $account = Account::findorfail($id);
+    public function update(Request $request, $id) {
+        $account = Account::findorfail($id);
         $account->account_name = $request->name;
         $account->account_class = $request->class;
         $account->save();
@@ -96,9 +73,9 @@ class AccountController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
+    public function destroy($id) {
         Account::where('id', $id)->delete();
         return response()->json();
     }
+
 }

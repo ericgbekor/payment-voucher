@@ -7,32 +7,15 @@
     </div>
 </div><!--/.row-->
 
-<!--adding new data
-<div class="form-group row add">
-<!--   <div class="panel-heading">Add New User</div>
-<div class="col-md-3">
-    <input type="text" class="form-control" id="uid" name="uid" placeholder="User ID" required>
-    <p class="error text-center alert alert-danger hidden"></p>
-</div>
-<div class="col-md-4">
-    <input type="text" class="form-control" id="username" name="username" placeholder="Username" required>
-    <p class="error text-center alert alert-danger hidden"></p>
-</div>
-
-<div class="col-md-3">
-    <input type="text" class="form-control" id="aclass" name="aclass" placeholder="User Class " required>
-    <p class="error text-center alert alert-danger hidden"></p>
-
-   <!-- <input type="hidden" id="_token" method='{{csrf_field()}}'>
-</div>
-<div class="col-md-2">
-    <button class="btn btn-warning" type="submit" id="add">
-        <span class="glyphicon glyphicon-plus"></span> Add User
-    </button>
+<!--adding new data-->
+<div class="form-group row add pull-right">
+<div class="col-md-2 ">
+    <a class="btn btn-success" type="submit" href="newuser" id="add">
+        <span class="glyphicon glyphicon-plus"></span> New User
+    </a>
 </div>
 </div>
-
-end of add-->
+<!--end of add-->
 
 
 <div class="row">
@@ -43,7 +26,7 @@ end of add-->
                 <table id="data" data-toggle="table"  data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="username" data-sort-order="asc">
                     <thead>
                         <tr>
-                           <!-- <th data-field="state" data-checkbox="true" >User</th>-->
+                            <!--<th data-field="state" data-checkbox="true" >User</th>-->
                             <!--<th data-field="id" data-sortable="true">User ID</th>-->
                             <th data-field="username"  data-sortable="true">Username</th>
                             <th data-field="email" data-sortable="true">Email</th>
@@ -53,7 +36,9 @@ end of add-->
                             <th data-field="status" data-sortable="true"> Status</th>-->
                             <th data-field="created_at" data-sortable="true"> Created At</th>
                             <th data-field="updated_at" data-sortable="true"> Updated At</th>
-                            
+                            <th></th>
+                            <th></th>
+                            <th></th>
 
                         </tr>
                     </thead>
@@ -74,13 +59,13 @@ end of add-->
                                 </button> </td>
                             <td>
                                 <button class="edit-modal btn btn-primary" data-id="{{$user->id}}" data-username="{{$user->username}}" data-email="{{$user->email}}"
-                                        data-firstname="{{$user->firstname}}" data-lastname="{{$user->lastname}}" data-usertype="{{$user->usertype}}" data-permission="{{$user->permission}}"
+                                        data-firstname="{{$user->firstname}}" data-lastname="{{$user->lastname}}" data-usertype="{{$user->usertype}}" data-role="{{$user->role}}"
                                         data-status="{{$user->status}}">
                                     <span class="glyphicon glyphicon-edit"></span> Edit
                                 </button> </td>
                             <td>
                                 <button class="delete-modal btn btn-danger" data-id="{{$user->id}}" data-name="{{$user->username}}" data-class="{{$user->email}}"
-                                        data-firstname="{{$user->firstname}}" data-lastname="{{$user->lastname}}" data-usertype="{{$user->usertype}}" data-permission="{{$user->permission}}"
+                                        data-firstname="{{$user->firstname}}" data-lastname="{{$user->lastname}}" data-usertype="{{$user->usertype}}" data-role="{{$user->role}}"
                                         data-status="{{$user->status}}">
                                     <span class="glyphicon glyphicon-trash"></span> Delete
                                 </button>
@@ -143,11 +128,17 @@ end of add-->
                                 <input type="text" class="form-control" id="usertype" value="">
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-2" for="permission">Permission:</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="permission" value="">
-                            </div>
+                        <div class="form-group {{$errors->has('role')? 'has-error':''}}">
+                         <label for="role" class="col-md-2 control-label">Role</label>
+                         
+                         <div class="col-sm-10">
+                             <!--<b>Role </b> <br>-->
+                             <input type ='checkbox' name ='role' value='1' /> Creator
+                             <input type ='checkbox' name ='role' value='2' /> Reviewer
+                             <input type ='checkbox' name ='role' value='3' /> Approver
+                        
+                         </div>
+                            
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2" for="status">User Status:</label>
@@ -252,7 +243,7 @@ end of add-->
         $('#usertype').val($(this).data('usertype')).prop("disabled",false);
         $('#firstname').val($(this).data('firstname')).prop("disabled",false);
         $('#lastname').val($(this).data('lastname')).prop("disabled",false);
-        $('#permission').val($(this).data('permission')).prop("disabled",false);
+        $('#role').val($(this).data('role')).prop("disabled",false);
         $('#status').val($(this).data('status')).prop("disabled",false);
         $('.modal-title').text("Edit " + $('#firstname').val() + "'s details");
         $('#myModal').modal('show');
@@ -364,7 +355,7 @@ end of add-->
         $('#usertype').val($(this).data('usertype')).prop("disabled",true);
         $('#firstname').val($(this).data('firstname')).prop("disabled",true);
         $('#lastname').val($(this).data('lastname')).prop("disabled",true);
-        $('#permission').val($(this).data('permission')).prop("disabled",true);
+        $('#role').val($(this).data('role')).prop("disabled",true);
         $('#status').val($(this).data('status')).prop("disabled",true);
         $('.modal-title').text($('#firstname').val() + "'s details");
         $('#myModal').modal('show');

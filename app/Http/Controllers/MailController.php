@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Response;
 use Mail;
 use App\Mail\reviewPV;
@@ -11,60 +12,81 @@ use Illuminate\Http\Request;
 
 class MailController extends Controller {
 
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
     public function __construct() {
         $this->middleware('auth');
     }
 
-    //
-    function sendReviewMail(Request $request) {
-         if ($request->has('email')) {
-            $email = $request-> email;
-            $emails = json_decode($email);
-           for ($i = 0; $i < count($emails); $i++) {
-                $mail = $emails[$i];
-               Mail::to($mail)->queue(new reviewPV);
-           }
-       }
-            return redirect('/transactions');
-        }
-    
-
-    function sendApproveMail(Request $request) {
-         if ($request->has('email')) {
-            $email = $request-> email;
-            $emails = json_decode($email);
-           for ($i = 0; $i < count($emails); $i++) {
-                $mail = $emails[$i];
-               Mail::to($mail)->queue(new approvePV);
-           }
-       }
-            return redirect('/approveTrans');
-        }
-    
-
-    function sendRejectMail(Request $request) {
+    /**
+     * Send mail notifictions to users to notify them about vouchers submitted for review.
+     * @param  \Illuminate\Http\Request  $request
+     * @return redirect
+     */
+    public function sendReviewMail(Request $request) {
         if ($request->has('email')) {
-            $email = $request-> email;
+            $email = $request->email;
             $emails = json_decode($email);
-           for ($i = 0; $i < count($emails); $i++) {
+            for ($i = 0; $i < count($emails); $i++) {
                 $mail = $emails[$i];
-               Mail::to($mail)->queue(new rejectPV);
-           }
-       }
-       return redirect('/reviewTrans');
+                Mail::to($mail)->queue(new reviewPV);
+            }
+        }
+        return redirect('/viewtransactions');
     }
 
-
-
-function approvalMail(Request $request) {
-      if ($request->has('email')) {
-            $email = $request-> email;
+    /**
+     * Send mail notifictions to users to notify them about vouchers submitted for approval.
+     * @param  \Illuminate\Http\Request  $request
+     * @return redirect
+     */
+    public function sendApproveMail(Request $request) {
+        if ($request->has('email')) {
+            $email = $request->email;
             $emails = json_decode($email);
-           for ($i = 0; $i < count($emails); $i++) {
+            for ($i = 0; $i < count($emails); $i++) {
                 $mail = $emails[$i];
-               Mail::to($mail)->queue(new approvalPV);
-           }
-       }
-            return redirect('/approveTrans');
-}
+                Mail::to($mail)->queue(new approvePV);
+            }
+        }
+        return redirect('/approveTrans');
+    }
+
+    /**
+     * Send mail notifictions to users to notify them about voucher rejection.
+     * @param  \Illuminate\Http\Request  $request
+     * @return redirect
+     */
+    public function sendRejectMail(Request $request) {
+        if ($request->has('email')) {
+            $email = $request->email;
+            $emails = json_decode($email);
+            for ($i = 0; $i < count($emails); $i++) {
+                $mail = $emails[$i];
+                Mail::to($mail)->queue(new rejectPV);
+            }
+        }
+        return redirect('/reviewTrans');
+    }
+
+    /**
+     * Send mail notifictions to users to notify them about voucher approval.
+     * @param  \Illuminate\Http\Request  $request
+     * @return redirect
+     */
+    public function approvalMail(Request $request) {
+        if ($request->has('email')) {
+            $email = $request->email;
+            $emails = json_decode($email);
+            for ($i = 0; $i < count($emails); $i++) {
+                $mail = $emails[$i];
+                Mail::to($mail)->queue(new approvalPV);
+            }
+        }
+        return redirect('/approveTrans');
+    }
+
 }

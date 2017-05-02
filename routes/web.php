@@ -15,22 +15,26 @@ Route::get('/','ChartController@charts' )->middleware('auth');
 
 Route::resource('supplier', 'SupplierController', ['except'=>['store','edit']]);
 Route::resource('account', 'AccountController', ['except'=>['store','edit']]);
-Route::resource('user', 'UserController', ['except'=>['store','edit']]);
+Route::resource('user', 'UserController');
+Route::get('/newuser','UserController@showForm');
+Route::resource('department', 'DeptController', ['except'=>['store','edit']]);
 
 
 Auth::routes();
-
+Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
 Route::get('/home', 'ChartController@charts');
+Route::get('/chart', 'ChartController@chartPeriod');
 Route::get('/transactions', 'TransactionController@index');
+Route::get('/viewtransactions', 'TransactionController@view');
 Route::get('/addtransactions', 'TransactionController@create');
 Route::post('/saveTrans', 'TransactionController@save');
 Route::get('/updateTrans', 'TransactionController@updatePV');
+Route::get('/showTrans', 'TransactionController@show');
 Route::get('/deleteTrans', 'TransactionController@deletePayment');
 Route::get('/reviewTrans', 'TransactionController@reviewPayment');
 Route::get('/approveTrans', 'TransactionController@approvePayment');
 Route::get('/makePayment', 'TransactionController@makePayment');
 Route::get('/multireject', 'TransactionController@multireject');
-Route::get('/reject', 'TransactionController@reject');
 Route::get('/approve', 'TransactionController@approve');
 Route::get('/review', 'TransactionController@review');
 Route::get('/exportExcel', 'ExcelController@exportExcel');

@@ -25,8 +25,8 @@ class SupplierController extends Controller {
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
+     * Save a new resource into storage.
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function create(Request $request) {
@@ -38,15 +38,7 @@ class SupplierController extends Controller {
        
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request) {
-      
-    }
+    
 
     /**
      * Display the specified resource.
@@ -59,15 +51,7 @@ class SupplierController extends Controller {
         return $supplier->toJson();
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id) {
-        return view('layouts');
-    }
+    
 
     /**
      * Update the specified resource in storage.

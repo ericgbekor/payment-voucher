@@ -22,10 +22,13 @@
             TRANSACTION DESCRIPTION: {{$trans[0]->description}}
         </div>
         <div>
-            AMOUNT IN WORDS: {{ucfirst($numWords)}}
+            AMOUNT IN WORDS: {{ucfirst($numWords)." ".$trans[0]->currency}}
         </div>
         <div style="text-align:right;">
             AMOUNT: {{$trans[0]->amount}}
+        </div>
+        <div>
+            CLASS/DEPT: {{$dept[0]->department}}
         </div>
         <div class="row">
             <table class="table-striped" border="1">
@@ -79,9 +82,9 @@
             </table>
 
         </div> 
-        <div>
-            EX RATE: {{$trans[0]->rate}}
-        </div>
+        <!--<div>-->
+        EX RATE: {{$trans[0]->rate}} <br>
+        <!--</div>-->
         <div>
             <h1> DETAILED TRANSACTION NARRATION </h1>
             <div>
@@ -100,9 +103,31 @@
 
         <section>
             <div class="row" style="border:1px solid; bottom:5px">
-                CREATED BY:  {{$creator[0]->firstname}} {{$creator[0]->lastname}}<br>
-                REVIEWED BY: {{$reviewer[0]->firstname}} {{$reviewer[0]->lastname}}<br>
-                APPROVED BY: {{$approver[0]->firstname}} {{$approver[0]->lastname}}
+            <table>
+                <thead> <tr>
+                        <th> CREATED BY</th>
+                <th> REVIEWED BY</th>
+                <th>  APPROVED BY</th>
+            </tr> </thead>
+                
+                <tbody>
+                    <tr>
+                        <td> {{$creator[0]->firstname}} {{$creator[0]->lastname}}</td>
+                         <td>{{$reviewer[0]->firstname}} {{$reviewer[0]->lastname}}</td>
+                          <td>{{$approver[0]->firstname}} {{$approver[0]->lastname}}</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                     <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
             </div>
         </section>
         

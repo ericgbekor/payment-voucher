@@ -24,7 +24,7 @@
                             <th data-field="status" data-sortable="true"> Status</th>
                             <th data-field="created_at" data-sortable="true"> Created At</th>
                             <th data-field="updated_at" data-sortable="true"> Updated At</th>
-                            
+                            <th></th>
                             <!-- <th>Delete</th> -->
 
                         </tr>
@@ -41,7 +41,11 @@
                             <td> {{$transaction->status}}</td>
                             <td> {{$transaction->created_at}} </td>
                             <td > {{$transaction->updated_at}} </td>
-
+                            <td>
+                                <a class="btn btn-secondary" href="showTrans?id={{$transaction->id}}" id="btn_show">
+                                    <span class="glyphicon glyphicon-eye-open"></span> Details
+                                </a> 
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -49,7 +53,7 @@
             </div>
             <div align="center">
                 <button type="button" name="btn_reject" id="btn_reject" class="btn btn-success">
-                    <span class="glyphicon glyphicon-trash"></span> Reject
+                    <span class="glyphicon glyphicon-remove-sign"></span> Reject
                 </button>
                 
                 <button type="button" name="btn_review" id="btn_review" class="btn btn-primary">

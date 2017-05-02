@@ -21,51 +21,57 @@ class UserController extends Controller
     public function index()
     {
          $users = User::get();
-        return view('userviews/tables',compact('users'));
+        return view('userviews.tables',compact('users'));
     }
-
+    
     /**
-     * Show the form for creating a new resource.
+     * Show form for creating new resource.
      *
-     * @return \Illuminate\Http\Response
+     * 
      */
-    public function create()
+    public function showForm(){
+        return view('userviews.useradd');
+    }
+    
+    /**
+     * Get a validator for an incoming registration request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
+    protected function validator(Request $request)
     {
-        //
+        return Validator::make($request->all(), [
+            'name' => 'required|max:255',
+            'email' => 'required|email|max:255|unique:users',
+            'password' => 'required|min:6|confirmed',
+            //'usergroup' => 'required|max:255',
+            
+        ])->validate();
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return redirect
      */
     public function store(Request $request)
     {
-        //
+        $user = new User();
+        $user->username = $request->username;
+        $user->email = $request->email;
+        $user->password = $request->password;
+        $user -> usertype = $request->usertype;
+        $user->firstname = $request->firstname;
+        $user->lastname = $request->lastname;
+        $user->role=$request->role;
+        $user->status = $request->status;
+        $user->save();
+        return redirect('user');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+    
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -82,7 +88,7 @@ class UserController extends Controller
         $user -> usertype = $request->type;
         $user->firstname = $request->fname;
         $user->lastname = $request->lname;
-        $user->permission=$request->permissions;
+        $user->role=$request->role;
         $user->status = $request->status;
         $user->save();
         return response()->json($user);

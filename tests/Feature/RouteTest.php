@@ -32,11 +32,11 @@ class RouteTest extends TestCase
            $response ->assertStatus(302);
     }
     
-     public function testSaveTrans()
-    {
-           $response = $this ->post('/saveTrans');
-           $response ->assertStatus(302);
-    }
+//     public function testSaveTrans()
+//    {
+//           $response = $this ->post('/saveTrans');
+//           $response ->assertStatus(302);
+//    }
     
      public function testUpdateTrans()
     {
@@ -68,11 +68,11 @@ class RouteTest extends TestCase
            $response ->assertStatus(302);
     }
     
-     public function testReject()
-    {
-           $response = $this ->get('/reject');
-           $response ->assertStatus(302);
-    }
+//     public function testReject()
+//    {
+//           $response = $this ->get('/reject');
+//           $response ->assertStatus(302);
+//    }
     
      public function testMultiReject()
     {
@@ -86,11 +86,11 @@ class RouteTest extends TestCase
            $response ->assertStatus(302);
     }
     
-     public function testImportExcel()
-    {
-           $response = $this ->post('/importExcel');
-           $response ->assertStatus(302);
-    }
+//     public function testImportExcel()
+//    {
+//           $response = $this ->post('/importExcel');
+//           $response ->assertStatus(302);
+//    }
     public function testExportExcel()
     {
            $response = $this ->get('/exportExcel');

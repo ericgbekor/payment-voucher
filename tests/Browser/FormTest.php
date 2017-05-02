@@ -15,11 +15,11 @@ class FormTests extends DuskTestCase
      */
     public function testFormInputs()
     {
-        $user = factory(User::class)->create([
-            'email' => 'taylor@laravel.com',
-        ]);
+//        $user = factory(User::class)->create([
+//            'email' => 'eri@laravel.com',
+//        ]);
 
-        $this->browse(function ($first, $second, $third) use ($user) {
+        $this->browse(function ($first) {
             $first->loginAs(User::find(5))
                     ->visit('/addtransactions')
                     ->select('currency','cedis')
@@ -32,16 +32,18 @@ class FormTests extends DuskTestCase
                     ->select('credit','5001')
                     ->type('withholding','100')
                     ->type('vat','50')
-//                    ->attach('documents','../background.png')
+                    ->select('department','1')
+                    ->select('reviewer','6')
+                    ->select('approver','9')
                     ->press('Create')
                     ->assertSee('Payment Vouchers');
         
         
-            $second ->visit('/login')
-                    ->type('email', $user->email)
-                    ->type('password', 'secret')
-                    ->press('Login')
-                    ->assertPathIs('/home');
+//            $second ->visit('/login')
+//                    ->type('email', $user->email)
+//                    ->type('password', 'secret')
+//                    ->press('Login')
+//                    ->assertPathIs('/home');
             
            
         });

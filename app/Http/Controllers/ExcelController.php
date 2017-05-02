@@ -15,7 +15,11 @@ use Auth;
 
 class ExcelController extends Controller {
 
-    //
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
     public function __construct()
 {
     $this->middleware('auth');
@@ -24,14 +28,14 @@ class ExcelController extends Controller {
     public function exportExcel(Request $request) {
         
         $pv = array();
-        $pv[] = [['id' => 'id', 'currency' => 'currency', 'amount' => 'amount', 'netpayable'=>'netpayable' , 'withholding' => 'withholding', 'vat' => 'vat', 'description' => 'description', 'rate' => 'rate', 'payee' => 'payee', 'cheque' => 'cheque','status' => 'status','debit' => 'debit', 'credit' => 'credit', 'created_at' => 'created_at', 'updated_at' => 'updated_at']];
+        $pv[] = [['id' => 'id', 'currency' => 'currency', 'amount' => 'amount', 'netpayable'=>'netpayable' , 'withholding' => 'withholding', 'vat' => 'vat', 'description' => 'description', 'rate' => 'rate', 'payee' => 'payee', 'cheque' => 'cheque','status' => 'status','debit' => 'debit', 'credit' => 'credit','department'=>'department', 'created_at' => 'created_at', 'updated_at' => 'updated_at']];
 
         if ($request->has('id')) {
             foreach ($request->id as $id) {
                 
                 $pv[] = Summary::where('id', $id)->get();
             }
-          $excel=Excel::create('Payments', function($data) use ($pv) {
+          Excel::create('Payments', function($data) use ($pv) {
                 $data->sheet('Vouchers', function($values) use ($pv) {
                     foreach ($pv as $row) {
                         $values->fromModel($row, null, 'A1', false, false);
@@ -105,7 +109,7 @@ class ExcelController extends Controller {
                     echo "Error";
                 }
             }
-            return redirect('transactions');
+            return redirect('viewtransactions');
         }
     }
 

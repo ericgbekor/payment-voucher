@@ -165,6 +165,9 @@ return [
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Elibyy\TCPDF\ServiceProvider::class,
        ConsoleTVs\Charts\ChartsServiceProvider::class,
+        Mpociot\ApiDoc\ApiDocGeneratorServiceProvider::class,
+        
+        
         /*
          * Package Service Providers...
          */

@@ -7,17 +7,27 @@ use PDF;
 use DB;
 use App\Payment;
 use App\Supplier;
+use App\Summary;
 use Carbon\Carbon;
 use NumberToWords\NumberToWords;
 
 class PDFController extends Controller {
 
-    //
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
     public function __construct()
 {
     $this->middleware('auth');
 }
 
+    /**
+     * Setting Header and Footer of the PDF Document.
+     * 
+     * @return void
+     */
     public function headerFooter() {
 
         // Custom Header
@@ -46,22 +56,29 @@ class PDFController extends Controller {
         });
     }
 
+    /**
+     * Set body elements of PDF and render HTML view in PDF format.
+     * @param  \Illuminate\Http\Request  $request
+     * @return void
+     */
     public function genPDF(Request $request) {
         $id = $request->id;
         // create the number to words "manager" class
         $numberToWords = new NumberToWords();
 
-        //build a new number transformer using the RFC 3066 language identifier
+        //build a new number transformer to convert number to words
         $pv = Payment::where('id', $id)->get();
-        $numberTransformer = $numberToWords->getNumberTransformer('en');
-        $numWords = $numberTransformer->toWords($pv[0]->amount);
+        $numberTrans = $numberToWords->getNumberTransformer('en');
+        $numWords = $numberTrans->toWords($pv[0]->amount);
 
         $this->headerFooter();
         PDF::setHeaderMargin(10);
         PDF::setMargins(15, 40, 10);
 
+        // set title of PDF
         PDF::SetTitle('Voucher Details');
         $trans = Payment::where('id', $id)->get();
+        
         $payments = DB::table('vouchers')
                         ->join('suppliers', 'vouchers.payee', '=', 'suppliers.id')
                         ->select('vouchers.id', 'payee', 'supplier_name')
@@ -81,6 +98,7 @@ class PDFController extends Controller {
                         ->join('users', 'approver', '=', 'users.id')
                         ->select('vouchers.id', 'approver', 'users.firstname', 'users.lastname')
                         ->where('vouchers.id', $id)->get();
+        $dept=Summary::where('id',$id)->get();
 
         $credit = DB::table('vouchers')
                         ->join('accounts', 'accountCredited', '=', 'accounts.id')
@@ -96,15 +114,18 @@ class PDFController extends Controller {
         $current = Carbon::now();
 
 
-        $view = \View::make('pdf.report', compact('current', 'trans', 'payments', 'creator', 'reviewer', 'approver', 'credit', 'debit', 'numWords'));
-        $html = $view->render();
-
-
+        $pdf = \View::make('pdf.report', compact('current','dept', 'trans', 'payments', 'creator', 'reviewer', 'approver', 'credit', 'debit', 'numWords'));
+        
+        //render html file
+        $html = $pdf->render();
+        
+        // add pdf page
         PDF::AddPage();
+        
+        //write html file into pdf format
         PDF::writeHTML($html, true, false, true, false, '');
-
-
-
+        
+        
         PDF::Output('voucher.pdf');
     }
 
