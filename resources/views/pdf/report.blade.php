@@ -1,6 +1,6 @@
 <html lang="en">
     <head>
-        
+
         <style>
             th,td{
                 text-align: center;
@@ -49,7 +49,7 @@
                         <td>{{$trans[0]->amount}}</td>
                         <td></td>
                     </tr>
-                    
+
                     <tr>
                         <td> VAT/NHIL</td>
                         <td></td>
@@ -57,7 +57,7 @@
                         <td></td>
                         <td>{{$trans[0]->vat}}</td>
                     </tr>
-                    
+
                     <tr>
                         <td> WTH Tax </td>
                         <td></td>
@@ -88,49 +88,49 @@
         <div>
             <h1> DETAILED TRANSACTION NARRATION </h1>
             <div>
-            Gross Amount: {{$trans[0]->amount}}  <br>
-            WHT: {{$trans[0]->withholding}} <br>
-            VAT/NHIL: {{$trans[0]->vat}}  <br>       
-            Net Payable: {{$trans[0]->netpayable}}  
+                Gross Amount: {{$trans[0]->amount}}  <br>
+                WHT: {{$trans[0]->withholding}} <br>
+                VAT/NHIL: {{$trans[0]->vat}}  <br>       
+                Net Payable: {{$trans[0]->netpayable}}  
             </div>
         </div>
 
         <div>
-        DATE: {{$current}}
+            DATE: {{$current}}
         </div>
 
 
 
         <section>
             <div class="row" style="border:1px solid; bottom:5px">
-            <table>
-                <thead> <tr>
-                        <th> CREATED BY</th>
-                <th> REVIEWED BY</th>
-                <th>  APPROVED BY</th>
-            </tr> </thead>
-                
-                <tbody>
-                    <tr>
-                        <td> {{$creator[0]->firstname}} {{$creator[0]->lastname}}</td>
-                         <td>{{$reviewer[0]->firstname}} {{$reviewer[0]->lastname}}</td>
-                          <td>{{$approver[0]->firstname}} {{$approver[0]->lastname}}</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                     <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                </tbody>
-            </table>
+                <table>
+                    <thead> <tr>
+                            <th> CREATED BY</th>
+                            <th> REVIEWED BY</th>
+                            <th>  APPROVED BY</th>
+                        </tr> </thead>
+
+                    <tbody>
+                        <tr>
+                            <td> {{$creator[0]->firstname}} {{$creator[0]->lastname}}</td>
+                            <td>{{$reviewer[0]->firstname}} {{$reviewer[0]->lastname}}</td>
+                            <td>{{$approver[0]->firstname}} {{$approver[0]->lastname}}</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </section>
-        
+
 
     </body>
 </html>

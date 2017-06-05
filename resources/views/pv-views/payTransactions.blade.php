@@ -1,4 +1,4 @@
-
+ <?php $nav_trans = 'active'; ?>
 
 @extends('master')
 @section('content')
@@ -42,7 +42,7 @@
                             <td> {{$transaction->created_at}} </td>
                             <td > {{$transaction->updated_at}} </td>
                             <td>
-                                <a type="button" class="pdf_button btn btn-secondary" href="/reportTrans?id={{$transaction->id}}" id="btn_pdf"  data-id="{{$transaction->id}}" data-descrition="{{$transaction->description}}" data-amount="{{$transaction->amount}}">
+                                <a type="button" class="pdf_button btn btn-secondary" href="reportTrans?id={{$transaction->id}}" id="btn_pdf"  data-id="{{$transaction->id}}" data-descrition="{{$transaction->description}}" data-amount="{{$transaction->amount}}">
                                     <span class="glyphicon glyphicon-pdf"></span> PDF
                                 </a>
                             </td>
@@ -132,12 +132,10 @@
                     $.ajax({
                         async: 'true',
                         type: 'get',
-                        url: '/printCheque',
+                        url: 'printCheque',
                         data: {id: id},
                         success: function (url) {
-                           location.href=this.url;
-                            window.open(this.url);
-                            location.reload();
+                            window.location.assign(this.url);
                           
                     }
 

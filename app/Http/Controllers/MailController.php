@@ -1,5 +1,10 @@
 <?php
 
+/**
+ *  @author: Eric Korku Gbekor
+ *  description: This controller performs mail notifications for the system
+ */
+
 namespace App\Http\Controllers;
 
 use Response;
@@ -35,7 +40,7 @@ class MailController extends Controller {
                 Mail::to($mail)->queue(new reviewPV);
             }
         }
-        return redirect('/viewtransactions');
+         return redirect()->back();
     }
 
     /**
@@ -52,7 +57,7 @@ class MailController extends Controller {
                 Mail::to($mail)->queue(new approvePV);
             }
         }
-        return redirect('/approveTrans');
+         return redirect()->back();
     }
 
     /**
@@ -69,7 +74,7 @@ class MailController extends Controller {
                 Mail::to($mail)->queue(new rejectPV);
             }
         }
-        return redirect('/reviewTrans');
+        return redirect()->back();
     }
 
     /**
@@ -86,7 +91,7 @@ class MailController extends Controller {
                 Mail::to($mail)->queue(new approvalPV);
             }
         }
-        return redirect('/approveTrans');
+        return redirect()->back();
     }
 
 }

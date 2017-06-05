@@ -1,4 +1,4 @@
-
+<?php $nav_account = 'active'; ?>
 @extends('master')
 @section('content')
 <div class="row">
@@ -19,11 +19,16 @@
         <p class="error text-center alert alert-danger hidden"></p>
     </div>
 
-    <div class="col-md-3">
-        <input type="text" class="form-control" id="aclass" name="aclass" placeholder="Account Class " required>
-        <p class="error text-center alert alert-danger hidden"></p>
 
-       <!-- <input type="hidden" id="_token" method='{{csrf_field()}}'>-->
+
+    <div class="col-sm-3">
+        <select class="form-control" name="aclass" id="aclass"  required>
+            <option value="-1">-- Select Account Class-- </option>
+
+            <option value="debit">Debit</option>
+            <option value="credit">Credit</option>
+
+        </select>
     </div>
     <div class="col-md-2">
         <button class="btn btn-warning" type="submit" id="add">
@@ -108,7 +113,13 @@
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="class">Account Class:</label>
                         <div class="col-sm-10">
-                            <input type="name" class="form-control" id="class" value="">
+                            <select class="form-control" name="class" id="class"  required>
+                                <option value="-1">-- Select Account Class-- </option>
+
+                                <option value="debit">Debit</option>
+                                <option value="credit">Credit</option>
+
+                            </select>
                         </div>
                     </div>
                 </form>
@@ -207,7 +218,7 @@
     $('.modal-footer').on('click', '.edit', function () {
         $.ajax({
             type: 'put',
-            url: '/account/' + $("#id").val(),
+            url: 'account/' + $("#id").val(),
             datatype: 'json',
             data: {
                 '_token': $('input[name=_token]').val(),
@@ -220,7 +231,7 @@
                 /* $('.item' + data.id).replaceWith("<tr class='item" + data.id + "'><td data-checkbox='true'></td><td>" + data.id + "</td><td>" + data.account_name +
                  "</td><td>" + data.account_class + "</td><td>" + data.created_at + "</td><td>" + data.updated_at + "</td><td>\n\
                  <button class='edit-modal btn btn-info' data-id='" + data.id + "' data-name='" + data.account_name + "' data-class='" + data.account_class + "'><span class='glyphicon glyphicon-edit'></span> Edit</button></td><td> <button class='delete-modal btn btn-danger' data-id='" + data.id + "' data-name='" + data.account_name + "' data-class='" + data.account_class + "'><span class='glyphicon glyphicon-trash'></span> Delete</button></td></tr>");*/
-                location.href = 'account';
+                location.href = "{{url('/account')}}";
             }
         });
     });
@@ -250,7 +261,7 @@
                      </span> Edit</button></td><td> <button class='delete-modal btn btn-danger' data-id='" + data.id +
                      "' data-name='" + data.account_name + "' data-class='" + data.account_class + "'>\n\
                      <span class='glyphicon glyphicon-trash'></span> Delete</button></td></tr>");*/
-                    location.href = 'account';
+                    location.href = "{{url('/account')}}";
                 }
 
                 $('#name').val('');
@@ -277,7 +288,7 @@
         $.ajax({
             async: 'true',
             type: 'delete',
-            url: '/account/' + $('.id').val(),
+            url: 'account/' + $('.id').val(),
             data: {
                 '_token': $('input[name=_token]').val(),
                 'id': $('.id').val()

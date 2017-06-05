@@ -1,3 +1,4 @@
+<?php $nav_trans = 'active'; ?>
 @extends('master')
 @section('content')
 <div class="row">
@@ -29,10 +30,10 @@
             <div class="panel-body">
                 <p><b> Rate:</b>  {{$trans[0]->rate}}</p>
                 <p> <b>Status:</b>  {{$trans[0]->status}}</p>
-                <p> <b>Supplier/Payee: </b> {{$trans[0]->payee}}</p>
-                <p> <b>Department:</b>  {{$trans[0]->department}}</p>
-                <p> <b>Account Debited:</b>  {{$trans[0]->debit}}</p>
-                <p> <b>Account Credited:</b>  {{$trans[0]->credit}}</p>
+                <p> <b>Supplier/Payee: </b> {{$payments[0]->supplier_name}}</p>
+                <p> <b>Department:</b>  {{$dept[0]->department}}</p>
+                <p> <b>Account Debited:</b>  {{$debit[0]->account_name}}</p>
+                <p> <b>Account Credited:</b>  {{$credit[0]->account_name}}</p>
                 <p> <a class="btn btn-secondary" href="download?id={{$trans[0]->id}}" id="btn_show">
                                     <span class="glyphicon glyphicon-download"></span> Download Attachment
                      </a>  </p>

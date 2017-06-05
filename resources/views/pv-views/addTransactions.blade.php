@@ -1,3 +1,4 @@
+ <?php $nav_trans = 'active'; ?>
 @extends('master')
 @section('content')
 
@@ -331,7 +332,7 @@
                         <label for="documents" class="col-md-4 control-label"></label>
 
                         <div class="col-md-4">
-                            upload .csv, .zip files
+                            upload .pdf, .zip files
                             <input id="documents" type="file" name="documents[]" multiple="multiple">
 
                             @if ($errors->has('documents'))

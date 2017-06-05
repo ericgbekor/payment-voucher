@@ -1,9 +1,15 @@
 <?php
+/**
+ *  @author: Eric Korku Gbekor
+ *  description: This controller communicates with the Account model to query the accounts table
+*/
+
 
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Account;
+use App\AccountClass;
 use Response;
 
 class AccountController extends Controller {

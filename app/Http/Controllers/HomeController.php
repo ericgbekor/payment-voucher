@@ -1,4 +1,8 @@
 <?php
+/**
+ *  @author: Eric Korku Gbekor
+ *  description: This controller returns the dashboard page of program
+ */
 
 namespace App\Http\Controllers;
 

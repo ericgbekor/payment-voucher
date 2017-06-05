@@ -19,11 +19,16 @@ Route::resource('user', 'UserController');
 Route::get('/newuser','UserController@showForm');
 Route::resource('department', 'DeptController', ['except'=>['store','edit']]);
 
+Route::get('/password/change', function(){
+    return view ('auth.changepassword');   
+});
 
 Auth::routes();
 Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
 Route::get('/home', 'ChartController@charts');
 Route::get('/chart', 'ChartController@chartPeriod');
+Route::post('/change', 'UserController@changePassword');
+Route::get('/userstatus', 'UserController@changeStatus');
 Route::get('/transactions', 'TransactionController@index');
 Route::get('/viewtransactions', 'TransactionController@view');
 Route::get('/addtransactions', 'TransactionController@create');

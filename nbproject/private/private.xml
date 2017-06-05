@@ -3,15 +3,22 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/xampp/htdocs/payment-voucher/app/Http/Controllers/ExcelController.php</file>
             <file>file:/C:/xampp/htdocs/payment-voucher/resources/views/pv-views/viewTransactions.blade.php</file>
-            <file>file:/C:/xampp/htdocs/payment-voucher/app/Http/Controllers/PDFController.php</file>
             <file>file:/C:/xampp/htdocs/payment-voucher/resources/views/pv-views/allTransactions.blade.php</file>
             <file>file:/C:/xampp/htdocs/payment-voucher/resources/views/pv-views/reviewTransactions.blade.php</file>
+            <file>file:/C:/xampp/htdocs/payment-voucher/resources/views/master.blade.php</file>
+            <file>file:/C:/xampp/htdocs/payment-voucher/app/Http/Controllers/UserController.php</file>
+            <file>file:/C:/xampp/htdocs/payment-voucher/app/User.php</file>
+            <file>file:/C:/xampp/htdocs/payment-voucher/resources/views/index.blade.php</file>
+            <file>file:/C:/xampp/htdocs/payment-voucher/app/Http/Controllers/ExcelController.php</file>
+            <file>file:/C:/xampp/htdocs/payment-voucher/resources/views/auth/register.blade.php</file>
+            <file>file:/C:/xampp/htdocs/payment-voucher/app/Http/Controllers/PDFController.php</file>
+            <file>file:/C:/xampp/htdocs/payment-voucher/app/Http/Controllers/Auth/RegisterController.php</file>
+            <file>file:/C:/xampp/htdocs/payment-voucher/resources/views/auth/passwords/email.blade.php</file>
+            <file>file:/C:/xampp/htdocs/payment-voucher/resources/views/auth/passwords/reset.blade.php</file>
             <file>file:/C:/xampp/htdocs/payment-voucher/routes/web.php</file>
             <file>file:/C:/xampp/htdocs/payment-voucher/app/Http/Controllers/MailController.php</file>
-            <file>file:/C:/xampp/htdocs/payment-voucher/resources/views/master.blade.php</file>
-            <file>file:/C:/xampp/htdocs/payment-voucher/resources/views/index.blade.php</file>
+            <file>file:/C:/xampp/htdocs/payment-voucher/resources/views/userviews/tables.blade.php</file>
             <file>file:/C:/xampp/htdocs/payment-voucher/app/Http/Controllers/TransactionController.php</file>
         </group>
     </open-files>

@@ -1,4 +1,4 @@
-
+ <?php $nav_user = 'active'; ?>
 @extends('master')
 @section('content')
 <div class="row">
@@ -9,11 +9,11 @@
 
 <!--adding new data-->
 <div class="form-group row add pull-right">
-<div class="col-md-2 ">
-    <a class="btn btn-success" type="submit" href="newuser" id="add">
-        <span class="glyphicon glyphicon-plus"></span> New User
-    </a>
-</div>
+    <div class="col-md-2 ">
+        <a class="btn btn-success" type="submit" href="newuser" id="add">
+            <span class="glyphicon glyphicon-plus"></span> New User
+        </a>
+    </div>
 </div>
 <!--end of add-->
 
@@ -26,16 +26,12 @@
                 <table id="data" data-toggle="table"  data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="username" data-sort-order="asc">
                     <thead>
                         <tr>
-                            <!--<th data-field="state" data-checkbox="true" >User</th>-->
-                            <!--<th data-field="id" data-sortable="true">User ID</th>-->
                             <th data-field="username"  data-sortable="true">Username</th>
                             <th data-field="email" data-sortable="true">Email</th>
                             <th data-field="full name" data-sortable="true"> Full name</th>
-                           <!-- <th data-field="user-type" data-sortable="true"> User Type</th>
-                            <th data-field="permission" data-sortable="true"> Permission</th>
-                            <th data-field="status" data-sortable="true"> Status</th>-->
                             <th data-field="created_at" data-sortable="true"> Created At</th>
                             <th data-field="updated_at" data-sortable="true"> Updated At</th>
+                            <th></th>
                             <th></th>
                             <th></th>
                             <th></th>
@@ -63,6 +59,13 @@
                                         data-status="{{$user->status}}">
                                     <span class="glyphicon glyphicon-edit"></span> Edit
                                 </button> </td>
+                                <td>
+                                    <a class="btn btn-default" type="submit" href="userstatus?status={{$user->status}}&&id={{$user->id}}" data-id="{{$user->id}}" data-name="{{$user->username}}" data-class="{{$user->email}}"
+                                        data-firstname="{{$user->firstname}}" data-lastname="{{$user->lastname}}" data-usertype="{{$user->usertype}}" data-role="{{$user->role}}"
+                                        data-status="{{$user->status}}">
+                                   @if ($user->status === 'enabled') Disable @else Enable @endif
+                                </a>
+                            </td>
                             <td>
                                 <button class="delete-modal btn btn-danger" data-id="{{$user->id}}" data-name="{{$user->username}}" data-class="{{$user->email}}"
                                         data-firstname="{{$user->firstname}}" data-lastname="{{$user->lastname}}" data-usertype="{{$user->usertype}}" data-role="{{$user->role}}"
@@ -122,23 +125,24 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
+<!--                        <div class="form-group">
                             <label class="control-label col-sm-2" for="usertype">User Type:</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" id="usertype" value="">
                             </div>
-                        </div>
+                        </div>-->
                         <div class="form-group {{$errors->has('role')? 'has-error':''}}">
-                         <label for="role" class="col-md-2 control-label">Role</label>
-                         
-                         <div class="col-sm-10">
-                             <!--<b>Role </b> <br>-->
-                             <input type ='checkbox' name ='role' value='1' /> Creator
-                             <input type ='checkbox' name ='role' value='2' /> Reviewer
-                             <input type ='checkbox' name ='role' value='3' /> Approver
-                        
-                         </div>
-                            
+                            <label for="role" class="col-md-2 control-label">Role</label>
+
+                            <div class="col-sm-10">
+                                <!--<b>Role </b> <br>-->
+                                <input type ='checkbox' name ='role' value='1' /> Creator
+                                <input type ='checkbox' name ='role' value='2' /> Reviewer
+                                <input type ='checkbox' name ='role' value='3' /> Approver
+                                <input type ='checkbox' name ='role' value='4' /> Administrator
+
+                            </div>
+
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2" for="status">User Status:</label>
@@ -146,7 +150,7 @@
                                 <input type="text" class="form-control" id="status" value="">
                             </div>
                         </div>
-                         <input type="hidden" id="_token" method='{{csrf_field()}}'>
+                        <input type="hidden" id="_token" method='{{csrf_field()}}'>
                     </form>
                     <div class="deleteContent">
                         Are you Sure you want to delete <span class="name"></span> ?
@@ -172,22 +176,22 @@
 <div class="row">
 
     <script>
-        $(function () {
-            $('#hover, #striped, #condensed').click(function () {
-                var classes = 'table';
-                if ($('#hover').prop('checked')) {
-                    classes += ' table-hover';
-                }
-                if ($('#condensed').prop('checked')) {
-                    classes += ' table-condensed';
-                }
-                $('#table-style').bootstrapTable('destroy')
-                        .bootstrapTable({
-                            classes: classes,
-                            striped: $('#striped').prop('checked')
-                        });
-            });
-        });
+//        $(function () {
+//            $('#hover, #striped, #condensed').click(function () {
+//                var classes = 'table';
+//                if ($('#hover').prop('checked')) {
+//                    classes += ' table-hover';
+//                }
+//                if ($('#condensed').prop('checked')) {
+//                    classes += ' table-condensed';
+//                }
+//                $('#table-style').bootstrapTable('destroy')
+//                        .bootstrapTable({
+//                            classes: classes,
+//                            striped: $('#striped').prop('checked')
+//                        });
+//            });
+//        });
         function rowStyle(row, index) {
             var classes = ['active', 'success', 'info', 'warning', 'danger'];
             if (index % 2 === 0 && index / 2 < classes.length) {
@@ -205,8 +209,6 @@
 
 <script src="{{URL::asset('js/jquery-1.11.1.min.js')}}"></script>
 <script src="{{URL::asset('js/bootstrap.min.js')}}"></script>
-<!--<script src="{{URL::asset('js/chart.min.js')}}"></script>
-<script src="{{URL::asset('js/chart-data.js')}}"></script>-->
 <script src="{{URL::asset('js/bootstrap-datepicker.js')}}"></script>
 <script src="{{URL::asset('js/bootstrap-table.js')}}"></script>
 <script>
@@ -237,14 +239,16 @@
         $('.actionBtn').addClass('edit').show();
         $('.deleteContent').hide();
         $('.form-horizontal').show();
-        $('#id').val($(this).data('id')).prop("disabled",false);
-        $('#username').val($(this).data('username')).prop("disabled",false);
-        $('#email').val($(this).data('email')).prop("disabled",false);
-        $('#usertype').val($(this).data('usertype')).prop("disabled",false);
-        $('#firstname').val($(this).data('firstname')).prop("disabled",false);
-        $('#lastname').val($(this).data('lastname')).prop("disabled",false);
-        $('#role').val($(this).data('role')).prop("disabled",false);
-        $('#status').val($(this).data('status')).prop("disabled",false);
+        $('#id').val($(this).data('id')).prop("disabled", false);
+        $('#username').val($(this).data('username')).prop("disabled", false);
+        $('#email').val($(this).data('email')).prop("disabled", false);
+        $('#usertype').val($(this).data('usertype')).prop("disabled", false);
+        $('#firstname').val($(this).data('firstname')).prop("disabled", false);
+        $('#lastname').val($(this).data('lastname')).prop("disabled", false);
+        //$('#role').val($(this).data('role')).prop("disabled", false);
+        $('input[name^="role"][value='+$(this).data('role')+']').prop("checked",true).prop("disabled", false);
+        console.log($(this).data('role'));
+        $('#status').val($(this).data('status')).prop("disabled", false);
         $('.modal-title').text("Edit " + $('#firstname').val() + "'s details");
         $('#myModal').modal('show');
     });
@@ -252,7 +256,7 @@
     $('.modal-footer').on('click', '.edit', function () {
         $.ajax({
             type: 'put',
-            url: '/user/' + $("#id").val(),
+            url: 'user/' + $("#id").val(),
             datatype: 'json',
             data: {
                 '_token': $('input[name=_token]').val(),
@@ -267,10 +271,10 @@
             },
             success: function (data) {
 
-              /*  $('.item' + data.id).replaceWith("<tr class='item" + data.id + "'><td>" + data.username +
+                /*  $('.item' + data.id).replaceWith("<tr class='item" + data.id + "'><td>" + data.username +
                  "</td><td>" + data.email + "</td><td>" + data.created_at + "</td><td>" + data.updated_at + "</td><td>\n\
                  <button class='edit-modal btn btn-info' data-id='" + data.id + "' data-name='" + data.username + "' data-class='" + data.email + "'><span class='glyphicon glyphicon-edit'></span> Edit</button></td><td> <button class='delete-modal btn btn-danger' data-id='" + data.id + "' data-name='" + data.username + "' data-class='" + data.email + "'><span class='glyphicon glyphicon-trash'></span> Delete</button></td></tr>");*/
-            location.href='user';
+                location.href = "{{url('user')}}";
             }
         });
     });
@@ -300,7 +304,7 @@
                      </span> Edit</button></td><td> <button class='delete-modal btn btn-danger' data-id='" + data.id +
                      "' data-name='" + data.username + "' data-class='" + data.email + "'>\n\
                      <span class='glyphicon glyphicon-trash'></span> Delete</button></td></tr>");*/
-                    location.href = 'user';
+                    location.href = "{{url('/user')}}";
                 }
 
                 $('#name').val('');
@@ -327,7 +331,7 @@
         $.ajax({
             async: 'true',
             type: 'delete',
-            url: '/user/' + $('.id').val(),
+            url: 'user/' + $('.id').val(),
             data: {
                 '_token': $('input[name=_token]').val(),
                 'id': $('.id').val()
@@ -349,14 +353,14 @@
         $('.actionBtn').addClass('edit').hide();
         $('.deleteContent').hide();
         $('.form-horizontal').show();
-        $('#id').val($(this).data('id')).prop("disabled",true);
-        $('#username').val($(this).data('username')).prop("disabled",true);
-        $('#email').val($(this).data('email')).prop("disabled",true);
-        $('#usertype').val($(this).data('usertype')).prop("disabled",true);
-        $('#firstname').val($(this).data('firstname')).prop("disabled",true);
-        $('#lastname').val($(this).data('lastname')).prop("disabled",true);
-        $('#role').val($(this).data('role')).prop("disabled",true);
-        $('#status').val($(this).data('status')).prop("disabled",true);
+        $('#id').val($(this).data('id')).prop("disabled", true);
+        $('#username').val($(this).data('username')).prop("disabled", true);
+        $('#email').val($(this).data('email')).prop("disabled", true);
+        $('#usertype').val($(this).data('usertype')).prop("disabled", true);
+        $('#firstname').val($(this).data('firstname')).prop("disabled", true);
+        $('#lastname').val($(this).data('lastname')).prop("disabled", true);
+        $('#role').val($(this).data('role')).prop("disabled", true);
+        $('#status').val($(this).data('status')).prop("disabled", true);
         $('.modal-title').text($('#firstname').val() + "'s details");
         $('#myModal').modal('show');
     });

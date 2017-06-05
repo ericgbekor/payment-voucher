@@ -1,4 +1,4 @@
-
+<?php $nav_department = 'active'; ?>
 @extends('master')
 @section('content')
 <div class="row">
@@ -207,7 +207,7 @@
     $('.modal-footer').on('click', '.edit', function () {
         $.ajax({
             type: 'put',
-            url: '/department/' + $("#id").val(),
+            url: 'department/' + $("#id").val(),
             datatype: 'json',
             data: {
                 '_token': $('input[name=_token]').val(),
@@ -220,7 +220,7 @@
                 /* $('.item' + data.id).replaceWith("<tr class='item" + data.id + "'><td data-checkbox='true'></td><td>" + data.id + "</td><td>" + data.account_name +
                  "</td><td>" + data.account_class + "</td><td>" + data.created_at + "</td><td>" + data.updated_at + "</td><td>\n\
                  <button class='edit-modal btn btn-info' data-id='" + data.id + "' data-name='" + data.account_name + "' data-class='" + data.account_class + "'><span class='glyphicon glyphicon-edit'></span> Edit</button></td><td> <button class='delete-modal btn btn-danger' data-id='" + data.id + "' data-name='" + data.account_name + "' data-class='" + data.account_class + "'><span class='glyphicon glyphicon-trash'></span> Delete</button></td></tr>");*/
-                location.href = 'department';
+                location.href = "{{url('/department')}}";
             }
         });
     });
@@ -249,7 +249,7 @@
                      </span> Edit</button></td><td> <button class='delete-modal btn btn-danger' data-id='" + data.id +
                      "' data-name='" + data.account_name + "' data-class='" + data.account_class + "'>\n\
                      <span class='glyphicon glyphicon-trash'></span> Delete</button></td></tr>");*/
-                    location.href = 'department';
+                    location.href = "{{url('/department')}}";
                 }
 
                 $('#name').val('');

@@ -1,4 +1,8 @@
 <?php
+/**
+ *  @author: Eric Korku Gbekor
+ *  description: This controller queries the relevant tables to generate charts
+*/
 
 namespace App\Http\Controllers;
 
@@ -29,7 +33,7 @@ class ChartController extends Controller {
         $credit = Charts::database(DB::table('vouchers')
                         ->join('accounts', 'accountCredited', '=', 'accounts.id')
                         ->select('vouchers.id', 'accountCredited', 'account_name')
-                        ->get(), "pie", "fusioncharts")
+                        ->get(), "pie", "highcharts")
                 ->title("Credit Accounts Affected")
                 ->elementLabel("Total")
                 ->width(0)
@@ -39,7 +43,7 @@ class ChartController extends Controller {
         $suppliers = Charts::database(DB::table('vouchers')
                         ->join('suppliers', 'payee', '=', 'suppliers.id')
                         ->select('vouchers.id', 'payee', 'supplier_name')
-                        ->get(), "bar", "fusioncharts")
+                        ->get(), "bar", "highcharts")
                 ->title("Suppliers")
                 ->elementLabel("Total")
                 ->width(0)
@@ -49,7 +53,7 @@ class ChartController extends Controller {
         $dept = Charts::database(DB::table('vouchers')
                         ->join('departments', 'department', '=', 'departments.id')
                         ->select('vouchers.id', 'departmentName')
-                        ->get(), 'bar', 'fusioncharts')
+                        ->get(), 'bar', 'highcharts')
                 ->title("Departments")
                 ->elementLabel("Vouchers Processed")
                 ->width(0)
@@ -65,17 +69,17 @@ class ChartController extends Controller {
                 ->labels($data->pluck('department'))
                 ->values($data->pluck('amount'))
                 ->width(0)
-                ->responsive(true);
+                ->responsive(false);
 
 
-        $status = Charts::database(Payment::all(), "pie", "fusioncharts")
+        $status = Charts::database(Payment::all(), "pie", "highcharts")
                 ->title("Status Breakdown")
                 ->elementLabel("Total")
                 ->width(0)
                 ->responsive(false)
                 ->groupBy('status');
 
-        $vouchers = Charts::database(Payment::all(), "line", "fusioncharts")
+        $vouchers = Charts::database(Payment::all(), "line", "highcharts")
                 ->title("Vouchers Processed")
                 ->elementLabel("Total")
                 ->width(0)
@@ -86,7 +90,7 @@ class ChartController extends Controller {
     }
     
     /**
-     * Create chart variables by querying database tables.
+     * Create chart variables for a specific period by querying database tables.
      * @param \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
@@ -103,7 +107,7 @@ class ChartController extends Controller {
                         ->join('accounts', 'accountCredited', '=', 'accounts.id')
                         ->select('vouchers.id', 'accountCredited', 'account_name')
                         ->whereBetween('vouchers.created_at',[$start,$end])
-                        ->get(), "pie", "fusioncharts")
+                        ->get(), "pie", "highcharts")
                 ->title("Credit Accounts Affected")
                 ->elementLabel("Total")
                 ->width(0)
@@ -114,7 +118,7 @@ class ChartController extends Controller {
                         ->join('suppliers', 'payee', '=', 'suppliers.id')
                         ->select('vouchers.id', 'payee', 'supplier_name')
                         ->whereBetween('vouchers.created_at',[$start,$end])
-                        ->get(), "bar", "fusioncharts")
+                        ->get(), "bar", "highcharts")
                 ->title("Suppliers")
                 ->elementLabel("Total")
                 ->width(0)
@@ -125,7 +129,7 @@ class ChartController extends Controller {
                         ->join('departments', 'department', '=', 'departments.id')
                         ->select('vouchers.id', 'departmentName')
                         ->whereBetween('vouchers.created_at',[$start,$end])
-                        ->get(), 'bar', 'fusioncharts')
+                        ->get(), 'bar', 'highcharts')
                 ->title("Departments")
                 ->elementLabel("Vouchers Processed")
                 ->width(0)
@@ -142,11 +146,11 @@ class ChartController extends Controller {
                 ->labels($data->pluck('department'))
                 ->values($data->pluck('amount'))
                 ->width(0)
-                ->responsive(true);
+                ->responsive(false);
 
 
         $status = Charts::database(Payment::whereBetween('created_at',[$start,$end])
-                 ->get(), "pie", "fusioncharts")
+                 ->get(), "pie", "highcharts")
                 ->title("Status Breakdown")
                 ->elementLabel("Total")
                 ->width(0)
@@ -154,7 +158,7 @@ class ChartController extends Controller {
                 ->groupBy('status');
 
         $vouchers = Charts::database(Payment::whereBetween('created_at',[$start,$end])
-                 ->get(), "line", "fusioncharts")
+                 ->get(), "line", "highcharts")
                 ->title("Vouchers Processed")
                 ->elementLabel("Total")
                 ->width(0)

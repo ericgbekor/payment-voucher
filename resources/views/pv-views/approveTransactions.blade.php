@@ -1,4 +1,4 @@
-
+ <?php $nav_trans = 'active'; ?>
 
 @extends('master')
 @section('content')
@@ -183,10 +183,10 @@
                  $.ajax({
                      async: 'true',
                      type: 'get',
-                     url: '/multireject',
+                     url: 'multireject',
                      data:{id:id},
                      success:function(response){
-                          window.location="/rejectmail?email="+response;
+                          window.location="rejectmail?email="+response;
 
                      }
                      
@@ -245,11 +245,11 @@
                   $.ajax({
                       async: 'true',
                       type: 'get',
-                      url: '/multiapprove',
+                      url: 'multiapprove',
                       data:{id:id},
                       success:function(response){
                          alert("Voucher(s) Approved Successfully!!!");
-                          window.location="/approvalmail?email="+response;                     
+                          window.location="approvalmail?email="+response;                     
                            
                           }
                       
@@ -264,110 +264,6 @@
             }); 
          });
     </script>
-
-<!--Modal script-->
-<script type="text/javascript">
-    // Edit Data (Modal and function edit data)
-    $(document).on('click', '.edit-modal', function () {
-        $('#footer_action_button').text(" Update");
-        $('#footer_action_button').addClass('glyphicon-check');
-        $('#footer_action_button').removeClass('glyphicon-trash');
-        $('.actionBtn').addClass('btn-success');
-        $('.actionBtn').removeClass('btn-danger');
-        $('.actionBtn').addClass('edit');
-        $('.deleteContent').hide();
-        $('.form-horizontal').show();
-        $('#id').val($(this).data('id'));
-        $('#name').val($(this).data('name'));
-        $('#category').val($(this).data('category'));
-        $('.modal-title').text("Edit " + $('#name').val() + "'s details");
-        $('#myModal').modal('show');
-    });
-
-    $('.modal-footer').on('click', '.edit', function () {
-        $.ajax({
-            type: 'put',
-            url: '/supplier/' + $("#id").val(),
-            datatype: 'json',
-            data: {
-                '_token': $('input[name=_token]').val(),
-                'id': $("#id").val(),
-                'name': $('#name').val(),
-                'category': $('#category').val()
-            },
-            success: function (data) {
-
-                /*$('.item' + data.id).replaceWith("<tr class='item" + data.id + "'><td data-checkbox='true'></td><td>" + data.id + "</td><td>" + data.description +
-                 "</td><td>" + data.amount + "</td><td>" + data.created_at + "</td><td>" + data.updated_at + "</td><td>\n\
-                 <button class='edit-modal btn btn-info' data-id='" + data.id + "' data-name='" + data.description + "' data-category='" + data.amount + "'><span class='glyphicon glyphicon-edit'></span> Edit</button></td><td> <button class='delete-modal btn btn-danger' data-id='" + data.id + "' data-name='" + data.description + "' data-category='" + data.amount + "'><span class='glyphicon glyphicon-trash'></span> Delete</button></td></tr>");*/
-                location.href = 'supplier';
-            }
-        });
-    });
-
-    // add function
-    $("#add").click(function () {
-        $.ajax({
-            type: 'get',
-            url: 'supplier/create',
-            datatype: 'json',
-            data: {
-                // '_token': $('input[name=_token]').val(),
-                'sname': $('input[name=sname]').val(),
-                'scategory': $('input[name=scategory]').val()
-            },
-            success: function (data) {
-                if ((data.errors)) {
-                    $('.error').removeClass('hidden');
-                    $('.error').text(data.errors.name);
-                    $('.error').text(data.errors.category);
-                } else {
-                    $('.error').remove();
-                    $('#data').append("<tr class='item" + data.id + "'><td data-checkbox='true'></td><td>" + data.id + "</td><td>" + data.description +
-                            "</td><td>" + data.amount + "</td><td>" + data.created_at + "</td><td>" + data.updated_at + "</td><td>\n\
-                        <button class='edit-modal btn btn-info' data-id='" + data.id + "' data-name='" + data.description + "' data-category='" + data.amount + "'><span class='glyphicon glyphicon-edit'>\n\
-                           </span> Edit</button></td><td> <button class='delete-modal btn btn-danger' data-id='" + data.id +
-                            "' data-name='" + data.description + "' data-category='" + data.amount + "'>\n\
-                        <span class='glyphicon glyphicon-trash'></span> Delete</button></td></tr>");
-                    location.href = 'supplier';
-                }
-
-                $('#name').val('');
-                $('#category').val('');
-            }
-        });
-    });
-//delete function
-    $(document).on('click', '.delete-modal', function () {
-        $('#footer_action_button').text("Delete");
-        $('#footer_action_button').removeClass('glyphicon-check');
-        $('#footer_action_button').addClass('glyphicon-trash');
-        $('.actionBtn').removeClass('btn-success');
-        $('.actionBtn').addClass('btn-danger');
-        $('.actionBtn').addClass('delete');
-        $('.modal-title').text('Delete Record');
-        $('.id').val($(this).data('id'));
-        $('.deleteContent').show();
-        $('.form-horizontal').hide();
-        // $('.name').html($(this).data('description'));
-        $('#myModal').modal('show');
-    });
-    $('.modal-footer').on('click', '.delete', function () {
-        $.ajax({
-            async: 'true',
-            type: 'get',
-            url: '/deleteTrans',
-            data: {
-                '_token': $('input[name=_token]').val(),
-                'id': $('.id').val()
-            },
-            success: function () {
-                $('.item' + $('.id').val()).remove();
-            }
-        });
-    });
-
-</script>
 
 
 @stop

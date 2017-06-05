@@ -1,4 +1,8 @@
 <?php
+/**
+ *  @author: Eric Korku Gbekor
+ *  description: This controller communicates with the Department model to query the departments table
+*/
 
 namespace App\Http\Controllers;
 

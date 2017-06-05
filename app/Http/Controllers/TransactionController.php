@@ -1,6 +1,12 @@
 <?php
 
+/**
+ *  @author: Eric Korku Gbekor
+ *  description: This controller communicates with various model to query the tables that relate with voucher transactions
+ */
+
 namespace App\Http\Controllers;
+
 use DB;
 use App\Payment;
 use App\Account;
@@ -30,65 +36,96 @@ class TransactionController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $transactions = Summary::all();
+        $transactions = DB::table('vouchers')->join('suppliers','vouchers.payee','=','suppliers.id')
+                        ->select('vouchers.id','status','currency','amount','netpayable','withholding','vat','description','rate','supplier_name as payee','department','cheque','accountDebited','accountCredited','creator','reviewer','approver','attachments','vouchers.created_at','vouchers.updated_at')
+                        ->get();
         return view('pv-views.allTransactions', compact('transactions'));
     }
-    
+
     public function view() {
-        $transactions = Summary::where('status', 'created')->orwhere('status', 'rejected')->get();
+        $transactions = DB::table('vouchers')->join('suppliers','vouchers.payee','=','suppliers.id')
+                        ->select('vouchers.id','status','currency','amount','netpayable','withholding','vat','description','rate','supplier_name as payee','department','cheque','accountDebited','accountCredited','creator','reviewer','approver','attachments','vouchers.created_at','vouchers.updated_at')
+                        ->where('status', 'created')->orwhere('status', 'rejected')->get();
         $suppliers = Supplier::get();
         $reviewer = User::where('role', '2')->orwhere('role', '4')->get();
         $approver = User::where('role', '3')->orwhere('role', '4')->get();
-        $debit = Account::where('account_class','debit')->get();
-        $credit = Account::where('account_class','credit')->get();
+        $debit = Account::where('account_class', 'debit')->get();
+        $credit = Account::where('account_class', 'credit')->get();
         $depts = Department::get();
-
-
-        return view('pv-views.viewTransactions', compact('transactions', 'suppliers', 'debit','depts','credit','reviewer','approver'));
+        return view('pv-views.viewTransactions', compact('transactions', 'suppliers', 'debit', 'depts', 'credit', 'reviewer', 'approver'));
     }
 
-     /**
+    /**
      * Display a listing of the resources with status "pending review".
      *
      * @return \Illuminate\Http\Response
      */
     public function reviewPayment() {
-
-        $transactions = Summary::where('status', 'pending review')->get();
+        
+        $transactions = DB::table('vouchers')->join('suppliers','vouchers.payee','=','suppliers.id')
+                        ->select('vouchers.id','status','currency','amount','netpayable','withholding','vat','description','rate','supplier_name as payee','department','cheque','accountDebited','accountCredited','creator','reviewer','approver','attachments','vouchers.created_at','vouchers.updated_at')
+                        ->where('status', 'pending review')->get();
         return view('pv-views/reviewTransactions', compact('transactions'));
     }
 
-     /**
+    /**
      * Display a listing of the resources with status "approved".
      *
      * @return \Illuminate\Http\Response
      */
     public function makePayment() {
-        $transactions = Summary::where('status', 'approved')->get();
+        $transactions = DB::table('vouchers')->join('suppliers','vouchers.payee','=','suppliers.id')
+                        ->select('vouchers.id','status','currency','amount','netpayable','withholding','vat','description','rate','supplier_name as payee','department','cheque','accountDebited','accountCredited','creator','reviewer','approver','attachments','vouchers.created_at','vouchers.updated_at')
+                        ->where('status', 'approved')->get();
         return view('pv-views/payTransactions', compact('transactions'));
     }
 
-     /**
+    /**
      * Display a listing of the resources with status "reviewed".
      *
      * @return \Illuminate\Http\Response
      */
     public function approvePayment() {
-        $transactions = Summary::where('status', 'reviewed')->get();
+       $transactions = DB::table('vouchers')->join('suppliers','vouchers.payee','=','suppliers.id')
+                        ->select('vouchers.id','status','currency','amount','netpayable','withholding','vat','description','rate','supplier_name as payee','department','cheque','accountDebited','accountCredited','creator','reviewer','approver','attachments','vouchers.created_at','vouchers.updated_at')
+                        ->where('status', 'reviewed')->get();
         return view('pv-views/approveTransactions', compact('transactions'));
     }
-    
-     /**
+
+    /**
      * Display the specified resource.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-     public function show(Request $request) {
-         $id = $request->id;
-//         $voucher = Payment::where('id',$id)->get();
-        $trans = Summary::where('id',$id)->get();
-        return view('pv-views.showTransaction', compact('trans'));
+    public function show(Request $request) {
+        $id = $request->id;
+//        $trans = Summary::where('id', $id)->get();
+        $trans = Payment::where('id', $id)->get();
+
+        $payments = DB::table('vouchers')
+                        ->join('suppliers', 'vouchers.payee', '=', 'suppliers.id')
+                        ->select('vouchers.id', 'payee', 'supplier_name')
+                        ->where('vouchers.id', $id)->get();
+        
+        $dept = DB::table('vouchers')
+                        ->join('departments', 'department', '=', 'departments.id')
+                        ->select('vouchers.id', 'departmentName as department')
+                        ->where('vouchers.id', $id)->get();
+
+        $credit = DB::table('vouchers')
+                        ->join('accounts', 'accountCredited', '=', 'accounts.id')
+                        ->select('vouchers.id', 'accountCredited', 'account_name')
+                        ->where('vouchers.id', $id)->get();
+
+        $debit = DB::table('vouchers')
+                        ->join('accounts', 'accountDebited', '=', 'accounts.id')
+                        ->select('vouchers.id', 'accountDebited', 'account_name')
+                        ->where('vouchers.id', $id)->get();
+
+        
+        
+        return view('pv-views.showTransaction', compact('trans','payments','debit','credit','dept'));
     }
 
     /**
@@ -98,12 +135,12 @@ class TransactionController extends Controller {
      */
     public function create() {
         $suppliers = Supplier::get();
-        $debit = Account::where('account_class','debit')->get();
-        $credit = Account::where('account_class','credit')->get();
+        $debit = Account::where('account_class', 'debit')->get();
+        $credit = Account::where('account_class', 'credit')->get();
         $depts = Department::get();
         $review = User::where('role', '2')->orwhere('role', '4')->get();
         $approve = User::where('role', '3')->orwhere('role', '4')->get();
-        return view('pv-views.addTransactions', compact('suppliers', 'debit','credit', 'approve', 'review','depts'));
+        return view('pv-views.addTransactions', compact('suppliers', 'debit', 'credit', 'approve', 'review', 'depts'));
     }
 
     /**
@@ -143,7 +180,6 @@ class TransactionController extends Controller {
         }
     }
 
-
     /**
      * Get user details.
      *
@@ -155,7 +191,6 @@ class TransactionController extends Controller {
         return $person;
     }
 
-    
     /**
      * Get path of file stored on file system and download it.
      *
@@ -185,7 +220,7 @@ class TransactionController extends Controller {
         $pv->accountDebited = $request->debit;
         $pv->accountCredited = $request->credit;
         $pv->payee = $request->payee;
-        $pv->department=$request->department;
+        $pv->department = $request->department;
         $pv->currency = $request->currency;
         $pv->status = "created";
         $pv->attachments = $this->saveFile($request);
@@ -216,7 +251,7 @@ class TransactionController extends Controller {
         $pv->accountDebited = $request->debit;
         $pv->accountCredited = $request->credit;
         $pv->payee = $request->payee;
-        $pv->department=$request->department;
+        $pv->department = $request->department;
         $pv->currency = $request->currency;
         $pv->status = "created";
         $pv->attachments = $this->saveFile($request);
@@ -228,7 +263,6 @@ class TransactionController extends Controller {
         $pv->save();
         return response()->json($pv);
     }
-
 
     /**
      * Remove the specified resources from storage.
@@ -245,7 +279,6 @@ class TransactionController extends Controller {
         }
     }
 
-    
     /**
      * Update status of selected resources to "pending review".
      *
@@ -262,11 +295,10 @@ class TransactionController extends Controller {
                 }
                 $pv->save();
                 $person = $this->getUserByID($pv->reviewer);
-                $email[] =  $person[0]->email;
+                $email[] = $person[0]->email;
             }
         }
         return json_encode($email);
-        
     }
 
     /**
@@ -276,25 +308,24 @@ class TransactionController extends Controller {
      * @return array $email
      */
     public function review(Request $request) {
-         $email = array();
+        $email = array();
         if ($request->has('id')) {
 
             if (Auth::user()->role != 1) {
                 foreach ($request->id as $id) {
                     $pv = Payment::findorfail($id);
-                    if ($pv->status=="pending review"){
-                    $pv->status = "reviewed";
+                    if ($pv->status == "pending review") {
+                        $pv->status = "reviewed";
                     }
                     $pv->reviewer = Auth::user()->id;
                     $pv->save();
                     $person = $this->getUserByID($pv->approver);
-                    $email[] =  $person[0]->email;                }
+                    $email[] = $person[0]->email;
+                }
             }
         }
         return json_encode($email);
     }
-
-
 
     /**
      * Update status of selected resources to rejected.
@@ -311,14 +342,12 @@ class TransactionController extends Controller {
                     $pv->status = "rejected";
                     $pv->save();
                     $person = $this->getUserByID($pv->creator);
-                    $email[] =  $person[0]->email;
-                    
+                    $email[] = $person[0]->email;
                 }
             }
-        } 
+        }
         return json_encode($email);
     }
-
 
     /**
      * Update the status of selected resources to approved
@@ -326,22 +355,23 @@ class TransactionController extends Controller {
      * @param  \Illuminate\Http\Request  $request
      * @return array $email
      */
-     public function approve(Request $request){
-          $email = array();
-         if($request->has('id')){ 
-             if(Auth::user()->role==3|| Auth::user()->role==4){ 
-           foreach ($request->id as $id){
-            $pv = Payment::findorfail($id);
-            if($pv->status=="reviewed"){
-            $pv->status = "approved";
+    public function approve(Request $request) {
+        $email = array();
+        if ($request->has('id')) {
+            if (Auth::user()->role == 3 || Auth::user()->role == 4) {
+                foreach ($request->id as $id) {
+                    $pv = Payment::findorfail($id);
+                    if ($pv->status == "reviewed") {
+                        $pv->status = "approved";
+                    }
+                    $pv->approver = Auth::user()->id;
+                    $pv->save();
+                    $person = $this->getUserByID($pv->creator);
+                    $email[] = $person[0]->email;
+                }
             }
-            $pv->approver = Auth::user()->id;
-            $pv->save();
-             $person = $this->getUserByID($pv->creator);
-             $email[] =  $person[0]->email;
-           }  
-             }
-         }
-         return json_encode($email);
-     }
+        }
+        return json_encode($email);
+    }
+
 }

@@ -1,4 +1,4 @@
-
+<?php $nav_supplier = 'active'; ?>
 @extends('master')
 @section('content')
 <div class="row">
@@ -9,7 +9,7 @@
 
 <!--adding new data-->
 <div class="form-group row add">
- <!--   <div class="panel-heading">Add New Suppliers</div>-->
+
     <div class="col-md-5">
 
 
@@ -161,8 +161,6 @@
 
 <script src="{{URL::asset('js/jquery-1.11.1.min.js')}}"></script>
 <script src="{{URL::asset('js/bootstrap.min.js')}}"></script>
-<!--<script src="{{URL::asset('js/chart.min.js')}}"></script>
-<script src="{{URL::asset('js/chart-data.js')}}"></script>-->
 <script src="{{URL::asset('js/bootstrap-datepicker.js')}}"></script>
 <script src="{{URL::asset('js/bootstrap-table.js')}}"></script>
 <script>
@@ -203,7 +201,7 @@
     $('.modal-footer').on('click', '.edit', function () {
         $.ajax({
             type: 'put',
-            url: '/supplier/' + $("#id").val(),
+            url: 'supplier/' + $("#id").val(),
             datatype: 'json',
             data: {
                 '_token': $('input[name=_token]').val(),
@@ -211,12 +209,8 @@
                 'name': $('#name').val(),
                 'category': $('#category').val()
             },
-            success: function (data) {
-
-                /*$('.item' + data.id).replaceWith("<tr class='item" + data.id + "'><td data-checkbox='true'></td><td>" + data.id + "</td><td>" + data.supplier_name +
-                        "</td><td>" + data.supplier_category + "</td><td>" + data.created_at + "</td><td>" + data.updated_at + "</td><td>\n\
-        <button class='edit-modal btn btn-info' data-id='" + data.id + "' data-name='" + data.supplier_name + "' data-category='" + data.supplier_category + "'><span class='glyphicon glyphicon-edit'></span> Edit</button></td><td> <button class='delete-modal btn btn-danger' data-id='" + data.id + "' data-name='" + data.supplier_name + "' data-category='" + data.supplier_category + "'><span class='glyphicon glyphicon-trash'></span> Delete</button></td></tr>");*/
-                location.href='supplier';
+            success: function () {
+                location.href = "{{url('/supplier')}}";
             }
         });
     });
@@ -226,9 +220,9 @@
         $.ajax({
             type: 'get',
             url: 'supplier/create',
-            datatype:'json',
+            datatype: 'json',
             data: {
-               // '_token': $('input[name=_token]').val(),
+                // '_token': $('input[name=_token]').val(),
                 'sname': $('input[name=sname]').val(),
                 'scategory': $('input[name=scategory]').val()
             },
@@ -240,19 +234,19 @@
                 } else {
                     $('.error').remove();
                     $('#data').append("<tr class='item" + data.id + "'><td data-checkbox='true'></td><td>" + data.id + "</td><td>" + data.supplier_name +
-                        "</td><td>" + data.supplier_category + "</td><td>" + data.created_at + "</td><td>" + data.updated_at + "</td><td>\n\
+                            "</td><td>" + data.supplier_category + "</td><td>" + data.created_at + "</td><td>" + data.updated_at + "</td><td>\n\
                         <button class='edit-modal btn btn-info' data-id='" + data.id + "' data-name='" + data.supplier_name + "' data-category='" + data.supplier_category + "'><span class='glyphicon glyphicon-edit'>\n\
                            </span> Edit</button></td><td> <button class='delete-modal btn btn-danger' data-id='" + data.id +
                             "' data-name='" + data.supplier_name + "' data-category='" + data.supplier_category + "'>\n\
                         <span class='glyphicon glyphicon-trash'></span> Delete</button></td></tr>");
-                            location.href='supplier';
+                    location.href = 'supplier';
+                }
+
+                $('#name').val('');
+                $('#category').val('');
             }
-        
-        $('#name').val('');
-        $('#category').val('');
-    }
+        });
     });
-});
 //delete function
     $(document).on('click', '.delete-modal', function () {
         $('#footer_action_button').text("Delete");

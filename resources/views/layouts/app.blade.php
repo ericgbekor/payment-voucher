@@ -11,7 +11,7 @@
     <title>Payment Voucher</title>
 
     <!-- Styles -->
-    <link href="/css/app.css" rel="stylesheet">
+    <link href="{{URL::asset('css/app.css')}}" rel="stylesheet">
 
     <!-- Scripts -->
     <script>
@@ -22,7 +22,7 @@
 
     <style rel="stylesheet">
  body .panel-default{
-    background-image: url('../background.png');
+    background-image: url('background.png');
     background-size: 100% 100%;
     background-repeat:no-repeat;
     /*height: 100%;*/
@@ -45,8 +45,8 @@
                     </button>
 
                     <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ url('/') }}">
-                        Payment Voucher
+                    <a class="navbar-brand" href="{{ url('/home') }}">
+                        PayFlow
                     </a>
                 </div>
 
@@ -92,6 +92,6 @@
     </div>
 
     <!-- Scripts -->
-    <script src="/js/app.js"></script>
+    <script src="{{URL::asset('js/app.js')}}"></script>
 </body>
 </html>

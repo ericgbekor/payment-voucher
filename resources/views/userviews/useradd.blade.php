@@ -1,3 +1,4 @@
+<?php $nav_user = 'active'; ?>
 @extends('master')
 
 @section('content')
@@ -91,7 +92,7 @@
                             
                         </div>
                         
-                        <div class="form-group{{$errors-> has('usertype')? 'has-error' : ''}}">
+<!--                        <div class="form-group{{$errors-> has('usertype')? 'has-error' : ''}}">
                             <label for="usertype" class="col-md-4 control-label"></label>
                             
                             <div class="col-md-6">
@@ -105,7 +106,7 @@
                                     </span>
                                 @endif
                             </div>
-                        </div>
+                        </div>-->
                         
                          <div class="form-group{{$errors-> has('status')? 'has-error' : ''}}">
                             <label for="status" class="col-md-4 control-label"></label>
@@ -132,6 +133,7 @@
                              <input type ='checkbox' name ='role' value='1' /> Creator
                              <input type ='checkbox' name ='role' value='2' /> Reviewer
                              <input type ='checkbox' name ='role' value='3' /> Approver
+							 <input type ='checkbox' name ='role' value='4' /> Administrator
                         
                          </div>
                             

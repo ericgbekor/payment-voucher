@@ -1,4 +1,4 @@
-
+ <?php $nav_trans = 'active'; ?>
 @extends('master')
 @section('content')
 <div class="row">
@@ -142,7 +142,7 @@
                                     <option value="-1">--Select Payee-- </option>
                                     @foreach ($suppliers as $sn) 
                                     {
-                                    <option value="{{ $sn->id }}">{{ $sn->supplier_name }}</option>
+                                    <option value="{{ $sn->id }}" name="{{ $sn->supplier_name }}">{{ $sn->supplier_name }}</option>
                                     }
                                     @endforeach
                                 </select>
@@ -171,7 +171,7 @@
                                     <option value="-1">--Select Credit Account-- </option>
                                     @foreach ($credit as $an) 
                                     {
-                                    <option value="{{ $an->id }}">{{ $an->account_name }}</option>
+                                    <option value="{{ $an->id }}" >{{ $an->account_name }}</option>
                                     }
                                     @endforeach
 
@@ -236,13 +236,6 @@
                             </div>
                         </div>
                         
-<!--                        <div class="form-group">
-                            <label class="control-label col-sm-2" for="attachment">Attachment:</label>
-                            <div class="col-sm-10">
-                                <input id="documents" type="file" name="documents">
-
-                            </div>
-                        </div>-->
 
 
                 </form>
@@ -318,7 +311,7 @@
                     $.ajax({
                         async: 'true',
                         type: 'get',
-                        url: '/multidelete',
+                        url: 'multidelete',
                         data: {id: id},
                         success: function () {
                             for (var i = 0; i < id.length; i++) {
@@ -349,11 +342,11 @@
                     $.ajax({
                         async: 'true',
                         type: 'get',
-                        url: '/multireview',
+                        url: 'multireview',
                         data: {id: id
                                },
                         success: function (response) {
-                            window.location = "/reviewmail?email="+response;
+                            window.location = "reviewmail?email="+response;
 
                         }
 
@@ -381,12 +374,11 @@
                     $.ajax({
                         async: 'false',
                         type: 'get',
-                        url: '/exportExcel',
+                        url: 'exportExcel',
                         data: {id: id},
                         success: function (url) {
                           
-                            window.open(this.url);
-                            location.reload();
+                            window.location.assign(this.url);
                     }
 
                     });
@@ -418,7 +410,7 @@
         $('#cheque').val($(this).data('cheque'));
         $('#rate').val($(this).data('rate'));
         $('#debit').val($(this).data('debit'));
-        $('#payee').val($(this).data('payee'));
+        $('select[name^="payee"] option[name="'+$(this).data('payee')+'"]').attr("selected",true);
         $('#credit').val($(this).data('credit'));
         $('#department').val($(this).data('dept'));
         $('#reviewer').val($(this).data('reviewer'));
@@ -432,7 +424,7 @@
         $.ajax({
             async: 'true',
             type: 'get',
-            url: '/updateTrans',
+            url: 'updateTrans',
             datatype: 'json',
             data: {
                 '_token': $('input[name=_token]').val(),
@@ -453,7 +445,7 @@
             },
             success: function () {
                 alert("Record Updated Successfully");
-                location.href = '/transactions';
+                location.href = 'viewtransactions';
             }
         });
     });
@@ -477,7 +469,7 @@
         $.ajax({
             async: 'true',
             type: 'get',
-            url: '/deleteTrans',
+            url: 'deleteTrans',
             data: {
                 '_token': $('input[name=_token]').val(),
                 'id': $('.id').val()

@@ -27,7 +27,7 @@
               </td>
             </tr>
             <tr>
-              <td style='border-collapse:collapse;padding-top:10px'> Vouchers have been submitted for review</br>               
+              <td style='border-collapse:collapse;padding-top:10px'> Reviewed vouchers have been submitted for approval</br>               
 
               </td>
             </tr>
@@ -40,7 +40,7 @@
         <table>
           <tbody><tr>
             <td bgcolor='#EF5350' style='padding-top:10px;padding-left:20px;padding-right:20px;padding-bottom:10px;font-family:Helvetica,Arial,Verdana,sans-serif;color:#404040;font-size:14px;line-height:10px;text-align:left;border-radius:5px;color:#ffffff;display:block'>
-              <a href="{{url('/reviewTrans')}}" style='text-decoration:none;color:#ffffff' target='_blank'>View Submitted Vouchers</a>
+              <a href="<?php echo e(url('/approveTrans)); ?>" style='text-decoration:none;color:#ffffff' target='_blank'>View Reviewed Vouchers</a>
             </td>
           </tr>
         </tbody></table>
@@ -71,8 +71,3 @@
   </tbody>
 </table>
 </html>
-
-
-
-
-

@@ -1,5 +1,10 @@
 <?php
 
+/**
+ *  @author: Eric Korku Gbekor
+ *  description: This controller communicates with the Supplier model to query the suppliers table
+*/
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -9,11 +14,15 @@ use Response;
 
 class SupplierController extends Controller {
 
-    public function __construct()
-{
-    $this->middleware('auth');
-}
-    
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct() {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -34,11 +43,8 @@ class SupplierController extends Controller {
         $supplier->supplier_name = $request->sname;
         $supplier->supplier_category = $request->scategory;
         $supplier->save();
-       return response()->json($supplier);
-       
+        return response()->json($supplier);
     }
-
-    
 
     /**
      * Display the specified resource.
@@ -50,8 +56,6 @@ class SupplierController extends Controller {
         $supplier = Supplier::where('id', $id)->get();
         return $supplier->toJson();
     }
-
-    
 
     /**
      * Update the specified resource in storage.
@@ -80,6 +84,5 @@ class SupplierController extends Controller {
         Supplier::where('id', $id)->delete();
         return response()->json();
     }
-    
 
 }

@@ -1,5 +1,10 @@
 <?php
 
+/**
+ *  @author: Eric Korku Gbekor
+ *  description: This controller communicates with the relevant models to perform PDF export
+ */
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -18,10 +23,9 @@ class PDFController extends Controller {
      *
      * @return void
      */
-    public function __construct()
-{
-    $this->middleware('auth');
-}
+    public function __construct() {
+        $this->middleware('auth');
+    }
 
     /**
      * Setting Header and Footer of the PDF Document.
@@ -78,7 +82,7 @@ class PDFController extends Controller {
         // set title of PDF
         PDF::SetTitle('Voucher Details');
         $trans = Payment::where('id', $id)->get();
-        
+
         $payments = DB::table('vouchers')
                         ->join('suppliers', 'vouchers.payee', '=', 'suppliers.id')
                         ->select('vouchers.id', 'payee', 'supplier_name')
@@ -98,7 +102,11 @@ class PDFController extends Controller {
                         ->join('users', 'approver', '=', 'users.id')
                         ->select('vouchers.id', 'approver', 'users.firstname', 'users.lastname')
                         ->where('vouchers.id', $id)->get();
-        $dept=Summary::where('id',$id)->get();
+        
+        $dept = DB::table('vouchers')
+                        ->join('departments', 'department', '=', 'departments.id')
+                        ->select('vouchers.id', 'departmentName as department')
+                        ->where('vouchers.id', $id)->get();
 
         $credit = DB::table('vouchers')
                         ->join('accounts', 'accountCredited', '=', 'accounts.id')
@@ -114,18 +122,18 @@ class PDFController extends Controller {
         $current = Carbon::now();
 
 
-        $pdf = \View::make('pdf.report', compact('current','dept', 'trans', 'payments', 'creator', 'reviewer', 'approver', 'credit', 'debit', 'numWords'));
-        
+        $pdf = \View::make('pdf.report', compact('current', 'dept', 'trans', 'payments', 'creator', 'reviewer', 'approver', 'credit', 'debit', 'numWords'));
+
         //render html file
         $html = $pdf->render();
-        
+
         // add pdf page
         PDF::AddPage();
-        
+
         //write html file into pdf format
         PDF::writeHTML($html, true, false, true, false, '');
-        
-        
+
+
         PDF::Output('voucher.pdf');
     }
 
