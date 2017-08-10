@@ -1,38 +1,15 @@
 <?php $nav_department = 'active'; ?>
 @extends('master')
 @section('content')
-<div class="row">
+<!-- <div class="row">
     <div class="col-lg-12">
         <h1 class="page-header">@section('name')  Departments @stop</h1>
     </div>
-</div><!--/.row-->
+</div> --><!--/.row-->
 
-<!--adding new data-->
-<div class="form-group row add">
-    <!--   <div class="panel-heading">Add New Account</div>-->
-<!--    <div class="col-md-3">
-        <input type="text" class="form-control" id="did" name="did" placeholder="" required>
-        <p class="error text-center alert alert-danger hidden"></p>
-    </div>-->
-    <div class="col-md-5">
-        <input type="text" class="form-control" id="dname" name="dname" placeholder="Department Name" required>
-        <p class="error text-center alert alert-danger hidden"></p>
-    </div>
+@section('icon')   
+<li class="active"> <a href="{{url('/department')}}"><svg class="glyph stroked app-window"><use xlink:href="#stroked-app-window"></use></svg> </a></li>@stop
 
-<!--    <div class="col-md-3">
-        <input type="text" class="form-control" id="aclass" name="aclass" placeholder="Account Class " required>
-        <p class="error text-center alert alert-danger hidden"></p>
-
-        <input type="hidden" id="_token" method='{{csrf_field()}}'>
-    </div>-->
-    <div class="col-md-2">
-        <button class="btn btn-success" type="submit" id="add">
-            <span class="glyphicon glyphicon-plus"></span> Add Department
-        </button>
-    </div>
-</div>
-
-<!--end of add-->
 
 
 <div class="row">
@@ -45,10 +22,9 @@
                         <tr>
                             <th data-field="state" data-checkbox="true" >Item</th>
                             <th data-field="id" data-sortable="true">ID</th>
-                            <th data-field="departmentName"  data-sortable="true">Department Name</th>
-<!--                            <th data-field="account_class" data-sortable="true">Account Class</th>-->
-                            <th data-field="created_at" data-sortable="true"> Created At</th>
-                            <th data-field="updated_at" data-sortable="true"> Updated At</th>
+                            <th data-field="deptname"  data-sortable="true">Department Name</th>
+                            <th data-field="description"  data-sortable="true">Description</th>
+                            <th data-field="status" data-sortable="true"> Status</th>
                             <th>Edit</th>
                             <th>Delete</th>
 
@@ -60,12 +36,16 @@
                         <tr class="item{{$dept->id}}"> 
                             <td data-checkbox="true"></td>
                             <td> {{$dept->id}} </td>
-                            <td> {{$dept->departmentName}}</td>
-<!--                            <td> {{$dept->account_class}}</td>-->
-                            <td> {{$dept->created_at}} </td>
-                            <td > {{$dept->updated_at}} </td>
+                            <td> {{$dept->deptname}}</td>
+                            <td> {{$dept->description}} </td>
+                             <td>
+                                    <a class="btn btn-default" type="submit" href="deptstatus?status={{$dept->status}}&&id={{$dept->id}}" data-id="{{$dept->id}}" data-name="{{$dept->deptname}}" data-description="{{$dept->description}}"
+                                        data-status="{{$dept->status}}">
+                                   @if ($dept->status === 'enabled') Disable @else Enable @endif
+                                </a>
+                            </td>
                             <td>
-                                <button class="edit-modal btn btn-primary" data-id="{{$dept->id}}" data-name="{{$dept->departmentName}}">
+                                <button class="edit-modal btn btn-primary" data-id="{{$dept->id}}" data-name="{{$dept->deptname}}" data-description="{{$dept->description}}">
                                     <span class="glyphicon glyphicon-edit"></span> Edit
                                 </button> </td>
                             <td>
@@ -96,21 +76,21 @@
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="id">ID :</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="id" value="">
+                            <input type="text" class="form-control" id="id" value="" readonly="true">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="name">Department Name:</label>
                         <div class="col-sm-10">
-                            <input type="name" class="form-control" id="name" value="">
+                            <input type="text" class="form-control" id="name" value="">
                         </div>
                     </div>
-<!--                    <div class="form-group">
-                        <label class="control-label col-sm-2" for="class">Account Class:</label>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="class">Description:</label>
                         <div class="col-sm-10">
-                            <input type="name" class="form-control" id="class" value="">
+                            <input type="text" class="form-control" id="description" value="">
                         </div>
-                    </div>-->
+                    </div>
                 </form>
                 <div class="deleteContent">
                     Are you Sure you want to delete <span class="name"></span> ?
@@ -199,7 +179,7 @@
         $('.form-horizontal').show();
         $('#id').val($(this).data('id'));
         $('#name').val($(this).data('name'));
-//        $('#class').val($(this).data('class'));
+        $('#description').val($(this).data('description'));
         $('.modal-title').text("Edit " + $('#name').val() + "'s details");
         $('#myModal').modal('show');
     });
@@ -207,13 +187,13 @@
     $('.modal-footer').on('click', '.edit', function () {
         $.ajax({
             type: 'put',
-            url: 'department/' + $("#id").val(),
+            url: 'department.update',
             datatype: 'json',
             data: {
                 '_token': $('input[name=_token]').val(),
                 'id': $("#id").val(),
                 'name': $('#name').val(),
-                'class': $('#class').val()
+                'description': $('#description').val()
             },
             success: function (data) {
 

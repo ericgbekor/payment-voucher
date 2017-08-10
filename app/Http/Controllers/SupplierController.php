@@ -10,6 +10,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Supplier;
 use Validator;
+use DB;
 use Response;
 
 class SupplierController extends Controller {
@@ -29,8 +30,9 @@ class SupplierController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $suppliers = Supplier::get();
-        return view('supplierviews/tables', compact('suppliers'));
+       // $suppliers = Supplier::get();
+        $suppliers = DB::table('suppliers')->get();
+        return view('supplierviews.tables', compact('suppliers'));
     }
 
     /**
@@ -41,9 +43,10 @@ class SupplierController extends Controller {
     public function create(Request $request) {
         $supplier = new Supplier();
         $supplier->supplier_name = $request->sname;
-        $supplier->supplier_category = $request->scategory;
+        $supplier->description = $request->description;
+        $supplier->status = $request->status;
         $supplier->save();
-        return response()->json($supplier);
+        return redirect('supplier');
     }
 
     /**
@@ -68,7 +71,7 @@ class SupplierController extends Controller {
 
         $supplier = Supplier::findorfail($id);
         $supplier->supplier_name = $request->name;
-        $supplier->supplier_category = $request->category;
+        $supplier->description = $request->description;
         $supplier->save();
         return response()->json($supplier);
     }
@@ -83,6 +86,35 @@ class SupplierController extends Controller {
 
         Supplier::where('id', $id)->delete();
         return response()->json();
+    }
+
+    public function addSupplier(){
+        return view('supplierviews.addsupplier');
+    }
+
+
+    public function changeStatus(Request $request){
+        if ($request->has('status')&&$request->has('id')){
+            $id = $request->id;
+            $status = $request->status;
+            
+            $supplier = Supplier::findorfail($id);
+            
+            if ($status=='enabled'){
+                $supplier->status = 'disabled';
+            }
+            else
+            {
+                $supplier->status = 'enabled';
+            }
+            $supplier->save();
+            return redirect('supplier');
+        }
+        
+        else{
+            echo "Error updating supplier status...";
+        }
+        
     }
 
 }

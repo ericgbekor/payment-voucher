@@ -39,9 +39,11 @@ class DeptController extends Controller {
     public function create(Request $request) {
         //
         $dept = new Department();
-        $dept->departmentName = $request->name;
+        $dept->deptname = $request->deptname;
+        $dept->description=$request->description;
+        $dept->status = $request->status;
         $dept->save();
-        return response()->json($dept);
+        return redirect('department');
     }
 
     /**
@@ -53,7 +55,8 @@ class DeptController extends Controller {
      */
     public function update(Request $request, $id) {
         $dept = Department::findorfail($request->id);
-        $dept->departmentName = $request->name;
+        $dept->deptname = $request->deptname;
+        $dept->description=$request->description;
         $dept->save();
         return response()->json($dept);
     }
@@ -68,6 +71,35 @@ class DeptController extends Controller {
 
         Department::where('id', $id)->delete();
         return response()->json();
+    }
+
+    public function addDepartment(){
+        return view('deptviews.newdepartment');
+    }
+
+
+    public function changeStatus(Request $request){
+        if ($request->has('status')&&$request->has('id')){
+            $id = $request->id;
+            $status = $request->status;
+            
+            $dept = Department::findorfail($id);
+            
+            if ($status=='enabled'){
+                $dept->status = 'disabled';
+            }
+            else
+            {
+                $dept->status = 'enabled';
+            }
+            $dept->save();
+            return redirect('department');
+        }
+        
+        else{
+            echo "Error updating department status...";
+        }
+        
     }
 
 }

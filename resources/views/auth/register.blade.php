@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app2')
 
 @section('content')
 <div class="container">
@@ -22,7 +22,7 @@
                                     </span>
                                 @endif
                             </div>
-                        </div>
+                         </div>
 
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                             <label for="email" class="col-md-4 control-label"></label>

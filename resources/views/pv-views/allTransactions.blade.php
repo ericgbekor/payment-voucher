@@ -2,12 +2,14 @@
 
 @extends('master')
 @section('content')
-<div class="row">
+<!-- <div class="row">
     <div class="col-lg-12">
         <h1 class="page-header">@section('name') Payment Vouchers @stop</h1>
     </div>
-</div><!--/.row-->
+</div> --><!--/.row-->
 
+@section('icon')   
+<li class="active"> <a href="{{url('/transactions')}}"><span class="glyphicon glyphicon-file"></span> </a></li>@stop
 
 <div class="row">
     <div class="col-lg-12">
@@ -20,6 +22,7 @@
                             <th data-field="id" data-sortable="true">PV</th>
                             <th data-field="description"  data-sortable="true">Transaction Description</th>
                             <th data-field="amount" data-sortable="true"> Total Amount</th>
+                            <th data-field="netpayable" data-sortable="true"> Net Payable</th>
                             <th data-field="payee" data-sortable="true"> Payee</th>
                             <th data-field="status" data-sortable="true"> Status</th>
                             <th data-field="created_at" data-sortable="true"> Created At</th>
@@ -37,6 +40,7 @@
                             <td> {{$transaction->id}} </td>
                             <td> {{$transaction->description}}</td>
                             <td> {{$transaction->amount}}</td>
+                            <td> {{$transaction->netpayable}}</td>
                              <td> {{$transaction->payee}}</td>
                             <td> {{$transaction->status}}</td>
                             <td> {{$transaction->created_at}} </td>

@@ -1,17 +1,23 @@
 <?php $nav_user = 'active'; ?>
 @extends('master')
 
+@section('icon')   
+<li class="active"> <a href="{{url('/user')}}"><span class="glyphicon glyphicon-user"></span> </a></li>@stop
+
+
 @section('content')
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">Register</div>
+                <div class="panel-heading">
+                <a href="{{URL::previous()}}"> <span class="glyphicon glyphicon-arrow-left"> </span></a> 
+                </div>
                 <div class="panel-body">
                     <form class="form-horizontal" role="form" method="POST" action="{{ url('/user') }}">
                         {{ csrf_field() }}
 
-                        <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
+                       <!--  <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
                             <label for="username" class="col-md-4 control-label"></label>
 
                             <div class="col-md-6">
@@ -23,7 +29,7 @@
                                     </span>
                                 @endif
                             </div>
-                        </div>
+                        </div> -->
 
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                             <label for="email" class="col-md-4 control-label"></label>

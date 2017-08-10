@@ -26,6 +26,7 @@ class UserController extends Controller {
      */
     public function index() {
         $users = User::get();
+       // dd($users);
         return view('userviews.tables', compact('users'));
     }
 
@@ -58,13 +59,42 @@ class UserController extends Controller {
      * @return redirect
      */
     public function store(Request $request) {
+       // dd($request);
         $user = new User();
         $user->username = $request->username;
         $user->email = $request->email;
         $user->password = bcrypt($request->password);
         $user->firstname = $request->firstname;
         $user->lastname = $request->lastname;
-        $user->role = $request->role;
+
+        $role = $request->role;
+        if ($role==1){
+             $user->is_creator=='yes';
+              $user->is_reviewer=='no';
+               $user->is_approver=='no';
+                $user->is_admin=='no';
+        }
+       
+       elseif ($role==2){
+         $user->is_reviewer = 'yes';
+          $user->is_creator=='no';
+            $user->is_approver=='no';
+                $user->is_admin=='no';
+       }
+
+       elseif ($role==3){
+         $user->is_approver = 'yes';
+          $user->is_reviewer=='no';
+               $user->is_creator=='no';
+                $user->is_admin=='no';
+       }
+
+       else{
+         $user->is_admin = 'yes';
+          $user->is_reviewer=='no';
+               $user->is_approver=='no';
+                $user->is_creator=='no';
+       }
         $user->status = $request->status;
         $user->save();
         return redirect('user');

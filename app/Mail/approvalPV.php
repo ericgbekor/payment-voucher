@@ -11,14 +11,16 @@ class approvalPV extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $approval;
+
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($approval)
     {
-        //
+        $this->approval=$approval;
     }
 
     /**
@@ -28,6 +30,7 @@ class approvalPV extends Mailable
      */
     public function build()
     {
-        return $this->view('mail.approval');
+        return $this->subject('Vouchers Approved')
+                    ->view('mail.approval');
     }
 }

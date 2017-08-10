@@ -27,6 +27,34 @@ class ExcelController extends Controller {
         $this->middleware('auth');
     }
 
+    // /**
+    //  * Export values of specified resources in storage to csv format.
+    //  *
+    //  * @param  \Illuminate\Http\Request  $request
+    //  * 
+    //  * @return void
+    //  */
+    // public function exportExcel(Request $request) {
+
+    //     $pv = array();
+    //     $pv[] = [['id' => 'id', 'currency' => 'currency', 'amount' => 'amount', 'netpayable' => 'netpayable', 'withholding' => 'withholding', 'vat' => 'vat', 'description' => 'description', 'rate' => 'rate', 'payee' => 'payee', 'cheque' => 'cheque', 'status' => 'status', 'debit' => 'debit', 'credit' => 'credit', 'department' => 'department', 'created_at' => 'created_at', 'updated_at' => 'updated_at']];
+
+    //     if ($request->has('id')) {
+    //         foreach ($request->id as $id) {
+
+    //             $pv[] = Summary::where('id', $id)->get();
+    //         }
+    //         Excel::create('Payments', function($data) use ($pv) {
+    //             $data->sheet('Vouchers', function($values) use ($pv) {
+    //                 foreach ($pv as $row) {
+    //                     $values->fromModel($row, null, 'A1', false, false);
+    //                 }
+    //             });
+    //         })->export('csv');
+    //     }
+    // }
+
+
     /**
      * Export values of specified resources in storage to csv format.
      *
@@ -34,16 +62,46 @@ class ExcelController extends Controller {
      * 
      * @return void
      */
-    public function exportExcel(Request $request) {
-
+    public function billPayment(Request $request) {
+        // $i = 0;
         $pv = array();
-        $pv[] = [['id' => 'id', 'currency' => 'currency', 'amount' => 'amount', 'netpayable' => 'netpayable', 'withholding' => 'withholding', 'vat' => 'vat', 'description' => 'description', 'rate' => 'rate', 'payee' => 'payee', 'cheque' => 'cheque', 'status' => 'status', 'debit' => 'debit', 'credit' => 'credit', 'department' => 'department', 'created_at' => 'created_at', 'updated_at' => 'updated_at']];
+         $pv[] = [['date'=>'Date', 'ref'=>'Ref Number','vendor'=> 'Vendor','amount'=> 'Amount','memo'=>'Memo', 'class'=>'Class', 'account'=>'Account']];
 
         if ($request->has('id')) {
             foreach ($request->id as $id) {
 
-                $pv[] = Summary::where('id', $id)->get();
+        $pv[] = Payment::join('suppliers','payee','=','suppliers.id')->join('departments','department','=','departments.id')->select('vouchers.created_at as created_at','cheque','supplier_name','amount','vouchers.description','departmentName','accountDebited')->where('vouchers.id', $id)->get();
             }
+
+            
+            Excel::create('Payments', function($data) use ($pv) {
+                $data->sheet('Vouchers', function($values) use ($pv) {
+                    foreach ($pv as $row) {
+                        $values->fromArray($row, null, 'A1', false, false);
+                    }
+                });
+            })->export('csv');
+        }
+    }
+
+
+    /**
+     * Export values of specified resources in storage to csv format.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * 
+     * @return void
+     */
+    public function chequePayment(Request $request) {
+        $pv = array();
+        $pv[] = [['date' => 'Date', 'Ref Number' => 'Ref Number', 'Vendor' => 'Vendor', 'Account' => 'Account', 'Amount' => 'Amount', 'Memo' => 'Memo', 'Class' => 'Class']];
+
+        if ($request->has('id')) {
+            foreach ($request->id as $id) {
+                $pv[] = Payment::join('suppliers','payee','=','suppliers.id')->join('departments','department','=','departments.id')->where('vouchers.id', $id)
+                        ->select('vouchers.created_at','cheque','supplier_name','accountDebited','amount','description','departmentName')->get();
+            }
+            
             Excel::create('Payments', function($data) use ($pv) {
                 $data->sheet('Vouchers', function($values) use ($pv) {
                     foreach ($pv as $row) {
@@ -53,6 +111,7 @@ class ExcelController extends Controller {
             })->export('csv');
         }
     }
+
 
      /**
      * Export values of specified resources in storage to csv format.
@@ -64,13 +123,12 @@ class ExcelController extends Controller {
     public function cheque(Request $request) {
 
         $pv = array();
-        $pv[] = [['name' => 'Name', 'amount' => 'Amount']];
+        $pv[] = [['name' => 'Name', 'Net Payable' => 'Net Payable']];
 
         if ($request->has('id')) {
             foreach ($request->id as $id) {
                 
-                $pv[] = Summary::where('id', $id)->select('payee', 'netpayable')
-                        ->get();
+                $pv[] = Payment::join('suppliers','payee','=','suppliers.id')->where('vouchers.id', $id)->select('supplier_name', 'netpayable')->get();
             }
             Excel::create('Vouchers', function($data) use ($pv) {
                 $data->sheet('Vouchers', function($values) use ($pv) {
@@ -127,7 +185,7 @@ class ExcelController extends Controller {
                     $pv->netpayable = $this->getNetPayable($value);
                     $pv->payee = $value->payee;
                     $pv->currency = $value->currency;
-                    $pv->status = "created";
+                    $pv->status = "incomplete";
                     $pv->vat = $value->vat;
                     $pv->withholding = $value->withholding;
                     $pv->creator = Auth::user()->id;
@@ -136,7 +194,7 @@ class ExcelController extends Controller {
                     echo "Error";
                 }
             }
-            return redirect('viewtransactions');
+            return redirect('incompletetrans');
         }
     }
 

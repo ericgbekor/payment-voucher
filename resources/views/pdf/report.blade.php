@@ -22,7 +22,7 @@
             TRANSACTION DESCRIPTION: {{$trans[0]->description}}
         </div>
         <div>
-            AMOUNT IN WORDS: {{ucfirst($numWords)." ".$trans[0]->currency}}
+            AMOUNT IN WORDS: {{ucwords($numWords." ".$trans[0]->currency)}}
         </div>
         <div style="text-align:right;">
             AMOUNT: {{$trans[0]->amount}}

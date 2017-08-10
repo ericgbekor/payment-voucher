@@ -11,14 +11,17 @@ class rejectPV extends Mailable
 {
     use Queueable, SerializesModels;
 
+
+    public $rejects;
+
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($rejects)
     {
-        //
+        $this->rejects=$rejects;
     }
 
     /**
@@ -28,6 +31,7 @@ class rejectPV extends Mailable
      */
     public function build()
     {
-        return $this->view('mail.reject');
+        return $this->subject('Vouchers Rejected')
+                    ->view('mail.reject');
     }
 }

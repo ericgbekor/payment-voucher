@@ -1,20 +1,23 @@
  <?php $nav_user = 'active'; ?>
 @extends('master')
 @section('content')
-<div class="row">
+<!-- <div class="row">
     <div class="col-lg-12">
         <h1 class="page-header">@section('name') Manage Users @stop</h1>
     </div>
-</div><!--/.row-->
+</div> --><!--/.row-->
+
+ @section('icon')   
+<li class="active"> <a href="{{url('/user')}}"><span class="glyphicon glyphicon-user"></span> </a></li>@stop
 
 <!--adding new data-->
-<div class="form-group row add pull-right">
+<!-- <div class="form-group row add pull-right">
     <div class="col-md-2 ">
         <a class="btn btn-success" type="submit" href="newuser" id="add">
             <span class="glyphicon glyphicon-plus"></span> New User
         </a>
     </div>
-</div>
+</div> -->
 <!--end of add-->
 
 
@@ -26,11 +29,12 @@
                 <table id="data" data-toggle="table"  data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="username" data-sort-order="asc">
                     <thead>
                         <tr>
-                            <th data-field="username"  data-sortable="true">Username</th>
+                            
                             <th data-field="email" data-sortable="true">Email</th>
                             <th data-field="full name" data-sortable="true"> Full name</th>
-                            <th data-field="created_at" data-sortable="true"> Created At</th>
-                            <th data-field="updated_at" data-sortable="true"> Updated At</th>
+                            <th data-field="username"  data-sortable="true">User Level</th>
+                            <!-- <th data-field="created_at" data-sortable="true"> Created At</th>
+                            <th data-field="updated_at" data-sortable="true"> Updated At</th> -->
                             <th></th>
                             <th></th>
                             <th></th>
@@ -42,19 +46,20 @@
                     <tbody>
                         @foreach($users as $user)
                         <tr class="item{{$user->id}}"> 
-                            <td> {{$user->username}}</td>
+                           
                             <td> {{$user->email}}</td>
                             <td> {{$user->lastname}},{{$user->firstname}} </td>
-                            <td> {{$user->created_at}} </td>
-                            <td > {{$user->updated_at}} </td>
+                             <td>@if ($user->is_approver=='yes') Approver @elseif ($user->is_creator=='yes') Creator @elseif ($user->is_reviewer=='yes') Reviewer @else Administrator @endif</td>
+                            <!-- <td> {{$user->created_at}} </td>
+                            <td > {{$user->updated_at}} </td> -->
                             <td>
                                 <button class="show-modal btn btn-secondary" data-id="{{$user->id}}" data-username="{{$user->username}}" data-email="{{$user->email}}"
                                         data-firstname="{{$user->firstname}}" data-lastname="{{$user->lastname}}" data-usertype="{{$user->usertype}}" data-permission="{{$user->permission}}"
                                         data-status="{{$user->status}}">
-                                    <span class="glyphicon glyphicon-eye-open"></span> Show
+                                    <span class="glyphicon glyphicon-eye-open"></span> Details
                                 </button> </td>
                             <td>
-                                <button class="edit-modal btn btn-primary" data-id="{{$user->id}}" data-username="{{$user->username}}" data-email="{{$user->email}}"
+                                <button class="edit-modal btn btn-primary" data-id="{{$user->id}}" data-email="{{$user->email}}"
                                         data-firstname="{{$user->firstname}}" data-lastname="{{$user->lastname}}" data-usertype="{{$user->usertype}}" data-role="{{$user->role}}"
                                         data-status="{{$user->status}}">
                                     <span class="glyphicon glyphicon-edit"></span> Edit
@@ -100,12 +105,12 @@
                                 <input type="text" class="form-control" id="id" value="">
                             </div>
                         </div>
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label class="control-label col-sm-2" for="username">Username:</label>
                             <div class="col-sm-10">
                                 <input type="name" class="form-control" id="username" value="">
                             </div>
-                        </div>
+                        </div> -->
                         <div class="form-group">
                             <label class="control-label col-sm-2" for="email">Email:</label>
                             <div class="col-sm-10">
@@ -239,14 +244,14 @@
         $('.actionBtn').addClass('edit').show();
         $('.deleteContent').hide();
         $('.form-horizontal').show();
-        $('#id').val($(this).data('id')).prop("disabled", false);
-        $('#username').val($(this).data('username')).prop("disabled", false);
+        $('#id').val($(this).data('id')).prop("disabled", true);
+        // $('#username').val($(this).data('username')).prop("disabled", false);
         $('#email').val($(this).data('email')).prop("disabled", false);
         $('#usertype').val($(this).data('usertype')).prop("disabled", false);
         $('#firstname').val($(this).data('firstname')).prop("disabled", false);
         $('#lastname').val($(this).data('lastname')).prop("disabled", false);
         //$('#role').val($(this).data('role')).prop("disabled", false);
-        $('input[name^="role"][value='+$(this).data('role')+']').prop("checked",true).prop("disabled", false);
+         $('input[name^="role"][value='+$(this).data('role')+']').prop("checked",true).prop("disabled", false);
         console.log($(this).data('role'));
         $('#status').val($(this).data('status')).prop("disabled", false);
         $('.modal-title').text("Edit " + $('#firstname').val() + "'s details");
@@ -274,7 +279,7 @@
                 /*  $('.item' + data.id).replaceWith("<tr class='item" + data.id + "'><td>" + data.username +
                  "</td><td>" + data.email + "</td><td>" + data.created_at + "</td><td>" + data.updated_at + "</td><td>\n\
                  <button class='edit-modal btn btn-info' data-id='" + data.id + "' data-name='" + data.username + "' data-class='" + data.email + "'><span class='glyphicon glyphicon-edit'></span> Edit</button></td><td> <button class='delete-modal btn btn-danger' data-id='" + data.id + "' data-name='" + data.username + "' data-class='" + data.email + "'><span class='glyphicon glyphicon-trash'></span> Delete</button></td></tr>");*/
-                location.href = "{{url('user')}}";
+                location.href = "{{url('/user')}}";
             }
         });
     });
@@ -354,7 +359,7 @@
         $('.deleteContent').hide();
         $('.form-horizontal').show();
         $('#id').val($(this).data('id')).prop("disabled", true);
-        $('#username').val($(this).data('username')).prop("disabled", true);
+        // $('#username').val($(this).data('username')).prop("disabled", true);
         $('#email').val($(this).data('email')).prop("disabled", true);
         $('#usertype').val($(this).data('usertype')).prop("disabled", true);
         $('#firstname').val($(this).data('firstname')).prop("disabled", true);

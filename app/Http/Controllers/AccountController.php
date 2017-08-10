@@ -40,11 +40,14 @@ class AccountController extends Controller {
      */
     public function create(Request $request) {
         $account = new Account();
-        $account->id = $request->aid;
+        $account->id= $request->id;
         $account->account_name = $request->aname;
-        $account->account_class = $request->aclass;
+        $account->description = $request->description;
+        $account->type = $request->type;
+        $account->currency = $request->currency;
+        $account->status = $request->status;
         $account->save();
-        return response()->json($account);
+        return redirect('account');
     }
 
     /**
@@ -66,9 +69,12 @@ class AccountController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id) {
+        dd($request);
         $account = Account::findorfail($id);
-        $account->account_name = $request->name;
-        $account->account_class = $request->class;
+        $account->account_name = $request->aname;
+        $account->description = $request->description;
+        $account->type = $request->type;
+        $account->currency = $request->currency;
         $account->save();
         return response()->json($account);
     }
@@ -84,4 +90,32 @@ class AccountController extends Controller {
         return response()->json();
     }
 
+    public function addAccount(){
+        return view('accountviews.addaccount');
+    }
+
+
+    public function changeStatus(Request $request){
+        if ($request->has('status')&&$request->has('id')){
+            $id = $request->id;
+            $status = $request->status;
+            
+            $supplier = Supplier::findorfail($id);
+            
+            if ($status=='enabled'){
+                $supplier->status = 'disabled';
+            }
+            else
+            {
+                $supplier->status = 'enabled';
+            }
+            $supplier->save();
+            return redirect('supplier');
+        }
+        
+        else{
+            echo "Error updating supplier status...";
+        }
+        
+    }
 }

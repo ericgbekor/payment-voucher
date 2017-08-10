@@ -5,10 +5,11 @@
         <author name="Eric Korku Gbekor" referencing="Lumino Admin Template"></author>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        <title>Payment Voucher</title>
-        <link rel="shortcut icon" type="image/x-icon" href="{{URL::asset('images.ico')}}">
+        <title>PayFlow</title>
+        <link rel="shortcut icon" type="image/x-icon" href="{{URL::asset('favicon.ico')}}">
         <link href="{{ URL::asset ('css/bootstrap.min.css')}}" rel="stylesheet">
         <link href="{{ URL:: asset('css/styles.css')}}" rel="stylesheet">
+        <link rel="stylesheet" href="{{ URL:: asset('css/bootstrap-select.min.css')}}" rel="stylesheet">
         
         <script type="text/javascript" src="{{URL:: asset('js/lumino.glyphs.js')}}"></script>
 
@@ -16,7 +17,37 @@
         <script src="js/html5shiv.js"></script>
         <script src="js/respond.min.js"></script>
         <![endif]-->
+        <style>
+            
+            .reveal-if-active {
+                     opacity: 0;
+                     max-height: 0;
+                     overflow: hidden;
+                    }
 
+            input[id="other"]:checked ~ .reveal-if-active,
+            input[type="checkbox"]:checked ~ .reveal-if-active {
+            opacity: 1;
+            max-height: 100px; 
+            overflow: visible;
+                }
+
+                .reveal-if-active {
+                            opacity: 0;
+                            max-height: 0;
+                            overflow: hidden;
+                            transform: scale(0.8);
+                            transition: 0.5s;
+                        input[id="other"]:checked ~ &,
+                        input[type="checkbox"]:checked ~ & {
+                            opacity: 1;
+                            max-height: 100px;
+                            overflow: visible;
+                            padding: 10px 20px;
+                            transform: scale(1);
+                         }
+                    }
+        </style>
     </head>
 
     <body>
@@ -54,12 +85,12 @@
         <div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
             <form role="search">
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Search">
+                    <!-- <input type="text" class="form-control" placeholder="Search"> -->
                 </div>
             </form>
-
+		
           
-            @if (Auth::user()->role==1)
+            @if (Auth::user()->is_creator=='yes')
             <ul class="nav menu">
                 <li class=""><a href="{{url('/home')}}"><svg class="glyph stroked dashboard-dial"><use xlink:href="#stroked-dashboard-dial"></use></svg> Dashboard</a></li>
                 <li class="parent {{$nav_trans or '' }} ">
@@ -73,6 +104,12 @@
                             </a>
                         </li>
 
+                        <!--  <li>
+                            <a class="" href="{{url('/incompletetrans')}}">
+                                <svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> Incomplete Vouchers
+                            </a>
+                        </li> -->
+
                         <li>
                             <a class="" href="{{url('/viewtransactions')}}">
                                 <svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> View Vouchers
@@ -81,20 +118,55 @@
 
                         <li>
                             <a class="" href="{{url('/makePayment')}}">
-                                <svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> Make Payment
+                                <svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> Processed Vouchers
                             </a>
                         </li>
                     </ul>
                 </li>
 
-                <li class="{{$nav_supplier or ''}}"><a href="{{url('/supplier')}}"><svg class="glyph stroked table"><use xlink:href="#stroked-table"></use></svg>Suppliers</a></li>
-                <li class = "{{$nav_account or ''}}"><a href="{{url('account')}}"><svg class="glyph stroked pencil"><use xlink:href="#stroked-pencil"></use></svg>Chart of Accounts</a></li>
-                <li class = "{{$nav_department or ''}}"><a href="{{url('department')}}"><svg class="glyph stroked app-window"><use xlink:href="#stroked-app-window"></use></svg>Departments</a></li>
+                 <li class="parent  {{$nav_supplier or ''}}">
+                <a href="{{url('/supplier')}}">
+                        <svg class="glyph stroked table"><use xlink:href="#stroked-table"></use></svg>Suppliers <span data-toggle="collapse" href="#sub-item-3"><svg class="glyph stroked chevron-down"><use xlink:href="#stroked-chevron-down"></use></svg></span> 
+                    </a>
+                    <ul class="children collapse" id="sub-item-3">
+                        <li>
+                            <a class="" href="{{url('/newsupplier')}}">
+                                <svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> New Supplier
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class = "parent {{$nav_account or ''}}">
+                    <a href="{{url('/account')}}">
+                       <svg class="glyph stroked pencil"><use xlink:href="#stroked-pencil"></use></svg>Chart of Accounts <span data-toggle="collapse" href="#sub-item-4"><svg class="glyph stroked chevron-down"><use xlink:href="#stroked-chevron-down"></use></svg></span> 
+                    </a>
+                    <ul class="children collapse" id="sub-item-4">
+                        <li>
+                            <a class="" href="{{url('/newaccount')}}">
+                                <svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> New Account
+                            </a>
+                        </li>
+                    </ul>
+                </li>  
+
+                <li class = "parent {{$nav_department or ''}}">
+
+                    <a href="{{url('/department')}}">
+                       <svg class="glyph stroked app-window"><use xlink:href="#stroked-app-window"></use></svg>Departments <span data-toggle="collapse" href="#sub-item-5"><svg class="glyph stroked chevron-down"><use xlink:href="#stroked-chevron-down"></use></svg></span> 
+                    </a>
+                    <ul class="children collapse" id="sub-item-5">
+                        <li>
+                            <a class="" href="{{url('/newdepartment')}}">
+                                <svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> New Department
+                            </a>
+                        </li>
+                    </ul>
+                </li>
                 <li role="presentation" class="divider"></li>
                 
             </ul>
 
-            @elseif (Auth::user()->role==2)
+            @elseif (Auth::user()->is_reviewer=='yes')
             <ul class="nav menu">
                 <li class=""><a href="{{url('/home')}}"><svg class="glyph stroked dashboard-dial"><use xlink:href="#stroked-dashboard-dial"></use></svg> Dashboard</a></li>
                 <li cclass="parent {{$nav_trans or '' }} ">
@@ -111,20 +183,55 @@
 
                         <li>
                             <a class="" href="{{url('/makePayment')}}">
-                                <svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> Make Payment
+                                <svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> Processed Vouchers
                             </a>
                         </li>
                     </ul>
                 </li>
 
-                <li class="{{$nav_supplier or ''}}"><a href="{{url('/supplier')}}"><svg class="glyph stroked table"><use xlink:href="#stroked-table"></use></svg>Suppliers</a></li>
-                <li class = "{{$nav_account or ''}}"><a href="{{url('/account')}}"><svg class="glyph stroked pencil"><use xlink:href="#stroked-pencil"></use></svg>Chart of Accounts</a></li>
-                <li class = "{{$nav_department or ''}}"><a href="{{url('/department')}}"><svg class="glyph stroked app-window"><use xlink:href="#stroked-app-window"></use></svg>Departments</a></li>
+                 <li class="parent  {{$nav_supplier or ''}}">
+                <a href="{{url('/supplier')}}">
+                        <svg class="glyph stroked table"><use xlink:href="#stroked-table"></use></svg>Suppliers <span data-toggle="collapse" href="#sub-item-3"><svg class="glyph stroked chevron-down"><use xlink:href="#stroked-chevron-down"></use></svg></span> 
+                    </a>
+                    <ul class="children collapse" id="sub-item-3">
+                        <li>
+                            <a class="" href="{{url('/newsupplier')}}">
+                                <svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> New Supplier
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class = "parent {{$nav_account or ''}}">
+                    <a href="{{url('/account')}}">
+                       <svg class="glyph stroked pencil"><use xlink:href="#stroked-pencil"></use></svg>Chart of Accounts <span data-toggle="collapse" href="#sub-item-4"><svg class="glyph stroked chevron-down"><use xlink:href="#stroked-chevron-down"></use></svg></span> 
+                    </a>
+                    <ul class="children collapse" id="sub-item-4">
+                        <li>
+                            <a class="" href="{{url('/newaccount')}}">
+                                <svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> New Account
+                            </a>
+                        </li>
+                    </ul>
+                </li>  
+
+                <li class = "parent {{$nav_department or ''}}">
+
+                    <a href="{{url('/department')}}">
+                       <svg class="glyph stroked app-window"><use xlink:href="#stroked-app-window"></use></svg>Departments <span data-toggle="collapse" href="#sub-item-5"><svg class="glyph stroked chevron-down"><use xlink:href="#stroked-chevron-down"></use></svg></span> 
+                    </a>
+                    <ul class="children collapse" id="sub-item-5">
+                        <li>
+                            <a class="" href="{{url('/newdepartment')}}">
+                                <svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> New Department
+                            </a>
+                        </li>
+                    </ul>
+                </li>
                 <li role="presentation" class="divider"></li>
                 
             </ul>
 
-            @elseif (Auth::user()->role==3)
+            @elseif (Auth::user()->is_approver=='yes')
             <ul class="nav menu">
                 <li class=""><a href="{{url('/home')}}"><svg class="glyph stroked dashboard-dial"><use xlink:href="#stroked-dashboard-dial"></use></svg> Dashboard</a></li>
                 <li class="parent {{$nav_trans or '' }} ">
@@ -140,15 +247,50 @@
                         </li>
                         <li>
                             <a class="" href="{{url('/makePayment')}}">
-                                <svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> Make Payment
+                                <svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> Processed Vouchers
                             </a>
                         </li>
                     </ul>
                 </li>
 
-                <li class="{{$nav_supplier or ''}}"><a href="{{url('/supplier')}}"><svg class="glyph stroked table"><use xlink:href="#stroked-table"></use></svg>Suppliers</a></li>
-                <li class = "{{$nav_account or ''}}"><a href="{{url('/account')}}"><svg class="glyph stroked pencil"><use xlink:href="#stroked-pencil"></use></svg>Chart of Accounts</a></li>
-                <li class = "{{$nav_department or ''}}"><a href="{{url('/department')}}"><svg class="glyph stroked app-window"><use xlink:href="#stroked-app-window"></use></svg>Departments</a></li>
+                 <li class="parent  {{$nav_supplier or ''}}">
+                <a href="{{url('/supplier')}}">
+                        <svg class="glyph stroked table"><use xlink:href="#stroked-table"></use></svg>Suppliers <span data-toggle="collapse" href="#sub-item-3"><svg class="glyph stroked chevron-down"><use xlink:href="#stroked-chevron-down"></use></svg></span> 
+                    </a>
+                    <ul class="children collapse" id="sub-item-3">
+                        <li>
+                            <a class="" href="{{url('/newsupplier')}}">
+                                <svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> New Supplier
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class = "parent {{$nav_account or ''}}">
+                    <a href="{{url('/account')}}">
+                       <svg class="glyph stroked pencil"><use xlink:href="#stroked-pencil"></use></svg>Chart of Accounts <span data-toggle="collapse" href="#sub-item-4"><svg class="glyph stroked chevron-down"><use xlink:href="#stroked-chevron-down"></use></svg></span> 
+                    </a>
+                    <ul class="children collapse" id="sub-item-4">
+                        <li>
+                            <a class="" href="{{url('/newaccount')}}">
+                                <svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> New Account
+                            </a>
+                        </li>
+                    </ul>
+                </li>  
+
+                <li class = "parent {{$nav_department or ''}}">
+
+                    <a href="{{url('/department')}}">
+                       <svg class="glyph stroked app-window"><use xlink:href="#stroked-app-window"></use></svg>Departments <span data-toggle="collapse" href="#sub-item-5"><svg class="glyph stroked chevron-down"><use xlink:href="#stroked-chevron-down"></use></svg></span> 
+                    </a>
+                    <ul class="children collapse" id="sub-item-5">
+                        <li>
+                            <a class="" href="{{url('/newdepartment')}}">
+                                <svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> New Department
+                            </a>
+                        </li>
+                    </ul>
+                </li>
                 <li role="presentation" class="divider"></li>
               
             </ul>
@@ -166,6 +308,13 @@
                                 <svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> New Voucher
                             </a>
                         </li>
+
+                         <!-- <li>
+                            <a class="" href="{{url('/incompletetrans')}}">
+                                <svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> Incomplete Vouchers
+                            </a>
+                        </li> -->
+
                         <li>
                             <a class="" href="{{url('/viewtransactions')}}">
                                 <svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> View Vouchers
@@ -185,16 +334,64 @@
                         </li>
                         <li>
                             <a class="" href="{{url('/makePayment')}}">
-                                <svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> Make Payment
+                                <svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> Processed Vouchers
                             </a>
                         </li>
                     </ul>
                 </li>
 
-                <li class="{{$nav_user or ''}}"><a href="{{url('/user')}}"><span class="glyphicon glyphicon-user"></span>Manage Users</a></li>
-                <li class="{{$nav_supplier or ''}}"><a href="{{url('/supplier')}}"><svg class="glyph stroked table"><use xlink:href="#stroked-table"></use></svg>Suppliers</a></li>
-                <li class = "{{$nav_account or ''}}"><a href="{{url('/account')}}"><svg class="glyph stroked pencil"><use xlink:href="#stroked-pencil"></use></svg>Chart of Accounts</a></li>
-                <li class = "{{$nav_department or ''}}"><a href="{{url('/department')}}"><svg class="glyph stroked app-window"><use xlink:href="#stroked-app-window"></use></svg>Departments</a></li>
+
+                <li class="parent {{$nav_user or ''}}">
+                <a href="{{url('/user')}}">
+                        <span class="glyphicon glyphicon-user"></span>Users <span data-toggle="collapse" href="#sub-item-2"><svg class="glyph stroked chevron-down"><use xlink:href="#stroked-chevron-down"></use></svg></span> 
+                    </a>
+                    <ul class="children collapse" id="sub-item-2">
+                        <li>
+                            <a class="" href="{{url('/newuser')}}">
+                                <svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> New User
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="parent  {{$nav_supplier or ''}}">
+                <a href="{{url('/supplier')}}">
+                        <svg class="glyph stroked table"><use xlink:href="#stroked-table"></use></svg>Suppliers <span data-toggle="collapse" href="#sub-item-3"><svg class="glyph stroked chevron-down"><use xlink:href="#stroked-chevron-down"></use></svg></span> 
+                    </a>
+                    <ul class="children collapse" id="sub-item-3">
+                        <li>
+                            <a class="" href="{{url('/newsupplier')}}">
+                                <svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> New Supplier
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class = "parent {{$nav_account or ''}}">
+                    <a href="{{url('/account')}}">
+                       <svg class="glyph stroked pencil"><use xlink:href="#stroked-pencil"></use></svg>Chart of Accounts <span data-toggle="collapse" href="#sub-item-4"><svg class="glyph stroked chevron-down"><use xlink:href="#stroked-chevron-down"></use></svg></span> 
+                    </a>
+                    <ul class="children collapse" id="sub-item-4">
+                        <li>
+                            <a class="" href="{{url('/newaccount')}}">
+                                <svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> New Account
+                            </a>
+                        </li>
+                    </ul>
+                </li>  
+
+                <li class = "parent {{$nav_department or ''}}">
+
+                    <a href="{{url('/department')}}">
+                       <svg class="glyph stroked app-window"><use xlink:href="#stroked-app-window"></use></svg>Departments <span data-toggle="collapse" href="#sub-item-5"><svg class="glyph stroked chevron-down"><use xlink:href="#stroked-chevron-down"></use></svg></span> 
+                    </a>
+                    <ul class="children collapse" id="sub-item-5">
+                        <li>
+                            <a class="" href="{{url('/newdepartment')}}">
+                                <svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> New Department
+                            </a>
+                        </li>
+                    </ul>
+                </li>
                 <li role="presentation" class="divider"></li>
             </ul>
             @endif
@@ -206,15 +403,15 @@
             <div class="row">
                 <ol class="breadcrumb">
                     <li><a href="{{url('/')}}"><svg class="glyph stroked home"><use xlink:href="#stroked-home"></use></svg></a></li>
-                    <li class="active">Icons</li>
+                    @yield('icon')
                 </ol>
             </div><!--/.row-->
 
-            <div class="row">
+           <!--  <div class="row">
                 <div class="col-lg-12">
                     <h1 class="page-header">@yield('name')</h1>
                 </div>
-            </div><!--/.row-->
+            </div>--><!--/.row--> 
 
 
             @yield('content')

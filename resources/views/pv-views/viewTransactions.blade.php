@@ -1,24 +1,35 @@
  <?php $nav_trans = 'active'; ?>
 @extends('master')
 @section('content')
-<div class="row">
+<!-- <div class="row">
     <div class="col-lg-12">
         <h1 class="page-header">@section('name') Payment Vouchers @stop</h1>
     </div>
-</div><!--/.row-->
+</div>--><!--/.row--> 
+
+@section('icon')   
+<li class="active"> <a href="{{url('/viewtransactions')}}"><span class="glyphicon glyphicon-file"></span> </a></li>@stop
+
+@if (session('status'))
+<div class="alert alert‐success">
+{{ session('status') }}
+</div>
+@endif
 
 
 <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-body">
-                <table class="table table-bordered table-striped" id="data" data-toggle="table"  data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="total amount" data-sort-order="asc">
+            
+                <table class="table table-bordered table-striped" id="data" data-toggle="table"  data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="PV" data-sort-order="asc">
                     <thead>
                         <tr>
                             <th>Item</th>
                             <th data-field="id" data-sortable="true">PV</th>
                             <th data-field="description"  data-sortable="true">Transaction Description</th>
                             <th data-field="amount" data-sortable="true"> Total Amount</th>
+                            <th data-field="netpayable" data-sortable="true"> Net Payable</th>
                             <th data-field="payee" data-sortable="true"> Payee</th>
                             <th data-field="status" data-sortable="true"> Status</th>
                             <th data-field="created_at" data-sortable="true"> Created At</th>
@@ -37,6 +48,7 @@
                             <td> {{$transaction->id}} </td>
                             <td> {{$transaction->description}}</td>
                             <td> {{$transaction->amount}}</td>
+                            <td> {{$transaction->netpayable}}</td>
                              <td> {{$transaction->payee}}</td>
                             <td> {{$transaction->status}}</td>
                             <td> {{$transaction->created_at}} </td>
@@ -46,7 +58,8 @@
                                 <button class="edit-modal btn btn-primary" id="btn_edit" data-id="{{$transaction->id}}" data-name="{{$transaction->description}}" data-amount="{{$transaction->amount}}" 
                                         data-cheque="{{$transaction->cheque}}" data-rate="{{$transaction->rate}}"  data-payee="{{$transaction->payee}}" 
                                         data-credit="{{$transaction->accountCredited}}" data-debit="{{$transaction->accountDebited}}" data-withholding="{{$transaction->withholding}}" data-vat="{{$transaction->vat}}" 
-                                        data-currency="{{$transaction->currency}}" data-dept="{{$transaction->department}}" data-reviewer="{{$transaction->reviewer}}" data-approver="{{$transaction->approver}}">
+                                        data-currency="{{$transaction->currency}}" data-dept="{{$transaction->department}}" data-reviewer="{{$transaction->reviewer}}" data-approver="{{$transaction->approver}}"
+                                        data-documents="{{$transaction->attachments}}">
                                     <span class="glyphicon glyphicon-edit"></span> Edit
                                 </button> 
                             
@@ -62,7 +75,23 @@
                     </tbody>
                 </table>
             </div>
+            <div class="dropdown">
+                <button type="button" class="btn btn-primary dropdown-toggle" id="dropdownMenu1"
+                    data-toggle="dropdown">Excel Export-QuickBooks
+                        <span class="caret"></span>
+                    </button>
+<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+<li role="presentation">
+<a role="menuitem" tabindex="-1" name="btn_bill" id="btn_bill">Bill Payment</a>
+</li>
+<li role="presentation">
+<a role="menuitem" tabindex="-1" name="btn_cheque" id="btn_cheque">Cheque Payment</a>
+</li>
+
+</ul>
+</div>
             <div align="center">
+            
                 <button type="button" name="btn_delete" id="btn_delete" class="btn btn-danger">
                     <span class="glyphicon glyphicon-trash"></span> Delete
                 </button>
@@ -71,9 +100,10 @@
                     <span class="glyphicon glyphicon-check"></span> Submit
                 </button>
                 
-                 <button type="button" name="btn_excel" id="btn_excel" class="btn btn-primary">
+                 <!-- <button type="button" name="btn_excel" id="btn_excel" class="btn btn-primary">
                     <span class="glyphicon glyphicon-check"></span> Export To Excel
-                </button>
+                </button> -->
+
             </div>
         </div>
     </div>
@@ -186,7 +216,7 @@
                                     <option value="-1">--Select Department-- </option>
                                     @foreach ($depts as $sn) 
                                     {
-                                    <option value="{{ $sn->id }}">{{ $sn->departmentName }}</option>
+                                    <option value="{{ $sn->id }}">{{ $sn->deptname }}</option>
                                     }
                                     @endforeach
                                 </select>
@@ -208,7 +238,7 @@
                             </div>
                         </div>
                         
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label class="control-label col-sm-2" for="reviewer">Reviewer:</label>
                             <div class="col-sm-5">
                                 <select class="form-control" name="reviewer" id="reviewer">
@@ -236,7 +266,22 @@
                             </div>
                         </div>
                         
+ -->
 
+                <div class="form-group{{ $errors->has('documents') ? ' has-error' : '' }}">
+                        <label for="documents" class="control-label col-sm-2">Attachments: </label>
+
+                        <div class="col-md-4">
+                            upload .pdf, .zip files
+                            <input id="documents" type="file" name="documents[]" multiple="multiple">
+
+                            @if ($errors->has('documents'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('documents') }}</strong>
+                            </span>
+                            @endif
+                        </div>
+                    </div>
 
                 </form>
                 <div class="deleteContent">
@@ -333,8 +378,10 @@
         $('#btn_submit').click(function () {
             if (confirm("Submit for Review?")) {
                 var id = [];
+                var count=0
                 $('#checkbox:checked').each(function () {
-                    id.push(this.value);   
+                    id.push(this.value);
+                    count=count+1;   
                 });
                 if (id.length === 0) {
                     alert("Please select at least one checkbox");
@@ -346,7 +393,8 @@
                         data: {id: id
                                },
                         success: function (response) {
-                            window.location = "reviewmail?email="+response;
+                            alert('Vouchers submitted Successfully!!');
+                            window.location = "reviewmail?count="+count;
 
                         }
 
@@ -361,7 +409,7 @@
 
 
     $(document).ready(function () {
-        $('#btn_excel').click(function () {
+        $('#btn_bill').click(function () {
             if (confirm("Export to Excel")) {
                 var id = [];
                 $('#checkbox:checked').each(function () {
@@ -374,7 +422,37 @@
                     $.ajax({
                         async: 'false',
                         type: 'get',
-                        url: 'exportExcel',
+                        url: 'bill',
+                        data: {id: id},
+                        success: function (url) {
+                          
+                            window.location.assign(this.url);
+                    }
+
+                    });
+                }
+            } else {
+                return false;
+            }
+
+        });
+    });
+
+    $(document).ready(function () {
+        $('#btn_cheque').click(function () {
+            if (confirm("Export to Excel")) {
+                var id = [];
+                $('#checkbox:checked').each(function () {
+                    id.push(this.value);
+                });
+                if (id.length === 0) {
+                    alert("Please select at least one checkbox");
+                } else {
+                    //
+                    $.ajax({
+                        async: 'false',
+                        type: 'get',
+                        url: 'cheque',
                         data: {id: id},
                         success: function (url) {
                           

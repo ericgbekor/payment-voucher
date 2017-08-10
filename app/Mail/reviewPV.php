@@ -12,14 +12,17 @@ class reviewPV extends Mailable
 {
     use Queueable, SerializesModels;
 
+
+    public $reviews;
+
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($reviews)
     {
-       // 
+        $this->reviews = $reviews;
     }
 
     /**
@@ -29,6 +32,7 @@ class reviewPV extends Mailable
      */
     public function build()
     {
-        return $this->view('mail.review');
+        return $this->subject('Vouchers Submitted for Review')
+                    ->view('mail.review');
     }
 }

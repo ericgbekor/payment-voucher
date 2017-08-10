@@ -1,43 +1,14 @@
 <?php $nav_account = 'active'; ?>
 @extends('master')
 @section('content')
-<div class="row">
+<!-- <div class="row">
     <div class="col-lg-12">
         <h1 class="page-header">@section('name') Chart of Accounts @stop</h1>
     </div>
-</div><!--/.row-->
+</div> --><!--/.row-->
 
-<!--adding new data-->
-<div class="form-group row add">
-    <!--   <div class="panel-heading">Add New Account</div>-->
-    <div class="col-md-3">
-        <input type="text" class="form-control" id="aid" name="aid" placeholder="Account ID" required>
-        <p class="error text-center alert alert-danger hidden"></p>
-    </div>
-    <div class="col-md-4">
-        <input type="text" class="form-control" id="aname" name="aname" placeholder="Account Name" required>
-        <p class="error text-center alert alert-danger hidden"></p>
-    </div>
-
-
-
-    <div class="col-sm-3">
-        <select class="form-control" name="aclass" id="aclass"  required>
-            <option value="-1">-- Select Account Class-- </option>
-
-            <option value="debit">Debit</option>
-            <option value="credit">Credit</option>
-
-        </select>
-    </div>
-    <div class="col-md-2">
-        <button class="btn btn-warning" type="submit" id="add">
-            <span class="glyphicon glyphicon-plus"></span> Add Account
-        </button>
-    </div>
-</div>
-
-<!--end of add-->
+@section('icon')   
+<li class="active"> <a href="{{url('/account')}}"><svg class="glyph stroked pencil"><use xlink:href="#stroked-pencil"></use></svg> </a></li>@stop
 
 
 <div class="row">
@@ -51,9 +22,10 @@
                             <th data-field="state" data-checkbox="true" >Item</th>
                             <th data-field="id" data-sortable="true">Account ID</th>
                             <th data-field="account_name"  data-sortable="true">Account Name</th>
-                            <th data-field="account_class" data-sortable="true">Account Class</th>
-                            <th data-field="created_at" data-sortable="true"> Created At</th>
-                            <th data-field="updated_at" data-sortable="true"> Updated At</th>
+                            <th data-field="description" data-sortable="true">Description</th>
+                            <th data-field="type" data-sortable="true">Type</th>
+                            <th data-field="currency" data-sortable="true">Currency</th>
+                            <th data-field="status" data-sortable="true"> Status</th>
                             <th>Edit</th>
                             <th>Delete</th>
 
@@ -66,15 +38,20 @@
                             <td data-checkbox="true"></td>
                             <td> {{$account->id}} </td>
                             <td> {{$account->account_name}}</td>
-                            <td> {{$account->account_class}}</td>
-                            <td> {{$account->created_at}} </td>
-                            <td > {{$account->updated_at}} </td>
+                            <td> {{$account->description}}</td>
+                            <td> {{$account->type}}</td>
+                            <td> {{$account->currency}}</td>
                             <td>
-                                <button class="edit-modal btn btn-primary" data-id="{{$account->id}}" data-name="{{$account->account_name}}" data-class="{{$account->account_class}}">
+                                <a class="btn btn-default" type="submit" href="accountstatus?status={{$account->status}}&&id={{$account->id}}" data-id="{{$account->id}}" data-name="{{$account->account_name}}" data-description="{{$account->description}}" data-status="{{$account->status}}" data-type="{{$account->type}}" data-currency="{{$account->currency}}">
+                                   @if ($account->status === 'enabled') Disable @else Enable @endif
+                                </a>
+                            </td>
+                            <td>
+                                <button class="edit-modal btn btn-primary" data-id="{{$account->id}}" data-name="{{$account->account_name}}" data-description="{{$account->description}}" data-status="{{$account->status}}" data-type="{{$account->type}}" data-currency="{{$account->currency}}">
                                     <span class="glyphicon glyphicon-edit"></span> Edit
                                 </button> </td>
                             <td>
-                                <button class="delete-modal btn btn-danger" data-id="{{$account->id}}" data-name="{{$account->account_name}}" data-class="{{$account->account_class}}">
+                                <button class="delete-modal btn btn-danger" data-id="{{$account->id}}" data-name="{{$account->account_name}}" data-description="{{$account->description}}" data-status="{{$account->status}}" data-type="{{$account->type}}" data-currency="{{$account->currency}}">
                                     <span class="glyphicon glyphicon-trash"></span> Delete
                                 </button>
                             </td>
@@ -101,7 +78,7 @@
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="id">ID :</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="id" value="">
+                            <input type="text" class="form-control" id="id" value="" readonly="true">
                         </div>
                     </div>
                     <div class="form-group">
@@ -110,16 +87,23 @@
                             <input type="name" class="form-control" id="name" value="">
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-2" for="class">Account Class:</label>
+                     <div class="form-group">
+                        <label class="control-label col-sm-2" for="description">Description:</label>
                         <div class="col-sm-10">
-                            <select class="form-control" name="class" id="class"  required>
-                                <option value="-1">-- Select Account Class-- </option>
+                            <input type="text" class="form-control" id="description" value="">
+                        </div>
+                    </div>
 
-                                <option value="debit">Debit</option>
-                                <option value="credit">Credit</option>
-
-                            </select>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="type">Type:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="type" value="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="currency">Currency:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="currency" value="">
                         </div>
                     </div>
                 </form>
@@ -210,7 +194,9 @@
         $('.form-horizontal').show();
         $('#id').val($(this).data('id'));
         $('#name').val($(this).data('name'));
-        $('#class').val($(this).data('class'));
+        $('#description').val($(this).data('description'));
+        $('#type').val($(this).data('type'));
+        $('#currency').val($(this).data('currency'));
         $('.modal-title').text("Edit " + $('#name').val() + "'s details");
         $('#myModal').modal('show');
     });
@@ -224,13 +210,11 @@
                 '_token': $('input[name=_token]').val(),
                 'id': $("#id").val(),
                 'name': $('#name').val(),
-                'class': $('#class').val()
+                'description': $('#description').val(),
+                'type': $('#type').val(),
+                'currency': $('#currency').val()
             },
             success: function (data) {
-
-                /* $('.item' + data.id).replaceWith("<tr class='item" + data.id + "'><td data-checkbox='true'></td><td>" + data.id + "</td><td>" + data.account_name +
-                 "</td><td>" + data.account_class + "</td><td>" + data.created_at + "</td><td>" + data.updated_at + "</td><td>\n\
-                 <button class='edit-modal btn btn-info' data-id='" + data.id + "' data-name='" + data.account_name + "' data-class='" + data.account_class + "'><span class='glyphicon glyphicon-edit'></span> Edit</button></td><td> <button class='delete-modal btn btn-danger' data-id='" + data.id + "' data-name='" + data.account_name + "' data-class='" + data.account_class + "'><span class='glyphicon glyphicon-trash'></span> Delete</button></td></tr>");*/
                 location.href = "{{url('/account')}}";
             }
         });

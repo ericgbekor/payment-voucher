@@ -1,4 +1,4 @@
- <?php $nav_trans = 'active'; ?>
+<?php $nav_trans = 'active'; ?>
 @extends('master')
 @section('content')
 
@@ -8,7 +8,10 @@
     </div>
 </div>/.row-->
 
-<div class="row col-md-5">
+@section('icon')   
+<li class="active"> <a href="{{url('/addtransactions')}}"><span class="glyphicon glyphicon-file"></span> </a></li>@stop
+
+<!-- <div class="row col-md-5">
     <div class="panel-default">
         <div class="panel-body">
     <form action="{{ URL::to('/importExcel') }}" class="form-horizontal" method="post" files="true" enctype="multipart/form-data">
@@ -28,7 +31,7 @@
                              
                         </div>
                         <!--<button class="btn btn-primary">Import File</button>-->
-                    </div>
+                    <!-- </div>
                     
                     <div class="form-group">
                         <div class="col-md-8 col-md-offset-4">
@@ -43,7 +46,7 @@
     </form>
             </div>
     </div>
-</div>
+</div> --> 
 <div class="row">
     <div class="col-lg-11">
         <div class="panel panel-default">
@@ -93,7 +96,7 @@
                         <label for="cheque" class="col-md-4 control-label"></label>
 
                         <div class="col-md-4">
-                            <input id="cheque" type="text" placeholder="Cheque No." class="form-control" name="cheque" required>
+                            <input id="cheque" type="text" placeholder="Cheque No." class="form-control" name="cheque">
 
                             @if ($errors->has('cheque'))
                             <span class="help-block">
@@ -136,11 +139,11 @@
 
                         <div class="col-md-4">
                            
-                            <select class="form-control" name="payee" id="payee"  name="payee" required>
-                                <option value="-1">--Select Payee-- </option>
+                            <select class="form-control selectpicker" data-live-search="true" name="payee" id="payee"  name="payee" title="Select a payee..." liveSearchStyle="contains" required>
+                                <!-- <option value="-1">--Select Payee-- </option> -->
                                 @foreach ($suppliers as $sn) 
                                 {
-                                <option value="{{ $sn->id }}">{{ $sn->supplier_name }}</option>
+                                <option value="{{ $sn->id }}">{{ $sn->supplier_name }} - {{$sn->description}}</option>
                                 }
                                 @endforeach
                             </select>
@@ -163,11 +166,11 @@
                         <label for="debit" class="col-md-4 control-label"></label>
 
                         <div class="col-md-4">
-                           <select class="form-control" name="debit" id="debit"  name="debit" required>
-                               <option value="-1">--Select Debit Account-- </option>
+                           <select class="form-control selectpicker" data-live-search="true" name="debit" id="debit"  name="debit" title="Select a debit account..." liveSearchStyle="contains" required>
+                               <!-- <option value="-1">--Select Debit Account-- </option> -->
                                 @foreach ($debit as $an) 
                                 {
-                                <option value="{{ $an->id }}">{{ $an->account_name }}</option>
+                                <option value="{{ $an->id }}">{{ $an->id}} - {{ $an->account_name }}</option>
                                 }
                                 @endforeach
                                
@@ -191,11 +194,11 @@
                         <label for="debit" class="col-md-4 control-label"></label>
 
                         <div class="col-md-4">
-                           <select class="form-control" name="credit" id="credit"  name="credit" required>
-                               <option value="-1">--Select Credit Account-- </option>
+                           <select class="form-control selectpicker" name="credit" data-live-search="true" id="credit"  name="credit" title="Select a credit account..." liveSearchStyle="contains" required>
+                               <!-- <option value="-1">--Select Credit Account-- </option> -->
                                 @foreach ($credit as $an) 
                                 {
-                                <option value="{{ $an->id }}">{{ $an->account_name }}</option>
+                                <option value="{{ $an->id }}">{{ $an->id }} - {{ $an->account_name }}</option>
                                 }
                                 @endforeach
                                
@@ -219,11 +222,11 @@
                         <label for="debit" class="col-md-4 control-label"></label>
 
                         <div class="col-md-4">
-                           <select class="form-control" name="department" id="department" required>
-                               <option value="-1">--Select Department-- </option>
+                           <select class="form-control selectpicker" data-live-search="true" liveSearchStyle="contains" name="department" id="department" title="Select a department..." required>
+                               <!-- <option value="-1">--Select Department-- </option> -->
                                 @foreach ($depts as $dept) 
                                 {
-                                <option value="{{ $dept->id }}">{{ $dept->departmentName }}</option>
+                                <option value="{{ $dept->id }}">{{ $dept->deptname }}</option>
                                 }
                                 @endforeach
                                
@@ -247,7 +250,18 @@
                         <label for="withholding" class="col-md-4 control-label"></label>
 
                         <div class="col-md-4">
-                            <input id="withholding" type="text" placeholder="Withholding Tax" class="form-control" name="withholding" required>
+                            <!-- <input id="withholding" type="text" placeholder="Withholding Tax" class="form-control" name="withholding"> -->
+                            <b>Withholding Tax</b><br>
+
+                            <input type="radio" name="withholding" value='0'/> 0 <br>
+                            <input type="radio" name="withholding" value='5'/> 5 <br>
+                             <input type="radio" name="withholding" value='8'/> 8 <br>
+                            <input type="radio" name="withholding" value='10'/> 10 <br>
+                            <input type="radio" id="other" name="withholding" value="">Other
+
+                            <div class="reveal-if-active">
+                                 <input id="withholding" type="text" placeholder="Enter rate here..." class="form-control" name="withholding2">
+                            </div>
 
                             @if ($errors->has('withholding'))
                             <span class="help-block">
@@ -261,8 +275,17 @@
                         <label for="vat" class="col-md-4 control-label"></label>
 
                         <div class="col-md-4">
-                            <input id="vat" type="text" placeholder="Enter VAT" class="form-control" name="vat" required>
+                            <!-- <input id="vat" type="text" placeholder="Enter VAT" class="form-control" name="vat"> -->
 
+                            <b>VAT/NHIL</b><br>
+
+                            <input type="radio" name="vat" value='0'/> 0 <br>
+                            <input type="radio" name="vat" value='2.5'/> 2.5 <br>
+                             <input type="radio" name="vat" value='17.5'/> 17.5 <br>
+                            <input type="radio" id="other" name="vat" value=""/>Other
+                            <div class="reveal-if-active">
+                                 <input id="vat" type="text" placeholder="Enter rate here..." class="form-control" name="vat2">
+                            </div>
                             @if ($errors->has('vat'))
                             <span class="help-block">
                                 <strong>{{ $errors->first('vat') }}</strong>
@@ -271,13 +294,13 @@
                         </div>
                     </div>
                     
-                    <div class="form-group{{ $errors->has('reviewer') ? ' has-error' : '' }}">
+                   <!--  <div class="form-group{{ $errors->has('reviewer') ? ' has-error' : '' }}">
                         <label for="reviewer" class="col-md-4 control-label"></label>
 
                         <div class="col-md-4">
                            
                             <select class="form-control" name="reviewer" id="reviewer"  required>
-                                <option value="-1">--Select Reviewer-- </option>
+                                <option value="-1">Select Reviewer </option>
                                 @foreach ($review as $sn) 
                                 {
                                 <option value="{{ $sn->id }}">{{ $sn->firstname }} {{ $sn->lastname }}</option>
@@ -291,13 +314,13 @@
                             </span>
                             @endif
                         </div>
-
+ -->
 <!--                        <div class="col-md-2">
                             <button class="add-modal btn btn-secondary" type="" id="add">
                                 <span class="glyphicon glyphicon-plus-sign"></span>
                             </button>
                         </div>-->
-                    </div>
+                    <!-- </div>
 
                     <div class="form-group{{ $errors->has('approver') ? ' has-error' : '' }}">
                         <label for="approver" class="col-md-4 control-label"></label>
@@ -305,7 +328,7 @@
                         <div class="col-md-4">
                            
                             <select class="form-control" name="approver" id="approver"  required>
-                                <option value="-1">--Select Approver-- </option>
+                                <option value="-1">Select Approver </option>
                                 @foreach ($approve as $sn) 
                                 {
                                 <option value="{{ $sn->id }}">{{ $sn->firstname }} {{ $sn->lastname }}</option>
@@ -318,14 +341,14 @@
                                 <strong>{{ $errors->first('approver') }}</strong>
                             </span>
                             @endif
-                        </div>
+                        </div> -->
 
 <!--                        <div class="col-md-2">
                             <button class="add-modal btn btn-secondary" type="" id="add">
                                 <span class="glyphicon glyphicon-plus-sign"></span>
                             </button>
                         </div>-->
-                    </div>
+                    <!-- </div> -->
 
             
                     <div class="form-group{{ $errors->has('documents') ? ' has-error' : '' }}">
@@ -478,6 +501,10 @@
 
 <script src="{{URL::asset('js/jquery-1.11.1.min.js')}}"></script>
 <script src="{{URL::asset('js/bootstrap.min.js')}}"></script>
+<script src="{{URL::asset('js/bootstrap-select.min.js')}}"></script>
+<script src="{{URL::asset('js/i18n/defaults-*.js')}}"></script>
+
+
 <script>
 $(document).on('click', '.add-modal', function () {
     $('#footer_action_button').text("Add");

@@ -1,34 +1,15 @@
 <?php $nav_supplier = 'active'; ?>
 @extends('master')
 @section('content')
-<div class="row">
+<!-- <div class="row">
     <div class="col-lg-12">
         <h1 class="page-header">@section('name') Suppliers @stop</h1>
     </div>
-</div><!--/.row-->
+</div> --><!--/.row-->
 
-<!--adding new data-->
-<div class="form-group row add">
+@section('icon')   
+<li class="active"> <a href="{{url('/supplier')}}"><svg class="glyph stroked table"><use xlink:href="#stroked-table"></use></svg> </a></li>@stop
 
-    <div class="col-md-5">
-
-
-        <input type="text" class="form-control" id="sname" name="sname" placeholder="Supplier Name" required>
-        <p class="error text-center alert alert-danger hidden"></p>
-
-        <input type="text" class="form-control" id="scategory" name="scategory" placeholder="Supplier Category " required>
-        <p class="error text-center alert alert-danger hidden"></p>
-
-       <!-- <input type="hidden" id="_token" method='{{csrf_field()}}'>-->
-    </div>
-    <div class="col-md-2">
-        <button class="btn btn-warning" type="submit" id="add">
-            <span class="glyphicon glyphicon-plus"></span> Add Supplier
-        </button>
-    </div>
-</div>
-
-<!--end of add-->
 
 
 <div class="row">
@@ -42,9 +23,8 @@
                             <th data-field="state" data-checkbox="true" ></th>
                             <th data-field="id" data-sortable="true">Supplier ID</th>
                             <th data-field="supplier_name"  data-sortable="true">Supplier Name</th>
-                            <th data-field="supplier_category" data-sortable="true">Supplier Category</th>
-                            <th data-field="created_at" data-sortable="true"> Created At</th>
-                            <th data-field="updated_at" data-sortable="true"> Updated At</th>
+                            <th data-field="description" data-sortable="true"> Description</th>
+                            <th data-field="status" data-sortable="true"> Status</th>
                             <th>Edit</th>
                             <th>Delete</th>
 
@@ -57,15 +37,21 @@
                             <td data-checkbox="true"></td>
                             <td> {{$supplier->id}} </td>
                             <td> {{$supplier->supplier_name}}</td>
-                            <td> {{$supplier->supplier_category}}</td>
-                            <td> {{$supplier->created_at}} </td>
-                            <td > {{$supplier->updated_at}} </td>
+                            <td> {{$supplier->description}}</td>
+                            
                             <td>
-                                <button class="edit-modal btn btn-primary" data-id="{{$supplier->id}}" data-name="{{$supplier->supplier_name}}" data-category="{{$supplier->supplier_category}}">
+                                    <a class="btn btn-default" type="submit" href="supplierstatus?status={{$supplier->status}}&&id={{$supplier->id}}" data-id="{{$supplier->id}}" data-name="{{$supplier->supplier_name}}" data-description="{{$supplier->description}}"
+                                        data-status="{{$supplier->status}}">
+                                   @if ($supplier->status === 'enabled') Disable @else Enable @endif
+                                </a>
+                            </td> 
+                            
+                            <td>
+                                <button class="edit-modal btn btn-primary" data-id="{{$supplier->id}}" data-name="{{$supplier->supplier_name}}" data-description="{{$supplier->description}}">
                                     <span class="glyphicon glyphicon-edit"></span> Edit
                                 </button> </td>
                             <td>
-                                <button class="delete-modal btn btn-danger" data-id="{{$supplier->id}}" data-name="{{$supplier->supplier_name}}" data-category="{{$supplier->supplier_category}}">
+                                <button class="delete-modal btn btn-danger" data-id="{{$supplier->id}}" data-name="{{$supplier->supplier_name}}" data-description="{{$supplier->description}}">
                                     <span class="glyphicon glyphicon-trash"></span> Delete
                                 </button>
                             </td>
@@ -92,7 +78,7 @@
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="id">ID :</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="id" value="">
+                            <input type="text" class="form-control" id="id" value="" readonly="true">
                         </div>
                     </div>
                     <div class="form-group">
@@ -102,9 +88,9 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-2" for="category">Supplier Category:</label>
+                        <label class="control-label col-sm-2" for="category">Description:</label>
                         <div class="col-sm-10">
-                            <input type="name" class="form-control" id="category" value="">
+                            <input type="name" class="form-control" id="description" value="">
                         </div>
                     </div>
                 </form>
@@ -193,7 +179,7 @@
         $('.form-horizontal').show();
         $('#id').val($(this).data('id'));
         $('#name').val($(this).data('name'));
-        $('#category').val($(this).data('category'));
+        $('#description').val($(this).data('description'));
         $('.modal-title').text("Edit " + $('#name').val() + "'s details");
         $('#myModal').modal('show');
     });
@@ -207,7 +193,7 @@
                 '_token': $('input[name=_token]').val(),
                 'id': $("#id").val(),
                 'name': $('#name').val(),
-                'category': $('#category').val()
+                'description': $('#description').val()
             },
             success: function () {
                 location.href = "{{url('/supplier')}}";

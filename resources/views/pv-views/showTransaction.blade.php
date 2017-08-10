@@ -1,12 +1,14 @@
 <?php $nav_trans = 'active'; ?>
 @extends('master')
 @section('content')
-<div class="row">
+<!-- <div class="row">
     <div class="col-lg-12">
         <h1 class="page-header">@section('name') Payment Vouchers @stop</h1>
     </div>
-</div><!--/.row-->
+</div> --><!--/.row-->
 
+@section('icon')   
+<li class="active"> <a href="{{url('/showTrans')}}"><span class="glyphicon glyphicon-file"></span> </a></li>@stop
 
 <div class="row">
     <div class="col-md-6">
@@ -35,7 +37,7 @@
                 <p> <b>Account Debited:</b>  {{$debit[0]->account_name}}</p>
                 <p> <b>Account Credited:</b>  {{$credit[0]->account_name}}</p>
                 <p> <a class="btn btn-secondary" href="download?id={{$trans[0]->id}}" id="btn_show">
-                                    <span class="glyphicon glyphicon-download"></span> Download Attachment
+                                    <span class="glyphicon glyphicon-download"></span> Download {{substr($trans[0]->attachments,strpos($trans[0]->attachments,'/')+1)}}
                      </a>  </p>
             </div>
         </div>

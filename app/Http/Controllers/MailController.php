@@ -6,9 +6,11 @@
  */
 
 namespace App\Http\Controllers;
-
+use Carbon\Carbon;
 use Response;
 use Mail;
+use App\User;
+use App\Payment;
 use App\Mail\reviewPV;
 use App\Mail\approvePV;
 use App\Mail\rejectPV;
@@ -32,14 +34,12 @@ class MailController extends Controller {
      * @return redirect
      */
     public function sendReviewMail(Request $request) {
-        if ($request->has('email')) {
-            $email = $request->email;
-            $emails = json_decode($email);
-            for ($i = 0; $i < count($emails); $i++) {
-                $mail = $emails[$i];
-                Mail::to($mail)->queue(new reviewPV);
-            }
-        }
+
+         $reviews = $request->count;
+        $reviewers = User::where('status','enabled')->where('is_reviewer','yes')->orwhere('is_admin','yes')->select('email')->get()->toArray();
+
+            Mail::to($reviewers)->queue(new reviewPV($reviews));
+
          return redirect()->back();
     }
 
@@ -49,14 +49,11 @@ class MailController extends Controller {
      * @return redirect
      */
     public function sendApproveMail(Request $request) {
-        if ($request->has('email')) {
-            $email = $request->email;
-            $emails = json_decode($email);
-            for ($i = 0; $i < count($emails); $i++) {
-                $mail = $emails[$i];
-                Mail::to($mail)->queue(new approvePV);
-            }
-        }
+
+         $approve = $request->count;
+        $approvers = User::where('status','enabled')->where('is_approver','yes')->orwhere('is_admin','yes')->select('email')->get()->toArray();
+
+            Mail::to($approvers)->queue(new approvePV($approve));
          return redirect()->back();
     }
 
@@ -66,16 +63,15 @@ class MailController extends Controller {
      * @return redirect
      */
     public function sendRejectMail(Request $request) {
-        if ($request->has('email')) {
-            $email = $request->email;
-            $emails = json_decode($email);
-            for ($i = 0; $i < count($emails); $i++) {
-                $mail = $emails[$i];
-                Mail::to($mail)->queue(new rejectPV);
-            }
-        }
-        return redirect()->back();
+        
+        $rejects = $request->count;
+        $creators = User::where('status','enabled')->where('is_creator','yes')->orwhere('is_admin','yes')->select('email')->get()->toArray();
+
+            Mail::to($creators)->queue(new rejectPV($rejects));
+
+         return redirect()->back();
     }
+    
 
     /**
      * Send mail notifictions to users to notify them about voucher approval.
@@ -83,15 +79,13 @@ class MailController extends Controller {
      * @return redirect
      */
     public function approvalMail(Request $request) {
-        if ($request->has('email')) {
-            $email = $request->email;
-            $emails = json_decode($email);
-            for ($i = 0; $i < count($emails); $i++) {
-                $mail = $emails[$i];
-                Mail::to($mail)->queue(new approvalPV);
-            }
-        }
-        return redirect()->back();
+
+        $approval = $request->count;
+        $creators = User::where('status','enabled')->where('is_creator','yes')->orwhere('is_admin','yes')->select('email')->get()->toArray();
+
+            Mail::to($creators)->queue(new approvalPV($approval));
+
+         return redirect()->back();
     }
 
 }

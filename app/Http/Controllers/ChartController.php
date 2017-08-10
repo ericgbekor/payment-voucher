@@ -33,7 +33,7 @@ class ChartController extends Controller {
         $credit = Charts::database(DB::table('vouchers')
                         ->join('accounts', 'accountCredited', '=', 'accounts.id')
                         ->select('vouchers.id', 'accountCredited', 'account_name')
-                        ->get(), "pie", "highcharts")
+                        ->get(), "bar", "highcharts")
                 ->title("Credit Accounts Affected")
                 ->elementLabel("Total")
                 ->width(0)
@@ -42,7 +42,7 @@ class ChartController extends Controller {
 
         $suppliers = Charts::database(DB::table('vouchers')
                         ->join('suppliers', 'payee', '=', 'suppliers.id')
-                        ->select('vouchers.id', 'payee', 'supplier_name')
+                        ->select('vouchers.id', 'payee', 'supplier_name' )
                         ->get(), "bar", "highcharts")
                 ->title("Suppliers")
                 ->elementLabel("Total")
@@ -52,16 +52,16 @@ class ChartController extends Controller {
 
         $dept = Charts::database(DB::table('vouchers')
                         ->join('departments', 'department', '=', 'departments.id')
-                        ->select('vouchers.id', 'departmentName')
+                        ->select('vouchers.id', 'deptname')
                         ->get(), 'bar', 'highcharts')
                 ->title("Departments")
                 ->elementLabel("Vouchers Processed")
                 ->width(0)
                 ->responsive(false)
-                ->groupBy('departmentName');
+                ->groupBy('deptname');
 
 
-        $data = Summary::select('department', DB::raw('sum(amount) as amount'))->groupBy('department')
+        $data = DB::table('vouchers')->join('departments', 'department', '=', 'departments.id')->select('department', DB::raw('sum(amount) as amount'))->groupBy('department')
                 ->get();
         $deptamount = Charts::create('pie', 'highcharts')
                 ->title('Amount Spent By Departments')
@@ -102,7 +102,7 @@ class ChartController extends Controller {
          $end = $request->end;
          $end = $end.' 00:00:00';
         
-        
+      // dd($start." ". $end);  
         $credit = Charts::database(DB::table('vouchers')
                         ->join('accounts', 'accountCredited', '=', 'accounts.id')
                         ->select('vouchers.id', 'accountCredited', 'account_name')
@@ -127,14 +127,14 @@ class ChartController extends Controller {
 
         $dept = Charts::database(DB::table('vouchers')
                         ->join('departments', 'department', '=', 'departments.id')
-                        ->select('vouchers.id', 'departmentName')
+                        ->select('vouchers.id', 'deptname')
                         ->whereBetween('vouchers.created_at',[$start,$end])
                         ->get(), 'bar', 'highcharts')
                 ->title("Departments")
                 ->elementLabel("Vouchers Processed")
                 ->width(0)
                 ->responsive(false)
-                ->groupBy('departmentName');
+                ->groupBy('deptname');
 
 
         $data = Summary::select('department', DB::raw('sum(amount) as amount'))->groupBy('department')

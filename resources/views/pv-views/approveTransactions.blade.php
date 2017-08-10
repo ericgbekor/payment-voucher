@@ -2,11 +2,14 @@
 
 @extends('master')
 @section('content')
-<div class="row">
+<!-- <div class="row">
     <div class="col-lg-12">
         <h1 class="page-header">@section('name') Payment Vouchers @stop</h1>
     </div>
-</div><!--/.row-->
+</div> --><!--/.row-->
+
+@section('icon')   
+<li class="active"> <a href="{{url('/approveTrans')}}"><span class="glyphicon glyphicon-file"></span> </a></li>@stop
 
 
 <div class="row">
@@ -20,6 +23,7 @@
                             <th data-field="id" data-sortable="true">PV</th>
                             <th data-field="description"  data-sortable="true">Transaction Description</th>
                             <th data-field="amount" data-sortable="true"> Total Amount</th>
+                            <th data-field="netpayable" data-sortable="true"> Net Payable</th>
                             <th data-field="payee" data-sortable="true"> Payee</th>
                             <th data-field="status" data-sortable="true"> Status</th>
                             <th data-field="created_at" data-sortable="true"> Created At</th>
@@ -34,9 +38,10 @@
                         @foreach($transactions as $transaction)
                         <tr class="item{{$transaction->id}}" id="{{$transaction->id}}"> 
                             <td><input type="checkbox" id="checkbox" name="pid[]" value="{{$transaction->id}}"></input></td>
-                            <td> {{$transaction->id}} </td>
+                             <td> {{$transaction->id}} </td>
                             <td> {{$transaction->description}}</td>
                             <td> {{$transaction->amount}}</td>
+                            <td> {{$transaction->netpayable}}</td>
                              <td> {{$transaction->payee}}</td>
                             <td> {{$transaction->status}}</td>
                             <td> {{$transaction->created_at}} </td>
@@ -172,8 +177,10 @@
            $('#btn_reject').click(function(){
               if(confirm("Reject?")){
                   var id =[];
+                  var count = 0;
                   $('#checkbox:checked').each(function(){
                   id.push(this.value);
+                  count = count + 1;
                   });
                   
              if(id.length === 0){
@@ -186,7 +193,7 @@
                      url: 'multireject',
                      data:{id:id},
                      success:function(response){
-                          window.location="rejectmail?email="+response;
+                          window.location="rejectmail?count="+count;
 
                      }
                      
@@ -234,8 +241,10 @@
             $('#btn_approve').click(function(){
                if(confirm("Approve?")){
                    var id =[];
+                   var count=0;
                    $('#checkbox:checked').each(function(){
                    id.push(this.value);
+                   count = count+1;
                    });
                   
               if(id.length === 0){
@@ -249,7 +258,7 @@
                       data:{id:id},
                       success:function(response){
                          alert("Voucher(s) Approved Successfully!!!");
-                          window.location="approvalmail?email="+response;                     
+                          window.location="approvalmail?count="+count;                     
                            
                           }
                       

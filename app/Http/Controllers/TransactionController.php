@@ -2,7 +2,7 @@
 
 /**
  *  @author: Eric Korku Gbekor
- *  description: This controller communicates with various model to query the tables that relate with voucher transactions
+ *  vouchers.description: This controller communicates with various model to query the tables that relate with voucher transactions
  */
 
 namespace App\Http\Controllers;
@@ -36,23 +36,35 @@ class TransactionController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $transactions = DB::table('vouchers')->join('suppliers','vouchers.payee','=','suppliers.id')
-                        ->select('vouchers.id','status','currency','amount','netpayable','withholding','vat','description','rate','supplier_name as payee','department','cheque','accountDebited','accountCredited','creator','reviewer','approver','attachments','vouchers.created_at','vouchers.updated_at')
+        $transactions = Payment::join('suppliers','vouchers.payee','=','suppliers.id')
+                        ->select('vouchers.id','vouchers.status','currency','amount','netpayable','withholding','vat','vouchers.description','rate','supplier_name as payee','department','cheque','accountDebited','accountCredited','creator','reviewer','approver','attachments','vouchers.created_at','vouchers.updated_at')
                         ->get();
         return view('pv-views.allTransactions', compact('transactions'));
     }
 
     public function view() {
-        $transactions = DB::table('vouchers')->join('suppliers','vouchers.payee','=','suppliers.id')
-                        ->select('vouchers.id','status','currency','amount','netpayable','withholding','vat','description','rate','supplier_name as payee','department','cheque','accountDebited','accountCredited','creator','reviewer','approver','attachments','vouchers.created_at','vouchers.updated_at')
-                        ->where('status', 'created')->orwhere('status', 'rejected')->get();
+        $transactions = Payment::join('suppliers','vouchers.payee','=','suppliers.id')
+                        ->select('vouchers.id','vouchers.status','currency','amount','netpayable','withholding','vat','vouchers.description','rate','supplier_name as payee','department','cheque','accountDebited','accountCredited','creator','reviewer','approver','attachments','vouchers.created_at','vouchers.updated_at')
+                        ->where('vouchers.status', 'created')->orwhere('vouchers.status', 'rejected')->get();
         $suppliers = Supplier::get();
-        $reviewer = User::where('role', '2')->orwhere('role', '4')->get();
-        $approver = User::where('role', '3')->orwhere('role', '4')->get();
-        $debit = Account::where('account_class', 'debit')->get();
-        $credit = Account::where('account_class', 'credit')->get();
+        $reviewer = User::where('is_reviewer', 'yes')->orwhere('is_admin', 'yes')->get();
+        $approver = User::where('is_approver', 'yes')->orwhere('is_admin', 'yes')->get();
+        $debit = Account::all();
+        $credit = Account::all();
         $depts = Department::get();
         return view('pv-views.viewTransactions', compact('transactions', 'suppliers', 'debit', 'depts', 'credit', 'reviewer', 'approver'));
+    }
+
+public function incomplete() {
+        $transactions = Payment::join('suppliers','vouchers.payee','=','suppliers.id')
+                        ->select('vouchers.id','vouchers.status','currency','amount','netpayable','withholding','vat','vouchers.description','rate','supplier_name as payee','department','cheque','accountDebited','accountCredited','creator','reviewer','approver','attachments','vouchers.created_at','vouchers.updated_at')->where('vouchers.status', 'incomplete')->get();
+        $suppliers = Supplier::get();
+        $reviewer = User::where('is_reviewer', 'yes')->orwhere('is_admin', 'yes')->get();
+        $approver = User::where('is_approver', 'yes')->orwhere('is_admin', 'yes')->get();
+        $debit = Account::all();
+        $credit = Account::all();
+        $depts = Department::get();
+        return view('pv-views.incompleteTransactions', compact('transactions', 'suppliers', 'debit', 'depts', 'credit', 'reviewer', 'approver'));
     }
 
     /**
@@ -62,10 +74,10 @@ class TransactionController extends Controller {
      */
     public function reviewPayment() {
         
-        $transactions = DB::table('vouchers')->join('suppliers','vouchers.payee','=','suppliers.id')
-                        ->select('vouchers.id','status','currency','amount','netpayable','withholding','vat','description','rate','supplier_name as payee','department','cheque','accountDebited','accountCredited','creator','reviewer','approver','attachments','vouchers.created_at','vouchers.updated_at')
-                        ->where('status', 'pending review')->get();
-        return view('pv-views/reviewTransactions', compact('transactions'));
+        $transactions = Payment::join('suppliers','vouchers.payee','=','suppliers.id')
+                        ->select('vouchers.id','vouchers.status','currency','amount','netpayable','withholding','vat','vouchers.description','rate','supplier_name as payee','department','cheque','accountDebited','accountCredited','creator','reviewer','approver','attachments','vouchers.created_at','vouchers.updated_at')
+                        ->where('vouchers.status', 'pending review')->get();
+        return view('pv-views.reviewTransactions', compact('transactions'));
     }
 
     /**
@@ -74,10 +86,10 @@ class TransactionController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function makePayment() {
-        $transactions = DB::table('vouchers')->join('suppliers','vouchers.payee','=','suppliers.id')
-                        ->select('vouchers.id','status','currency','amount','netpayable','withholding','vat','description','rate','supplier_name as payee','department','cheque','accountDebited','accountCredited','creator','reviewer','approver','attachments','vouchers.created_at','vouchers.updated_at')
-                        ->where('status', 'approved')->get();
-        return view('pv-views/payTransactions', compact('transactions'));
+        $transactions = Payment::join('suppliers','vouchers.payee','=','suppliers.id')
+                        ->select('vouchers.id','vouchers.status','currency','amount','netpayable','withholding','vat','vouchers.description','rate','supplier_name as payee','department','cheque','accountDebited','accountCredited','creator','reviewer','approver','attachments','vouchers.created_at','vouchers.updated_at')
+                        ->where('vouchers.status', 'approved')->get();
+        return view('pv-views.payTransactions', compact('transactions'));
     }
 
     /**
@@ -86,10 +98,10 @@ class TransactionController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function approvePayment() {
-       $transactions = DB::table('vouchers')->join('suppliers','vouchers.payee','=','suppliers.id')
-                        ->select('vouchers.id','status','currency','amount','netpayable','withholding','vat','description','rate','supplier_name as payee','department','cheque','accountDebited','accountCredited','creator','reviewer','approver','attachments','vouchers.created_at','vouchers.updated_at')
-                        ->where('status', 'reviewed')->get();
-        return view('pv-views/approveTransactions', compact('transactions'));
+       $transactions = Payment::join('suppliers','vouchers.payee','=','suppliers.id')
+                        ->select('vouchers.id','vouchers.status','currency','amount','netpayable','withholding','vat','vouchers.description','rate','supplier_name as payee','department','cheque','accountDebited','accountCredited','creator','reviewer','approver','attachments','vouchers.created_at','vouchers.updated_at')
+                        ->where('vouchers.status', 'reviewed')->get();
+        return view('pv-views.approveTransactions', compact('transactions'));
     }
 
     /**
@@ -103,23 +115,19 @@ class TransactionController extends Controller {
 //        $trans = Summary::where('id', $id)->get();
         $trans = Payment::where('id', $id)->get();
 
-        $payments = DB::table('vouchers')
-                        ->join('suppliers', 'vouchers.payee', '=', 'suppliers.id')
+        $payments = Payment::join('suppliers', 'vouchers.payee', '=', 'suppliers.id')
                         ->select('vouchers.id', 'payee', 'supplier_name')
                         ->where('vouchers.id', $id)->get();
         
-        $dept = DB::table('vouchers')
-                        ->join('departments', 'department', '=', 'departments.id')
-                        ->select('vouchers.id', 'departmentName as department')
+        $dept = Payment::join('departments', 'department', '=', 'departments.id')
+                        ->select('vouchers.id', 'deptname as department')
                         ->where('vouchers.id', $id)->get();
 
-        $credit = DB::table('vouchers')
-                        ->join('accounts', 'accountCredited', '=', 'accounts.id')
+        $credit = Payment::join('accounts', 'accountCredited', '=', 'accounts.id')
                         ->select('vouchers.id', 'accountCredited', 'account_name')
                         ->where('vouchers.id', $id)->get();
 
-        $debit = DB::table('vouchers')
-                        ->join('accounts', 'accountDebited', '=', 'accounts.id')
+        $debit = Payment::join('accounts', 'accountDebited', '=', 'accounts.id')
                         ->select('vouchers.id', 'accountDebited', 'account_name')
                         ->where('vouchers.id', $id)->get();
 
@@ -134,12 +142,13 @@ class TransactionController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create() {
-        $suppliers = Supplier::get();
-        $debit = Account::where('account_class', 'debit')->get();
-        $credit = Account::where('account_class', 'credit')->get();
+        //$suppliers = Supplier::get();
+        $suppliers = DB::table('suppliers')->get();
+        $debit = Account::get();
+        $credit = Account::get();
         $depts = Department::get();
-        $review = User::where('role', '2')->orwhere('role', '4')->get();
-        $approve = User::where('role', '3')->orwhere('role', '4')->get();
+        $review = User::where('is_reviewer', 'yes')->orwhere('is_admin', 'yes')->where('status','enabled')->get();
+        $approve = User::where('is_approver', 'yes')->orwhere('is_admin','yes')->where('status','enabled')->get();
         return view('pv-views.addTransactions', compact('suppliers', 'debit', 'credit', 'approve', 'review', 'depts'));
     }
 
@@ -163,17 +172,49 @@ class TransactionController extends Controller {
         }
     }
 
+    public function getVAT(Request $request){
+        if ($request->has('vat')){
+            $vat = $request->vat;
+            $amount = $request->amount;
+            $vatcalc = ($vat/100)*$amount;
+            return $vatcalc;
+        }
+        else{
+            $vat = $request->vat2;
+            $amount = $request->amount;
+            $vatcalc = ($vat/100)*$amount;
+            return $vatcalc;
+        }
+    }
+
+
+    public function getWHT(Request $request){
+
+        if ($request->has('withholding')){
+            $wht = $request->withholding;
+            $amount = $request->amount;
+            $whtcalc = ($wht/100)*$amount;
+            return $whtcalc;
+        }
+        else{
+            $wht = $request->withholding2;
+            $amount = $request->amount;
+            $whtcalc = ($wht/100)*$amount;
+            return $whtcalc;
+        }
+    }
+
     /**
      * Generate netpayable value from gross amount, vat and withholding tax.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return double $net
      */
-    public function getNetPayable($request) {
+    public function getNetPayable(Request $request) {
         if ($request->has('amount')) {
             $amount = $request->amount;
-            $vat = $request->vat;
-            $wth = $request->withholding;
+            $vat = $this->getVAT($request);
+            $wth = $this->getWHT($request);
 
             $net = $amount - $wth + $vat;
             return $net;
@@ -201,7 +242,7 @@ class TransactionController extends Controller {
         $id = $request->id;
         $pv = Payment::findorfail($id);
         $doc = $pv->attachments;
-        return response()->download("storage/" . $doc);
+        return response()->download(storage_path("app/public/{$doc}"));
     }
 
     /**
@@ -211,6 +252,9 @@ class TransactionController extends Controller {
      * @return redirect
      */
     public function save(Request $request) {
+
+        if (Auth::user()->is_creator=='yes' or Auth::user()->is_admin=='yes')
+        {
         $pv = new Payment();
         $pv->amount = $request->amount;
         $pv->netpayable = $this->getNetPayable($request);
@@ -224,13 +268,14 @@ class TransactionController extends Controller {
         $pv->currency = $request->currency;
         $pv->status = "created";
         $pv->attachments = $this->saveFile($request);
-        $pv->vat = $request->vat;
-        $pv->withholding = $request->withholding;
+        $pv->vat = $this->getVAT($request);
+        $pv->withholding = $this->getWHT($request);
         $pv->creator = Auth::user()->id;
         $pv->reviewer = $request->reviewer;
         $pv->approver = $request->approver;
         $pv->save();
-        return redirect('transactions');
+        return redirect('viewtransactions');
+    }
     }
 
     /**
@@ -241,6 +286,8 @@ class TransactionController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function updatePV(Request $request) {
+        if (Auth::user()->is_creator=='yes' or Auth::user()->is_admin=='yes')
+        {
         $id = $request->id;
         $pv = Payment::findorfail($id);
         $pv->amount = $request->amount;
@@ -262,6 +309,7 @@ class TransactionController extends Controller {
         $pv->approver = $request->approver;
         $pv->save();
         return response()->json($pv);
+    }
     }
 
     /**
@@ -286,7 +334,6 @@ class TransactionController extends Controller {
      * @return array $email
      */
     public function reviewStatus(Request $request) {
-        $email = array();
         if ($request->has('id')) {
             foreach ($request->id as $id) {
                 $pv = Payment::findorfail($id);
@@ -294,11 +341,10 @@ class TransactionController extends Controller {
                     $pv->status = "pending review";
                 }
                 $pv->save();
-                $person = $this->getUserByID($pv->reviewer);
-                $email[] = $person[0]->email;
+                
             }
         }
-        return json_encode($email);
+        // return json_encode($email);
     }
 
     /**
@@ -308,10 +354,9 @@ class TransactionController extends Controller {
      * @return array $email
      */
     public function review(Request $request) {
-        $email = array();
         if ($request->has('id')) {
 
-            if (Auth::user()->role != 1) {
+            if (Auth::user()->is_reviewer == 'yes' && Auth::user()->status=='enabled') {
                 foreach ($request->id as $id) {
                     $pv = Payment::findorfail($id);
                     if ($pv->status == "pending review") {
@@ -319,12 +364,12 @@ class TransactionController extends Controller {
                     }
                     $pv->reviewer = Auth::user()->id;
                     $pv->save();
-                    $person = $this->getUserByID($pv->approver);
-                    $email[] = $person[0]->email;
+                    // $person = $this->getUserByID($pv->approver);
+                    // $email[] = $person[0]->email;
                 }
             }
         }
-        return json_encode($email);
+        // return json_encode($email);
     }
 
     /**
@@ -334,19 +379,18 @@ class TransactionController extends Controller {
      * @return array $email
      */
     public function multireject(Request $request) {
-        $email = array();
         if ($request->has('id')) {
-            if (Auth::user()->role != 1) {
+            if (Auth::user()->is_creator=='no' && Auth::user()->status=='enabled') {
                 foreach ($request->id as $id) {
                     $pv = Payment::findorfail($id);
                     $pv->status = "rejected";
                     $pv->save();
-                    $person = $this->getUserByID($pv->creator);
-                    $email[] = $person[0]->email;
+                    // $person = $this->getUserByID($pv->creator);
+                    // $email[] = $person[0]->email;
                 }
             }
         }
-        return json_encode($email);
+        // return json_encode($email);
     }
 
     /**
@@ -356,9 +400,8 @@ class TransactionController extends Controller {
      * @return array $email
      */
     public function approve(Request $request) {
-        $email = array();
         if ($request->has('id')) {
-            if (Auth::user()->role == 3 || Auth::user()->role == 4) {
+            if (Auth::user()->is_approver == 'yes' || Auth::user()->is_admin == 'yes' && Auth::user()->status=='enabled') {
                 foreach ($request->id as $id) {
                     $pv = Payment::findorfail($id);
                     if ($pv->status == "reviewed") {
@@ -366,12 +409,12 @@ class TransactionController extends Controller {
                     }
                     $pv->approver = Auth::user()->id;
                     $pv->save();
-                    $person = $this->getUserByID($pv->creator);
-                    $email[] = $person[0]->email;
+                    // $person = $this->getUserByID($pv->creator);
+                    // $email[] = $person[0]->email;
                 }
             }
         }
-        return json_encode($email);
+        // return json_encode($email);
     }
 
 }

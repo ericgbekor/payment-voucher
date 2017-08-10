@@ -2,11 +2,14 @@
 
 @extends('master')
 @section('content')
-<div class="row">
+<!-- <div class="row">
     <div class="col-lg-12">
         <h1 class="page-header">@section('name') Payment Vouchers @stop</h1>
     </div>
-</div><!--/.row-->
+</div> --><!--/.row-->
+
+@section('icon')   
+<li class="active"> <a href="{{url('/makePayment')}}"><span class="glyphicon glyphicon-file"></span> </a></li>@stop
 
 
 <div class="row">
@@ -20,6 +23,7 @@
                             <th data-field="id" data-sortable="true">PV</th>
                             <th data-field="description"  data-sortable="true">Transaction Description</th>
                             <th data-field="amount" data-sortable="true"> Total Amount</th>
+                            <th data-field="netpayable" data-sortable="true"> Net Payable</th>
                             <th data-field="payee" data-sortable="true"> Payee</th>
                             <th data-field="status" data-sortable="true"> Status</th>
                             <th data-field="created_at" data-sortable="true"> Created At</th>
@@ -34,15 +38,16 @@
                         @foreach($transactions as $transaction)
                         <tr class="item{{$transaction->id}}" id="{{$transaction->id}}"> 
                             <td><input type="checkbox" id="checkbox" name="pid[]" value="{{$transaction->id}}"></input></td>
-                            <td> {{$transaction->id}} </td>
+                             <td> {{$transaction->id}} </td>
                             <td> {{$transaction->description}}</td>
                             <td> {{$transaction->amount}}</td>
+                            <td> {{$transaction->netpayable}}</td>
                              <td> {{$transaction->payee}}</td>
                             <td> {{$transaction->status}}</td>
                             <td> {{$transaction->created_at}} </td>
                             <td > {{$transaction->updated_at}} </td>
                             <td>
-                                <a type="button" class="pdf_button btn btn-secondary" href="reportTrans?id={{$transaction->id}}" id="btn_pdf"  data-id="{{$transaction->id}}" data-descrition="{{$transaction->description}}" data-amount="{{$transaction->amount}}">
+                                <a type="button" class="pdf_button btn btn-secondary" href="reportTrans?id={{$transaction->id}}"  target="_blank" id="btn_pdf"  data-id="{{$transaction->id}}" data-descrition="{{$transaction->description}}" data-amount="{{$transaction->amount}}">
                                     <span class="glyphicon glyphicon-pdf"></span> PDF
                                 </a>
                             </td>
@@ -53,7 +58,7 @@
             </div>
             <div align="center">
                  <button type="button" name="btn_excel" id="excel" class="btn btn-success">
-                    <span class="glyphicon glyphicon-check"></span> Print Cheque
+                    <span class="glyphicon glyphicon-check"></span> Excel Export-Cheque
                 </button>
             </div>
         </div>

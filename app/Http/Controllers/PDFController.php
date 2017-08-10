@@ -83,6 +83,8 @@ class PDFController extends Controller {
         PDF::SetTitle('Voucher Details');
         $trans = Payment::where('id', $id)->get();
 
+
+
         $payments = DB::table('vouchers')
                         ->join('suppliers', 'vouchers.payee', '=', 'suppliers.id')
                         ->select('vouchers.id', 'payee', 'supplier_name')
@@ -93,10 +95,12 @@ class PDFController extends Controller {
                         ->select('vouchers.id', 'creator', 'users.firstname', 'users.lastname')
                         ->where('vouchers.id', $id)->get();
 
+
         $reviewer = DB::table('vouchers')
                         ->join('users', 'reviewer', '=', 'users.id')
                         ->select('vouchers.id', 'reviewer', 'users.firstname', 'users.lastname')
                         ->where('vouchers.id', $id)->get();
+
 
         $approver = DB::table('vouchers')
                         ->join('users', 'approver', '=', 'users.id')
@@ -105,7 +109,7 @@ class PDFController extends Controller {
         
         $dept = DB::table('vouchers')
                         ->join('departments', 'department', '=', 'departments.id')
-                        ->select('vouchers.id', 'departmentName as department')
+                        ->select('vouchers.id', 'deptname as department')
                         ->where('vouchers.id', $id)->get();
 
         $credit = DB::table('vouchers')
