@@ -45,6 +45,7 @@ Route::get('/showTrans', 'TransactionController@show');
 Route::get('/deleteTrans', 'TransactionController@deletePayment');
 Route::get('/reviewTrans', 'TransactionController@reviewPayment');
 Route::get('/approveTrans', 'TransactionController@approvePayment');
+Route::get('/addcheque', 'TransactionController@addCheque');
 Route::get('/makePayment', 'TransactionController@makePayment');
 Route::get('/multireject', 'TransactionController@multireject');
 Route::get('/approve', 'TransactionController@approve');

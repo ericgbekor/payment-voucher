@@ -75,7 +75,7 @@
                     <ul class="children collapse" id="sub-item-1">
                         <li>
                             <a class="" href="{{url('/addtransactions')}}">
-                                <svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> New Voucher
+                                 New Voucher
                             </a>
                         </li>
 
@@ -87,13 +87,13 @@
 
                         <li>
                             <a class="" href="{{url('/viewtransactions')}}">
-                                <svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> View Vouchers
+                                 View Vouchers
                             </a>
                         </li>
 
                         <li>
                             <a class="" href="{{url('/makePayment')}}">
-                                <svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> Processed Vouchers
+                                Processed Vouchers
                             </a>
                         </li>
                     </ul>
@@ -106,7 +106,7 @@
                     <ul class="children collapse" id="sub-item-3">
                         <li>
                             <a class="" href="{{url('/newsupplier')}}">
-                                <svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> New Supplier
+                                New Supplier
                             </a>
                         </li>
                     </ul>
@@ -118,7 +118,7 @@
                     <ul class="children collapse" id="sub-item-4">
                         <li>
                             <a class="" href="{{url('/newaccount')}}">
-                                <svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> New Account
+                                 New Account
                             </a>
                         </li>
                     </ul>
@@ -132,7 +132,7 @@
                     <ul class="children collapse" id="sub-item-5">
                         <li>
                             <a class="" href="{{url('/newdepartment')}}">
-                                <svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> New Department
+                                 New Department
                             </a>
                         </li>
                     </ul>
@@ -152,13 +152,13 @@
 
                         <li>
                             <a class="" href="{{url('/reviewTrans')}}">
-                                <svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> Review Vouchers
+                                 Review Vouchers
                             </a>
                         </li>
 
                         <li>
                             <a class="" href="{{url('/makePayment')}}">
-                                <svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> Processed Vouchers
+                                 Processed Vouchers
                             </a>
                         </li>
                     </ul>
@@ -171,7 +171,7 @@
                     <ul class="children collapse" id="sub-item-3">
                         <li>
                             <a class="" href="{{url('/newsupplier')}}">
-                                <svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> New Supplier
+                                 New Supplier
                             </a>
                         </li>
                     </ul>
@@ -183,7 +183,7 @@
                     <ul class="children collapse" id="sub-item-4">
                         <li>
                             <a class="" href="{{url('/newaccount')}}">
-                                <svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> New Account
+                                 New Account
                             </a>
                         </li>
                     </ul>
@@ -197,7 +197,7 @@
                     <ul class="children collapse" id="sub-item-5">
                         <li>
                             <a class="" href="{{url('/newdepartment')}}">
-                                <svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> New Department
+                                 New Department
                             </a>
                         </li>
                     </ul>
@@ -217,12 +217,12 @@
                         
                         <li>
                             <a class="" href="{{url('/approveTrans')}}">
-                                <svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> Approve Vouchers
+                                 Approve Vouchers
                             </a>
                         </li>
                         <li>
                             <a class="" href="{{url('/makePayment')}}">
-                                <svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> Processed Vouchers
+                                 Processed Vouchers
                             </a>
                         </li>
                     </ul>
@@ -235,7 +235,7 @@
                     <ul class="children collapse" id="sub-item-3">
                         <li>
                             <a class="" href="{{url('/newsupplier')}}">
-                                <svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> New Supplier
+                                 New Supplier
                             </a>
                         </li>
                     </ul>
@@ -247,7 +247,7 @@
                     <ul class="children collapse" id="sub-item-4">
                         <li>
                             <a class="" href="{{url('/newaccount')}}">
-                                <svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> New Account
+                                 New Account
                             </a>
                         </li>
                     </ul>
@@ -261,7 +261,7 @@
                     <ul class="children collapse" id="sub-item-5">
                         <li>
                             <a class="" href="{{url('/newdepartment')}}">
-                                <svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> New Department
+                                 New Department
                             </a>
                         </li>
                     </ul>
@@ -280,7 +280,7 @@
                     <ul class="children collapse" id="sub-item-1">
                         <li>
                             <a class="" href="{{url('/addtransactions')}}">
-                                <svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> New Voucher
+                                 New Voucher
                             </a>
                         </li>
 
@@ -292,24 +292,24 @@
 
                         <li>
                             <a class="" href="{{url('/viewtransactions')}}">
-                                <svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> View Vouchers
+                                 View Vouchers
                             </a>
                         </li>
 
                         <li>
                             <a class="" href="{{url('/reviewTrans')}}">
-                                <svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> Review Vouchers
+                                 Review Vouchers
                             </a>
                         </li>
 
                         <li>
                             <a class="" href="{{url('/approveTrans')}}">
-                                <svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> Approve Vouchers
+                                 Approve Vouchers
                             </a>
                         </li>
                         <li>
                             <a class="" href="{{url('/makePayment')}}">
-                                <svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> Processed Vouchers
+                                 Processed Vouchers
                             </a>
                         </li>
                     </ul>
@@ -322,7 +322,7 @@
                     <ul class="children collapse" id="sub-item-2">
                         <li>
                             <a class="" href="{{url('/newuser')}}">
-                                <svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> New User
+                                 New User
                             </a>
                         </li>
                     </ul>
@@ -335,7 +335,7 @@
                     <ul class="children collapse" id="sub-item-3">
                         <li>
                             <a class="" href="{{url('/newsupplier')}}">
-                                <svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> New Supplier
+                                New Supplier
                             </a>
                         </li>
                     </ul>
@@ -347,7 +347,7 @@
                     <ul class="children collapse" id="sub-item-4">
                         <li>
                             <a class="" href="{{url('/newaccount')}}">
-                                <svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> New Account
+                                 New Account
                             </a>
                         </li>
                     </ul>
@@ -361,7 +361,7 @@
                     <ul class="children collapse" id="sub-item-5">
                         <li>
                             <a class="" href="{{url('/newdepartment')}}">
-                                <svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> New Department
+                                New Department
                             </a>
                         </li>
                     </ul>

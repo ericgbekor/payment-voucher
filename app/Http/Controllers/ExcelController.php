@@ -70,7 +70,7 @@ class ExcelController extends Controller {
         if ($request->has('id')) {
             foreach ($request->id as $id) {
 
-        $pv[] = Payment::join('suppliers','payee','=','suppliers.id')->join('departments','department','=','departments.id')->select('vouchers.created_at as created_at','cheque','supplier_name','amount','vouchers.description','departmentName','accountDebited')->where('vouchers.id', $id)->get();
+        $pv[] = Payment::join('suppliers','payee','=','suppliers.id')->join('departments','department','=','departments.id')->join('accounts','accountDebited','=','accounts.id')->select('vouchers.created_at as created_at','cheque','supplier_name','amount','vouchers.description','deptname','account_name')->where('vouchers.id', $id)->get();
             }
 
             
@@ -99,7 +99,7 @@ class ExcelController extends Controller {
         if ($request->has('id')) {
             foreach ($request->id as $id) {
                 $pv[] = Payment::join('suppliers','payee','=','suppliers.id')->join('departments','department','=','departments.id')->where('vouchers.id', $id)
-                        ->select('vouchers.created_at','cheque','supplier_name','accountDebited','amount','description','departmentName')->get();
+                        ->select('vouchers.created_at','cheque','supplier_name','accountDebited','amount','vouchers.description','deptname')->get();
             }
             
             Excel::create('Payments', function($data) use ($pv) {
@@ -123,12 +123,12 @@ class ExcelController extends Controller {
     public function cheque(Request $request) {
 
         $pv = array();
-        $pv[] = [['name' => 'Name', 'Net Payable' => 'Net Payable']];
+        $pv[] = [['ID'=>'ID','name' => 'Name', 'Net Payable' => 'Net Payable','Description'=>'Description']];
 
         if ($request->has('id')) {
             foreach ($request->id as $id) {
                 
-                $pv[] = Payment::join('suppliers','payee','=','suppliers.id')->where('vouchers.id', $id)->select('supplier_name', 'netpayable')->get();
+                $pv[] = Payment::join('suppliers','payee','=','suppliers.id')->where('vouchers.id', $id)->select('vouchers.id','supplier_name', 'netpayable','vouchers.description')->get();
             }
             Excel::create('Vouchers', function($data) use ($pv) {
                 $data->sheet('Vouchers', function($values) use ($pv) {

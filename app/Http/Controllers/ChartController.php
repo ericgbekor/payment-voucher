@@ -43,6 +43,7 @@ class ChartController extends Controller {
         $suppliers = Charts::database(DB::table('vouchers')
                         ->join('suppliers', 'payee', '=', 'suppliers.id')
                         ->select('vouchers.id', 'payee', 'supplier_name' )
+                        ->orderBy('vouchers.id','desc')
                         ->get(), "bar", "highcharts")
                 ->title("Suppliers")
                 ->elementLabel("Total")

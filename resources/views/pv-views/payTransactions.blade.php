@@ -47,6 +47,10 @@
                             <td> {{$transaction->created_at}} </td>
                             <td > {{$transaction->updated_at}} </td>
                             <td>
+                            <button class="edit-modal btn btn-primary" id="btn_edit" data-id="{{$transaction->id}}" data-name="{{$transaction->description}}" data-amount="{{$transaction->amount}}" 
+                                        data-cheque="{{$transaction->cheque}}">Cheque #
+                                </button> </td>
+                            <td>
                                 <a type="button" class="pdf_button btn btn-secondary" href="reportTrans?id={{$transaction->id}}"  target="_blank" id="btn_pdf"  data-id="{{$transaction->id}}" data-descrition="{{$transaction->description}}" data-amount="{{$transaction->amount}}">
                                     <span class="glyphicon glyphicon-pdf"></span> PDF
                                 </a>
@@ -64,6 +68,51 @@
         </div>
     </div>
 </div><!--/.row-->
+
+<!--Modal for CRUD-->
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&minus;</button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body ">
+                
+              <form class="form-horizontal" role="form">
+                    <div class="form-group container-fluid">
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="id">ID :</label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control" id="id" value="" readonly="true">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="cheque">Cheque:</label>
+                            <div class="col-sm-5">
+                                <input type="name" class="form-control" id="cheque" value="">
+                            </div>
+                        </div>
+                        
+                </form>
+                <div class="deleteContent">
+                    Are you Sure you want to delete transaction?
+                    <span class="hidden id"></span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn actionBtn" data-dismiss="modal">
+                        <span id="footer_action_button" class='glyphicon'> </span>
+                    </button>
+                    <button type="button" class="btn btn-warning" data-dismiss="modal">
+                        <span class='glyphicon glyphicon-remove'></span> Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> <!--end modal-->
 
 
 
@@ -150,6 +199,40 @@
                 return false;
             }
 
+        });
+    });
+
+
+         // Edit Data (Modal and function edit data)
+    $(document).on('click', '.edit-modal', function () {
+        $('#footer_action_button').text(" Update");
+        $('#footer_action_button').addClass('glyphicon-check');
+        $('#footer_action_button').removeClass('glyphicon-trash');
+        $('.actionBtn').addClass('btn-success');
+        $('.actionBtn').removeClass('btn-danger');
+        $('.actionBtn').addClass('edit');
+        $('.deleteContent').hide();
+        $('.form-horizontal').show();
+        $('#id').val($(this).data('id'));
+        $('#cheque').val($(this).data('cheque'));
+        $('.modal-title').text("Edit Cheque Number ");
+        $('#myModal').modal('show');
+    });
+    $('.modal-footer').on('click', '.edit', function () {
+        $.ajax({
+            async: 'true',
+            type: 'get',
+            url: 'addcheque',
+            datatype: 'json',
+            data: {
+                '_token': $('input[name=_token]').val(),
+                'id': $('#id').val(),
+                'cheque': $('#cheque').val(),
+            },
+            success: function () {
+                alert("Cheque Number Added Successfully");
+                location.href = 'makePayment';
+            }
         });
     });
     

@@ -176,7 +176,7 @@ public function incomplete() {
         if ($request->has('vat')){
             $vat = $request->vat;
             $amount = $request->amount;
-            $vatcalc = ($vat/100)*$amount;
+            $vatcalc =($vat/100)*$amount;
             return $vatcalc;
         }
         else{
@@ -216,7 +216,7 @@ public function incomplete() {
             $vat = $this->getVAT($request);
             $wth = $this->getWHT($request);
 
-            $net = $amount - $wth + $vat;
+            $net = ($amount - $wth) + $vat;
             return $net;
         }
     }
@@ -312,6 +312,20 @@ public function incomplete() {
     }
     }
 
+    public function addCheque(Request $request){
+
+        if (Auth::user()->is_creator=='yes' or Auth::user()->is_admin=='yes')
+        {
+        $id = $request->id;
+        $pv = Payment::findorfail($id);
+        $pv->cheque = $request->cheque;
+        $pv->creator = Auth::user()->id;
+        $pv->save();
+        return response()->json($pv);
+    }
+
+    }
+
     /**
      * Remove the specified resources from storage.
      *
@@ -356,7 +370,7 @@ public function incomplete() {
     public function review(Request $request) {
         if ($request->has('id')) {
 
-            if (Auth::user()->is_reviewer == 'yes' && Auth::user()->status=='enabled') {
+            if (Auth::user()->is_reviewer == 'yes' || Auth::user()->is_admin=='yes' && Auth::user()->status=='enabled') {
                 foreach ($request->id as $id) {
                     $pv = Payment::findorfail($id);
                     if ($pv->status == "pending review") {
