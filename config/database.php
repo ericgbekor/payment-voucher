@@ -41,7 +41,7 @@ return [
 
         'mysql' => [
             'driver' => 'mysql',
-            'host' => env('DB_HOST', '127.0.0.1'),
+            'host' => env('DB_HOST', '192.185.19.9'),
             'port' => env('DB_PORT', '3306'),
             'database' => env('DB_DATABASE', 'davidkad_payflow'),
             'username' => env('DB_USERNAME', 'davidkad_payflow'),
