@@ -10,7 +10,7 @@
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                	<a href="{{URL::previous()}}"> <h2 class="glyphicon glyphicon-arrow-left"> </h2></a> 
+                <a href="{{URL::previous()}}"> <span class="glyphicon glyphicon-arrow-left"> </span></a> 
                 </div>
                 <div class="panel-body">
                     <form class="form-horizontal" role="form" method="GET" action="{{ url('/department/create') }}">

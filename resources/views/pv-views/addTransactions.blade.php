@@ -50,7 +50,7 @@
 <div class="row">
     <div class="col-lg-11">
         <div class="panel panel-default">
-            <div class="panel-heading"> Payment Vouchers</div>
+            <div class="panel-heading"><a href="{{URL::previous()}}"> <span class="glyphicon glyphicon-arrow-left"> </span></a> Add Voucher</div>
             
             <div class="panel-body">
 

@@ -75,12 +75,12 @@
                     </tbody>
                 </table>
             </div>
-            <div class="dropdown">
+            <!-- <div class="dropdown">
                 <button type="button" class="btn btn-primary dropdown-toggle" id="dropdownMenu1"
                     data-toggle="dropdown">Excel Export-QuickBooks
                         <span class="caret"></span>
-                    </button>
-<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                    </button> -->
+<!-- <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
 <li role="presentation">
 <a role="menuitem" tabindex="-1" name="btn_bill" id="btn_bill">Bill Payment</a>
 </li>
@@ -88,7 +88,7 @@
 <a role="menuitem" tabindex="-1" name="btn_cheque" id="btn_cheque">Cheque Payment</a>
 </li>
 
-</ul>
+</ul> -->
 </div>
             <div align="center">
             

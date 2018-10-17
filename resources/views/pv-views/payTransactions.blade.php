@@ -60,11 +60,11 @@
                     </tbody>
                 </table>
             </div>
-            <div align="center">
+            <!-- <div align="center">
                  <button type="button" name="btn_excel" id="excel" class="btn btn-success">
                     <span class="glyphicon glyphicon-check"></span> Excel Export-Cheque
                 </button>
-            </div>
+            </div> -->
         </div>
     </div>
 </div><!--/.row-->
