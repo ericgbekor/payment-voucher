@@ -389,7 +389,7 @@
                     $.ajax({
                         async: 'true',
                         type: 'get',
-                        url: 'multireview',
+                        url: 'review',
                         data: {id: id
                                },
                         success: function (response) {
