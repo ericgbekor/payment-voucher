@@ -85,7 +85,7 @@ class ChartController extends Controller {
                 ->elementLabel("Total")
                 ->width(0)
                 ->responsive(false)
-                ->groupByMonth(2017, true);
+                ->groupByMonth(2018, true);
 
         return view('index', compact('credit', 'suppliers', 'status', 'vouchers', 'chart', 'dept', 'deptamount'));
     }
@@ -164,7 +164,7 @@ class ChartController extends Controller {
                 ->elementLabel("Total")
                 ->width(0)
                 ->responsive(false)
-                ->groupByMonth(2017, true);
+                ->groupByMonth(2018, true);
 
         return view('index', compact('credit', 'suppliers', 'status', 'vouchers', 'chart', 'dept', 'deptamount'));
     }
