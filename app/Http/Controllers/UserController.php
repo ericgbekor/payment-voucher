@@ -61,7 +61,7 @@ class UserController extends Controller {
     public function store(Request $request) {
        // dd($request);
         $user = new User();
-        $user->username = $request->username;
+        // $user->username = $request->username;
         $user->email = $request->email;
         $user->password = bcrypt($request->password);
         $user->firstname = $request->firstname;
@@ -109,7 +109,7 @@ class UserController extends Controller {
      */
     public function update(Request $request, $id) {
         $user = User::findorfail($id);
-        $user->username = $request->name;
+        // $user->username = $request->name;
         $user->email = $request->mail;
         $user->firstname = $request->fname;
         $user->lastname = $request->lname;
