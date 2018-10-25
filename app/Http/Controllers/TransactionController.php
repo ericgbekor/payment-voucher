@@ -44,8 +44,9 @@ class TransactionController extends Controller {
 
     public function view() {
         $transactions = Payment::join('suppliers','vouchers.payee','=','suppliers.id')
-                        ->select('vouchers.id','vouchers.status','currency','amount','netpayable','withholding','vat','vouchers.description','rate','supplier_name as payee','department','cheque','accountDebited','accountCredited','creator','reviewer','approver','attachments','vouchers.created_at','vouchers.updated_at')
+                        ->select('vouchers.id','vouchers.status','currency','amount','netpayable','withholding','vat','vouchers.description','rate','supplier_name as payee','vouchers.payee as supplier','department','cheque','accountDebited','accountCredited','creator','reviewer','approver','attachments','vouchers.created_at','vouchers.updated_at')
                         ->where('vouchers.status', 'created')->orwhere('vouchers.status', 'rejected')->get();
+        
         $suppliers = Supplier::get();
         $reviewer = User::where('is_reviewer', 'yes')->orwhere('is_admin', 'yes')->get();
         $approver = User::where('is_approver', 'yes')->orwhere('is_admin', 'yes')->get();
@@ -173,15 +174,14 @@ public function incomplete() {
     }
 
     public function getVAT(Request $request){
+        $amount = str_replace(",","",$request->amount);
         if ($request->has('vat')){
             $vat = $request->vat;
-            $amount = $request->amount;
             $vatcalc =($vat/100)*$amount;
             return $vatcalc;
         }
         else{
             $vat = $request->vat2;
-            $amount = $request->amount;
             $vatcalc = ($vat/100)*$amount;
             return $vatcalc;
         }
@@ -189,16 +189,15 @@ public function incomplete() {
 
 
     public function getWHT(Request $request){
+        $amount = str_replace(",","",$request->amount);
 
         if ($request->has('withholding')){
             $wht = $request->withholding;
-            $amount = $request->amount;
             $whtcalc = ($wht/100)*$amount;
             return $whtcalc;
         }
         else{
             $wht = $request->withholding2;
-            $amount = $request->amount;
             $whtcalc = ($wht/100)*$amount;
             return $whtcalc;
         }
@@ -212,7 +211,7 @@ public function incomplete() {
      */
     public function getNetPayable(Request $request) {
         if ($request->has('amount')) {
-            $amount = $request->amount;
+            $amount = str_replace(",","",$request->amount);
             $vat = $this->getVAT($request);
             $wth = $this->getWHT($request);
 
@@ -256,8 +255,9 @@ public function incomplete() {
         if (Auth::user()->is_creator=='yes' or Auth::user()->is_admin=='yes')
         {
         $pv = new Payment();
-        $pv->amount = $request->amount;
-        $pv->netpayable = $this->getNetPayable($request);
+        $amount = $request->amount;
+        $pv->amount = $amount;
+        $pv->netpayable = round($this->getNetPayable($request));
         $pv->description = $request->description;
         $pv->rate = $request->rate;
         $pv->cheque = $request->cheque;
@@ -268,8 +268,8 @@ public function incomplete() {
         $pv->currency = $request->currency;
         $pv->status = "created";
         $pv->attachments = $this->saveFile($request);
-        $pv->vat = $this->getVAT($request);
-        $pv->withholding = $this->getWHT($request);
+        $pv->vat = round($this->getVAT($request),2);
+        $pv->withholding = round($this->getWHT($request),2);
         $pv->creator = Auth::user()->id;
         $pv->reviewer = $request->reviewer;
         $pv->approver = $request->approver;
@@ -290,8 +290,9 @@ public function incomplete() {
         {
         $id = $request->id;
         $pv = Payment::findorfail($id);
-        $pv->amount = $request->amount;
-        $pv->netpayable = $this->getNetPayable($request);
+        $amount = str_replace(",","",$request->amount);
+        $pv->amount = $amount;
+        $pv->netpayable = round($this->getNetPayable($request),2);
         $pv->description = $request->description;
         $pv->rate = $request->rate;
         $pv->cheque = $request->cheque;
@@ -302,8 +303,8 @@ public function incomplete() {
         $pv->currency = $request->currency;
         $pv->status = "created";
         $pv->attachments = $this->saveFile($request);
-        $pv->vat = $request->vat;
-        $pv->withholding = $request->withholding;
+        $pv->vat = round($request->vat,2);
+        $pv->withholding = round($request->withholding,2);
         $pv->creator = Auth::user()->id;
         $pv->reviewer = $request->reviewer;
         $pv->approver = $request->approver;

@@ -56,7 +56,7 @@
 
                             <td>
                                 <button class="edit-modal btn btn-primary" id="btn_edit" data-id="{{$transaction->id}}" data-name="{{$transaction->description}}" data-amount="{{$transaction->amount}}" 
-                                        data-cheque="{{$transaction->cheque}}" data-rate="{{$transaction->rate}}"  data-payee="{{$transaction->payee}}" 
+                                        data-cheque="{{$transaction->cheque}}" data-rate="{{$transaction->rate}}"  data-payee="{{$transaction->supplier}}" 
                                         data-credit="{{$transaction->accountCredited}}" data-debit="{{$transaction->accountDebited}}" data-withholding="{{$transaction->withholding}}" data-vat="{{$transaction->vat}}" 
                                         data-currency="{{$transaction->currency}}" data-dept="{{$transaction->department}}" data-reviewer="{{$transaction->reviewer}}" data-approver="{{$transaction->approver}}"
                                         data-documents="{{$transaction->attachments}}">
@@ -172,7 +172,7 @@
                                     <option value="-1">--Select Payee-- </option>
                                     @foreach ($suppliers as $sn) 
                                     {
-                                    <option value="{{ $sn->id }}" name="{{ $sn->supplier_name }}">{{ $sn->supplier_name }}</option>
+                                    <option value="{{ $sn->id }}">{{ $sn->supplier_name }}</option>
                                     }
                                     @endforeach
                                 </select>
@@ -488,7 +488,8 @@
         $('#cheque').val($(this).data('cheque'));
         $('#rate').val($(this).data('rate'));
         $('#debit').val($(this).data('debit'));
-        $('select[name^="payee"] option[name="'+$(this).data('payee')+'"]').attr("selected",true);
+        // $('select[name^="payee"] option[name="'+$(this).data('payee')+'"]').attr("selected",true);
+        $('#payee').val($(this).data('payee'));
         $('#credit').val($(this).data('credit'));
         $('#department').val($(this).data('dept'));
         $('#reviewer').val($(this).data('reviewer'));
