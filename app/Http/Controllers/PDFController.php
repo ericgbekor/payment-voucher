@@ -49,7 +49,7 @@ class PDFController extends Controller {
 
         // Custom Footer
         PDF::setFooterCallback(function($pdf) {
-            $html = '©Ashesi University College. All rights reserved.  1 University Avenue, Berekuso; PMB CT 3, Cantonments, Accra, Ghana | Phone: +233.302.610.330';
+            $html = '©Ashesi University. All rights reserved.  1 University Avenue, Berekuso; PMB CT 3, Cantonments, Accra, Ghana | Phone: +233.302.610.330';
             // Position at 15 mm from bottom
             $pdf->SetY(-15);
             // Set font
@@ -71,9 +71,37 @@ class PDFController extends Controller {
         $numberToWords = new NumberToWords();
 
         //build a new number transformer to convert number to words
-        $pv = Payment::where('id', $id)->get();
+        // $pv = Payment::where('id', $id)->get();
+        $trans = Payment::where('id', $id)->get();
         $numberTrans = $numberToWords->getNumberTransformer('en');
-        $numWords = $numberTrans->toWords($pv[0]->amount);
+        
+        if ((strpos(str_replace(",","",$trans[0]->amount),'.'))!= false){
+            $amount = explode(".",str_replace(",","",$trans[0]->amount));
+            $basevalue = $amount[0];
+            $decimalvalue = $amount[1];
+            $numWordsOne = $numberTrans->toWords($basevalue);
+            $numWordsTwo = $numberTrans->toWords($decimalvalue);
+            if ($trans[0]->currency=='cedis'){
+                $numWords = $numWordsOne." Cedis and ".$numWordsTwo." Pesewas";
+            }
+            else{
+                $numWords = $numWordsOne." Dollars and ".$numWordsTwo." Cents";
+            }
+            
+        }
+        else{
+            $numWordsOne = $numberTrans->toWords(str_replace(",","",$trans[0]->amount));
+            if ($trans[0]->currency == 'cedis'){
+                $numWords = $numWordsOne." Cedis Only";
+            }
+            else{
+                $numWords = $numWordsOne." Dollars Only";
+            }
+            
+        }
+        
+    
+        
 
         $this->headerFooter();
         PDF::setHeaderMargin(10);

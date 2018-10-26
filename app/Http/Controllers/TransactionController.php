@@ -47,7 +47,8 @@ class TransactionController extends Controller {
                         ->select('vouchers.id','vouchers.status','currency','amount','netpayable','withholding','vat','vouchers.description','rate','supplier_name as payee','vouchers.payee as supplier','department','cheque','accountDebited','accountCredited','creator','reviewer','approver','attachments','vouchers.created_at','vouchers.updated_at')
                         ->where('vouchers.status', 'created')->orwhere('vouchers.status', 'rejected')->get();
         
-        $suppliers = Supplier::get();
+        // $suppliers = Supplier::all();
+        $suppliers = DB::table('suppliers')->get();
         $reviewer = User::where('is_reviewer', 'yes')->orwhere('is_admin', 'yes')->get();
         $approver = User::where('is_approver', 'yes')->orwhere('is_admin', 'yes')->get();
         $debit = Account::all();

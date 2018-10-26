@@ -16,10 +16,13 @@
         <p>PAYEE NAME: {{$payments[0]->supplier_name}} </p>
         <p>CHEQUE NUMBER: {{$trans[0]->cheque}}</p>
         <p>TRANSACTION DESCRIPTION: {{$trans[0]->description}}</p>
-        <p>AMOUNT IN WORDS: {{ucwords($numWords." ".$trans[0]->currency)}}</p>
+        <p>AMOUNT IN WORDS: {{ucwords($numWords)}}</p>
         <p>CLASS/DEPT: {{$dept[0]->department}}</p>
         <p>EX RATE: {{$trans[0]->rate}}</p>
-        <p>AMOUNT: {{$trans[0]->amount}}</p>
+        @if ($trans[0]->currency=='cedis') <p>AMOUNT: {{' GHS '.$trans[0]->amount}}</p>
+        @else <p>AMOUNT: {{' $ '.$trans[0]->amount}}</p>
+        @endif
+         
 
         <div class="row">
             <table class="table-striped" border="1" style="width:85%;" >

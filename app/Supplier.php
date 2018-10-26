@@ -9,8 +9,7 @@ class Supplier extends Model
 {
 	use SoftDeletes;
     //
-
-    public function suppliers(){
+    public function payee(){
 
 		return $this->hasMany('App\Payment','payee');
 	}

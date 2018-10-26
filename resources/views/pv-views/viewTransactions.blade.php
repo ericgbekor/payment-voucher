@@ -168,7 +168,7 @@
                         <div class="form-group">
                             <label class="control-label col-sm-2" for="payee">Payee:</label>
                             <div class="col-sm-5">
-                                <select class="form-control" name="payee" id="payee" required>
+                                <select class="form-control payee" name="payee" id="payee" required>
                                     <option value="-1">--Select Payee-- </option>
                                     @foreach ($suppliers as $sn) 
                                     {
